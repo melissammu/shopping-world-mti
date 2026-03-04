@@ -82,3 +82,13 @@
   cursor: pointer;
   box-sizing: border-box;     /* MUY importante */
 }
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 500px;
+}
+
+.logo-img {
+  width: 15px;
+  height: auto;
+}
