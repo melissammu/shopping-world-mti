@@ -17,6 +17,7 @@
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   text-align: center;
+  box-sizing:border-box;
 }
 
 /* ===== AVATAR ===== */
@@ -62,34 +63,38 @@
 }
 
 /* ===== BOTONES ===== */
-.site-button {
-  display: flex;              /* clave */
-  align-items: center;        /* centra verticalmente el texto */
-  justify-content: center;    /* centra horizontalmente */
+.site-button{
   width: 100%;
-  padding: 16px 18px;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px 16px;
   margin: 12px 0;
 
-  background: rgb(225, 223, 223);
-  color: #111;
-  font-weight: 600;
-  font-size: 16px;
-
-  border-radius: 999px;
-  border: none;
+  border-radius: 28px;
+  border: 2px solid #000;
   text-decoration: none;
 
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.15;
+  text-align: center;
+
   cursor: pointer;
-  box-sizing: border-box;     /* MUY importante */
 }
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 500px;
+  margin-bottom: 18px;
 }
 
 .logo-img {
-  width: 15px;
+  width: 90px;
+  max-width: 100%;
   height: auto;
 }
 .button-link {
