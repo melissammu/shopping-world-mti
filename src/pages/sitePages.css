@@ -4,155 +4,127 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fbb9d6;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* ===== CARD ===== */
-.site-card {
-  background: #f3c9e4;
-  width: 100%;
-  max-width: 420px;
-  padding: 28px 22px;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  box-sizing:border-box;
-}
-
-/* ===== AVATAR ===== */
-.site-avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 14px;
-}
-
-/* ===== NOMBRE ===== */
-.site-name {
-  font-size: 26px;
-  font-weight: 700;
-  margin: 10px 0 6px;
-}
-
-/* ===== BIO ===== */
-.site-bio {
-  font-size: 15px;
-  color: #4803e9;
-  margin-bottom: 18px;
-}
-
-/* ===== ICONOS SOCIALES ===== */
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 22px;
-}
-
-.social-icons a {
-  font-size: 22px;
-  color:  #4803e9;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.social-icons a:hover {
-  transform: scale(1.15);
-  color: #d2f606;
-}
-
-/* ===== BOTONES ===== */
-.site-button{
-  width: 100%;
-  max-width: 100%;
+  padding: clamp(16px, 4vw, 32px);
   box-sizing: border-box;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 18px 16px;
-  margin: 12px 0;
-
-  border-radius: 28px;
-  border: 2px solid #000;
-  text-decoration: none;
-
-  font-weight: 800;
-  font-size: 22px;
-  line-height: 1.15;
-  text-align: center;
-
-  cursor: pointer;
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
 }
+
+/* ===== CARD PRINCIPAL ===== */
+.site-card {
+  width: min(720px, 94vw);
+  max-width: 720px;
+
+  padding: clamp(18px, 4.5vw, 40px);
+  border-radius: 22px;
+
+  text-align: center;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== LOGO ===== */
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: clamp(14px, 3.5vw, 22px);
 }
 
 .logo-img {
-  width: 90px;
-  max-width: 100%;
+  width: clamp(90px, 18vw, 140px);
   height: auto;
-}
-.button-link {
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content:center;
-}
-/* Botones - look profesional */
-.button-link {
-  width: 100%;
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  padding: 18px 16px;
-  min-height: 72px;
-
-  border-radius: 26px;
-  border: 1px solid rgba(0,0,0,0.12);
-
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.15;
-  text-align: center;
-  text-decoration: none;
-
-  cursor: pointer;
-
-  /* Animación suave */
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  max-width: 100%;
 }
 
-/* Efecto al tocar/click (móvil) */
-.button-link:active {
-  transform: scale(0.98);
-  filter: brightness(0.98);
-}
-
-/* Sombra suave (look premium) */
-.button-link {
-  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-}
-
-/* Espacio entre botones */
+/* ===== LINKS / BOTONES ===== */
 .links-container {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: clamp(12px, 2.8vw, 18px);
+  margin-top: clamp(10px, 2.5vw, 16px);
 }
-.button-link .btn-text {
-  white-space: normal;
-  word-break: keep-all;
+
+/* ===== BOTONES ===== */
+.site-button {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+
+  padding: clamp(14px, 4vw, 22px);
+  font-size: clamp(16px, 4.2vw, 20px);
+  font-weight: 800;
+
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff4da6, #ff7abf);
+
+  box-shadow: 0 12px 30px rgba(255, 77, 166, 0.35);
+
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
-.button-link .btn-icon {
-  font-size: 22px;
-  line-height: 1;
+
+.site-button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+.site-button:active {
+  transform: scale(0.97);
+}
+
+/* ===== LINKS TIPO <a> ===== */
+.button-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+
+  padding: clamp(14px, 4vw, 22px);
+  font-size: clamp(16px, 4.2vw, 20px);
+  font-weight: 800;
+
+  border-radius: 999px;
+  text-decoration: none;
+
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff4da6, #ff7abf);
+
+  box-shadow: 0 12px 30px rgba(255, 77, 166, 0.35);
+
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button-link:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+.button-link:active {
+  transform: scale(0.97);
+}
+
+/* ===== AJUSTE EXTRA PARA TELÉFONOS MUY PEQUEÑOS ===== */
+@media (max-width: 360px) {
+  .site-card {
+    width: 96vw;
+    padding: 16px;
+  }
+
+  .site-button,
+  .button-link {
+    max-width: 100%;
+  }
 }

@@ -1,99 +1,62 @@
-import React from 'react';
-export default function SitePage(){
-const abrirLink = (url) => {
-  if (!url) return;
+import React from "react";
+import "./sitePages.css";
 
-  // Safari/iPhone: más estable abrir así
-  const nuevaVentana = window.open(url, "_blank", "noopener,noreferrer");
+export default function SitePage() {
 
-  // Si Safari bloquea la nueva pestaña, abre en la misma
-  if (!nuevaVentana) {
-    window.location.href = url;
-  }
-};
- return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "20px",
-        height: "100vh",
-        backgroundColor: "#000000",
-        position: "relative",
-      }}
-    >
-      {/* LOGO ARRIBA CENTRADO */}
-      <div className="logo-container">
-        <img src="/logonvo.png" alt="MV Logo" className="logo-img" />
+  const abrirLink = (url) => {
+    if (!url) return;
+
+    const nuevaVentana = window.open(url, "_blank", "noopener,noreferrer");
+
+    if (!nuevaVentana) {
+      window.location.href = url;
+    }
+  };
+
+  return (
+
+    <div className="site-container">
+
+      {/* LOGO FUERA DEL CONTENEDOR */}
+      <img
+        src="/logonvo.png"
+
+        className="logo-top"
+      />
+
+      {/* TARJETA CENTRAL */}
+      <div className="site-card">
+
+        <div className="links-container">
+
+          <button
+            className="site-button primary"
+            onClick={() => abrirLink("LINK_TIKTOK")}
+            type="button"
+          >
+            Clique agora - Vitrine TikTok Shop
+          </button>
+
+          <button
+            className="site-button"
+            onClick={() => abrirLink("LINK_AMAZON")}
+            type="button"
+          >
+            Clique agora - Amazon
+          </button>
+
+          <button
+            className="site-button"
+            onClick={() => abrirLink("LINK_SHEIN")}
+            type="button"
+          >
+            Clique agora - Shein
+          </button>
+
+        </div>
+
       </div>
 
-      {/* BOTÓN TIKTOK */}
-      <button
-       onClick={() => abrirLink("https://vt.tiktok.com/ZS9evc46RRqcM-2SCrz/")}
-        style={{
-          backgroundColor: "#ecce09",
-          color: "#000000",
-          padding: "20px 120px",
-          borderRadius: "90px",
-          textDecoration: "none",
-          fontWeight: "bold",
-           fontSize:"60px",
-        }}
-      >
-        <span className="btn-text">Clique agora - Vitrine TikTok Shop</span>
-
-      </button>
-      
-
-      {/* BOTÓN AMAZON */}
-      <button
-       onClick={() => abrirLink("https://a.co/d/0cW0YAXb") }
-        style={{
-          backgroundColor: "#FF9900",
-          color: "#000",
-          padding: "20px 120px",
-          borderRadius: "90px",
-          textDecoration: "none",
-          fontWeight: "bold",
-          fontSize:"60px",
-
-        }}
-      >
-              <span className="btn-text">Clique agora - Amazon</span>
-
-      </button>
- <button
-       onClick={() => abrirLink("https://onelink.shein.com/31/5ickfrxc1897")}
-        style={{
-          backgroundColor: "#FF9900",
-          color: "#000",
-          padding: "20px 120px",
-          borderRadius: "90px",
-          textDecoration: "none",
-          fontWeight: "bold",
-          fontSize:"60px",
-
-        }}
-      >
-               <span className="btn-text">Clique agora - Shein</span>
- 
-      </button>
-
-      {/* MARCA DE AGUA ABAJO */}
-      <div
-        style={{
-          position: "inferior",
-          bottom: "10px",
-          fontSize: "30px",
-          fontWeight: "bold",
-          letterSpacing: "2px",
-        }}
-      >
-        <span style={{ color: "rgba(180,180,180,0.15)" }}>MV.</span>
-      </div>
     </div>
   );
 }
-       
