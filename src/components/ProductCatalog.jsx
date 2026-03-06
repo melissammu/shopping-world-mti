@@ -1,46 +1,41 @@
 import React from "react";
-import "../pages/productCatalogPage.css";
+import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [] }) {
-
-  if (!products.length) {
-    return (
-      <p style={{ opacity: 0.8, textAlign: "center", marginTop: "20px" }}>
-        Aún no hay productos para mostrar.
-      </p>
-    );
-  }
-
   return (
+    <div className="catalog-page">
+      <div className="catalog-header">
+        <h1 className="catalog-title">Produtos</h1>
+        <p className="catalog-subtitle">
+          Escolha seu produto e clique para comprar
+        </p>
+      </div>
 
-    <div className="catalog-container">
+      <div className="catalog-grid">
+        {products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <div className="image-container">
+              {product.price && (
+                <span className="promo-message">{product.price}</span>
+              )}
 
-      {products.map((p, index) => (
+              <span className="click-watermark">👆 CLIQUE</span>
 
-        <div className="product-card" key={index}>
-
-          <img
-            src={p.image}
-            alt={p.name}
-            className="product-image"
-          />
-
-          <h3>{p.name}</h3>
-
-          <a
-            href={p.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="buy-button"
-          >
-            Comprar
-          </a>
-
-        </div>
-
-      ))}
-
+              <a
+                href={product.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="product-image"
+                />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-
   );
 }

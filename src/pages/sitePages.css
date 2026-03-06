@@ -1,130 +1,158 @@
-/* ===== CONTENEDOR PRINCIPAL ===== */
-.site-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: clamp(16px, 4vw, 32px);
-  box-sizing: border-box;
+/* ===== CONTENEDOR GENERAL ===== */
 
-  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+.site-container{
+  min-height:100vh;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  background: radial-gradient(circle at top,#1f1f2e,#0a0a0f);
+
+  font-family:Arial, Helvetica, sans-serif;
 }
 
-/* ===== CARD PRINCIPAL ===== */
-.site-card {
-  width: min(720px, 94vw);
-  max-width: 720px;
 
-  padding: clamp(18px, 4.5vw, 40px);
-  border-radius: 22px;
 
-  text-align: center;
-  box-sizing: border-box;
+/* ===== BARRA NEGRA DEL LOGO ===== */
 
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.logo-bar{
 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  width:100%;
 
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  background:black;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:25px 0;
+
+  margin-bottom:70px;
+
 }
+
+
 
 /* ===== LOGO ===== */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: clamp(14px, 3.5vw, 22px);
+
+.logo-img{
+
+  width:140px;
+
+  max-width:40vw;
+
 }
 
-.logo-img {
-  width: clamp(90px, 18vw, 140px);
-  height: auto;
-  max-width: 100%;
+
+
+/* ===== TARJETA DE BOTONES ===== */
+
+.site-card{
+
+  width:90%;
+
+  max-width:460px;
+
+  padding:45px 30px;
+
+  border-radius:30px;
+
+  background:rgba(255,255,255,0.05);
+
+  backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  box-shadow:0 25px 70px rgba(0,0,0,0.6);
+
 }
 
-/* ===== LINKS / BOTONES ===== */
-.links-container {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 2.8vw, 18px);
-  margin-top: clamp(10px, 2.5vw, 16px);
+
+
+/* ===== CONTENEDOR DE LINKS ===== */
+
+.links-container{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:25px;
+
 }
+
+
 
 /* ===== BOTONES ===== */
-.site-button {
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
 
-  padding: clamp(14px, 4vw, 22px);
-  font-size: clamp(16px, 4.2vw, 20px);
-  font-weight: 800;
+.site-button,
+.button-link{
 
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
+  width:100%;
 
-  color: #ffffff;
-  background: linear-gradient(135deg, #ff4da6, #ff7abf);
+  padding:20px;
 
-  box-shadow: 0 12px 30px rgba(255, 77, 166, 0.35);
+  border-radius:40px;
 
-  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+  font-size:20px;
+
+  font-weight:700;
+
+  border:none;
+
+  cursor:pointer;
+
+  text-decoration:none;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  color:white;
+
+  background:linear-gradient(135deg,#ff4da6,#ff7abf);
+
+  box-shadow:0 15px 40px rgba(255,77,166,0.35);
+
+  transition:all .2s ease;
+
 }
 
-.site-button:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05);
+
+
+.site-button:hover,
+.button-link:hover{
+
+  transform:scale(1.05);
+
 }
 
-.site-button:active {
-  transform: scale(0.97);
+
+
+.site-button:active,
+.button-link:active{
+
+  transform:scale(0.98);
+
 }
 
-/* ===== LINKS TIPO <a> ===== */
-.button-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
 
-  padding: clamp(14px, 4vw, 22px);
-  font-size: clamp(16px, 4.2vw, 20px);
-  font-weight: 800;
+/* ===== RESPONSIVE ===== */
 
-  border-radius: 999px;
-  text-decoration: none;
+@media (max-width:480px){
 
-  color: #ffffff;
-  background: linear-gradient(135deg, #ff4da6, #ff7abf);
-
-  box-shadow: 0 12px 30px rgba(255, 77, 166, 0.35);
-
-  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+.site-card{
+padding:40px 25px;
 }
 
-.button-link:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05);
+.logo-img{
+width:120px;
 }
 
-.button-link:active {
-  transform: scale(0.97);
-}
-
-/* ===== AJUSTE EXTRA PARA TELÉFONOS MUY PEQUEÑOS ===== */
-@media (max-width: 360px) {
-  .site-card {
-    width: 96vw;
-    padding: 16px;
-  }
-
-  .site-button,
-  .button-link {
-    max-width: 100%;
-  }
 }

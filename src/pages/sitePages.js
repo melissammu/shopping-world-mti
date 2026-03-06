@@ -1,62 +1,27 @@
-import React from "react";
-import "./sitePages.css";
+import React, { useEffect, useState } from "react";
+import ProductCatalog from "../components/ProductCatalog";
+import { supabase } from "../lib/supabase";
 
-export default function SitePage() {
+export default function SheinPage() {
+  const [products, setProducts] = useState([]);
 
-  const abrirLink = (url) => {
-    if (!url) return;
+  useEffect(() => {
+    async function loadProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("id", { ascending: false });
 
-    const nuevaVentana = window.open(url, "_blank", "noopener,noreferrer");
+      if (error) {
+        console.error("Erro ao buscar produtos:", error);
+        return;
+      }
 
-    if (!nuevaVentana) {
-      window.location.href = url;
+      setProducts(data || []);
     }
-  };
 
-  return (
+    loadProducts();
+  }, []);
 
-    <div className="site-container">
-
-      {/* LOGO FUERA DEL CONTENEDOR */}
-      <img
-        src="/logonvo.png"
-
-        className="logo-top"
-      />
-
-      {/* TARJETA CENTRAL */}
-      <div className="site-card">
-
-        <div className="links-container">
-
-          <button
-            className="site-button primary"
-            onClick={() => abrirLink("LINK_TIKTOK")}
-            type="button"
-          >
-            Clique agora - Vitrine TikTok Shop
-          </button>
-
-          <button
-            className="site-button"
-            onClick={() => abrirLink("LINK_AMAZON")}
-            type="button"
-          >
-            Clique agora - Amazon
-          </button>
-
-          <button
-            className="site-button"
-            onClick={() => abrirLink("LINK_SHEIN")}
-            type="button"
-          >
-            Clique agora - Shein
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-  );
+  return <ProductCatalog products={products} />;
 }
