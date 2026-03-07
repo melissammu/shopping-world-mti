@@ -41,13 +41,15 @@ export default function ProductCatalog({ products = [] }) {
 
               <img
                 src={buildProxyImage(product.image)}
-                alt={product.name}
+                alt={product.name || product.title || "Produto"}
                 className="product-image"
                 loading="lazy"
                 onError={(e) => {
                   const img = product.image || "";
+                  const store = product.store || "";
 
                   if (
+                    store === "amazon" ||
                     img.includes("amazon") ||
                     img.includes("m.media-amazon") ||
                     img.includes("amazonaws")
@@ -63,8 +65,10 @@ export default function ProductCatalog({ products = [] }) {
             </div>
 
             <div className="product-info">
-              <h3 className="product-name">{product.name}</h3>
-              <p className="product-price">{product.price}</p>
+              <h3 className="product-name">
+                {product.name || product.title || "Produto"}
+              </h3>
+              <p className="product-price">{product.price || ""}</p>
             </div>
           </a>
         ))}

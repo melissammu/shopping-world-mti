@@ -4,33 +4,36 @@ import { supabase } from "../lib/supabase";
 
 export default function AmazonPage() {
   const [products, setProducts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function loadProducts() {
       const { data, error } = await supabase
         .from("amazon_products")
-        .select("*");
+        .select("*")
+        .order("id", { ascending: false });
 
       if (error) {
-        console.error("Erro carregando produtos:", error);
+        console.error("Erro ao buscar produtos Amazon:", error);
+        setErrorMessage(error.message);
         return;
       }
 
-      const formattedProducts = data.map((item) => ({
-        id: item.id,
-        name: item.title,
-        price: item.price,
-        images: [item.image],
-        link: item.link,
-        tag: item.tag || "Oferta",
-      }));
-
-      console.log("Produtos formatados:", formattedProducts);
-      setProducts(formattedProducts);
+      setProducts(data || []);
     }
 
-    fetchProducts();
+    loadProducts();
   }, []);
 
-  return <ProductCatalog products={products} />;
+  return (
+    <div>
+      {errorMessage && (
+        <div style={{ padding: "10px", color: "red" }}>
+          Erro: {errorMessage}
+        </div>
+      )}
+
+      <ProductCatalog products={products} />
+    </div>
+  );
 }
