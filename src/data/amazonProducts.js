@@ -3,14 +3,14 @@ const amazonProducts = [
     id: 1,
     name: "Aro de luz profissional",
     price: "R$ 120,00",
-    image: ["/produtos/amazon1.jpg"],
+    image: ["/produtos/moleton_amazon.jpg"],
     link: "https://amazon.com/tu-link-afiliado-1",
   },
   {
     id: 2,
     name: "Microfone sem fio",
     price: "R$ 85,00",
-    image: ["/produtos/amazon2.jpg"],
+    image: ["/produtos/camisa_ny.jpg"],
     link: "https://amazon.com/tu-link-afiliado-2",
   },
   {
