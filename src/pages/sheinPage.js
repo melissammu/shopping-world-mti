@@ -20,6 +20,7 @@ export default function SheinPage() {
       }
 
       setProducts(data || []);
+    
     }
 
     loadProducts();
