@@ -2,6 +2,20 @@ import React from "react";
 import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [] }) {
+  const buildProxyImage = (imageUrl) => {
+    if (!imageUrl) return "/produtos/placeholder.jpg";
+
+    if (
+      imageUrl.startsWith("/produtos/") ||
+      imageUrl.startsWith("/images/") ||
+      imageUrl.startsWith("data:")
+    ) {
+      return imageUrl;
+    }
+
+    return `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`;
+  };
+
   return (
     <div className="catalog-page">
       <div className="catalog-header">
@@ -26,11 +40,10 @@ export default function ProductCatalog({ products = [] }) {
               )}
 
               <img
-                src={product.image}
+                src={buildProxyImage(product.image)}
                 alt={product.name || product.title || "Produto"}
                 className="product-image"
                 loading="lazy"
-                referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.currentTarget.src = "/produtos/placeholder.jpg";
                 }}
