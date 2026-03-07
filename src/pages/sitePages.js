@@ -1,27 +1,47 @@
-import React, { useEffect, useState } from "react";
-import ProductCatalog from "../components/ProductCatalog";
-import { supabase } from "../lib/supabase";
+import React from "react";
+import { Link } from "react-router-dom";
+import "./sitePages.css";
 
-export default function SheinPage() {
-  const [products, setProducts] = useState([]);
+export default function SitePage() {
+  const tiktokShopLink = "https://vt.tiktok.com/ZS9dyaRedqTsc-OlTc0/";
 
-  useEffect(() => {
-    async function loadProducts() {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("id", { ascending: false });
+  return (
+    <div className="home-page">
+      <div className="home-card">
+        <img
+          src="/avatar/shop_word.png"
+          alt="Shopping World"
+          className="home-logo"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
 
-      if (error) {
-        console.error("Erro ao buscar produtos:", error);
-        return;
-      }
+        <h1 className="home-title">Shopping World</h1>
 
-      setProducts(data || []);
-    }
+        <p className="home-subtitle">
+          Seu shopping mundial em um só lugar
+        </p>
 
-    loadProducts();
-  }, []);
+        <div className="home-buttons">
+          <Link to="/shein" className="home-button shein-btn">
+            Shein
+          </Link>
 
-  return <ProductCatalog products={products} />;
+          <Link to="/amazon" className="home-button amazon-btn">
+            Amazon
+          </Link>
+
+          <a
+            href={tiktokShopLink}
+            target="_blank"
+            rel="noreferrer"
+            className="home-button tiktok-btn"
+          >
+            TikTok Shop
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }

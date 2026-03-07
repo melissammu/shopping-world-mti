@@ -12,29 +12,44 @@ export default function ProductCatalog({ products = [] }) {
       </div>
 
       <div className="catalog-grid">
-        {products.map((product) => (
-          <div className="product-card" key={product.id}>
-            <div className="image-container">
-              {product.price && (
-                <span className="promo-message">{product.price}</span>
-              )}
+        {products.map((product) => {
+          const imageSrc =
+            Array.isArray(product.images) && product.images.length > 0
+              ? product.images[0]
+              : product.image || "";
 
-              <span className="click-watermark">👆 CLIQUE</span>
+          return (
+            <a
+              key={product.id}
+              href={product.link}
+              target="_blank"
+              rel="noreferrer"
+              className="product-card"
+            >
+              <div className="image-container">
+                {product.tag && (
+                  <span className="promo-message">{product.tag}</span>
+                )}
 
-              <a
-                href={product.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
                 <img
-                  src={product.image}
-                  alt={product.title}
+                  src={imageSrc}
+                  alt={product.name}
                   className="product-image"
+                  onError={(e) => {
+                    e.currentTarget.src = "/produtos/placeholder.jpg";
+                  }}
                 />
-              </a>
-            </div>
-          </div>
-        ))}
+
+                <span className="click-watermark">🔥 Clique</span>
+              </div>
+
+              <div className="product-info">
+                <h3 className="product-name">{product.name}</h3>
+                <p className="product-price">{product.price}</p>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </div>
   );

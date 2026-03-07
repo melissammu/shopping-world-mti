@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import SitePage from "./pages/sitePages";
 import AmazonPage from "./pages/amazonPage";
