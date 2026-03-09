@@ -42,7 +42,6 @@ export default function ProductCatalog({ products = [] }) {
                     src={safeImage}
                     alt={product.name || "Produto"}
                     className="product-image"
-                    loading="lazy"
                     onError={(e) => {
                       e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
                     }}
@@ -55,7 +54,6 @@ export default function ProductCatalog({ products = [] }) {
                     src={safeImage}
                     alt={product.name || "Produto"}
                     className="product-image"
-                    loading="lazy"
                     onError={(e) => {
                       e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
                     }}
