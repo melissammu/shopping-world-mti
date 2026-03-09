@@ -21,9 +21,10 @@ export default function ProductCatalog({ products = [] }) {
               : "";
 
           const safeImage =
-            Array.isArray(product.image) && product.image.length > 0
+            Array.isArray(product.image)
               ? product.image[0]
-              : "/produtos/placeholder-amazon.jpg";
+              : product.image || 
+            "/produtos/placeholder-amazon.jpg";
 
           return (
             <div key={product.id} className="product-card">

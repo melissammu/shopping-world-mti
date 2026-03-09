@@ -28,7 +28,6 @@ export default function AmazonPage() {
             "";
 
           if (!finalLink) {
-            console.warn("Produto sem link:", p.title);
             return null;
           }
 
@@ -45,12 +44,7 @@ export default function AmazonPage() {
             category: p.category || "Sem categoria",
           };
         })
-        .filter((product) => product !== null);
-
-      console.log(
-        "PRODUTOS FORMATADOS:",
-        JSON.stringify(formattedProducts, null, 2)
-      );
+        .filter(Boolean);
 
       setProducts(formattedProducts);
     }
@@ -59,7 +53,7 @@ export default function AmazonPage() {
   }, []);
 
   return (
-    <div>
+    <div className="amazon-page">
       {errorMessage && (
         <div style={{ padding: "10px", color: "red" }}>
           Erro: {errorMessage}
