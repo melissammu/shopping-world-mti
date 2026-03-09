@@ -21,9 +21,10 @@ export default function ProductCatalog({ products = [] }) {
               : "";
 
           const safeImage =
-            Array.isArray(product.image)
+            product.image_url ||
+            ( Array.isArray(product.image)
               ? product.image[0]
-              : product.image || 
+              : product.image) || 
             "/produtos/placeholder-amazon.jpg";
 
           return (
