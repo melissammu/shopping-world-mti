@@ -80,14 +80,12 @@ export default function ProductCatalog({ products = [] }) {
                 <p className="product-price">{product.price}</p>
 
                 {safeLink ? (
-                  <a
-                    href={safeLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="product-button"
-                  >
-                    Comprar agora
-                  </a>
+                  <button
+                  className="buy-button"
+                  onClick={() => window.open(product.link, "_blank")}
+                >               
+                 Comprar agora
+                 </button>
                 ) : (
                   <button type="button" className="product-button" disabled>
                     Sem link
