@@ -11,6 +11,7 @@ export default function AmazonPage() {
       const { data, error } = await supabase
         .from("amazon_products")
         .select("*")
+        .eq("is_active", true)
         .order("id", { ascending: false });
 
       if (error) {
@@ -19,7 +20,39 @@ export default function AmazonPage() {
         return;
       }
 
-      setProducts(data || []);
+      const formattedProducts = (data || [])
+        .map((p) => {
+          const finalLink =
+            (p.link_br && p.link_br.trim()) ||
+            (p.link_us && p.link_us.trim()) ||
+            "";
+
+          if (!finalLink) {
+            console.warn("Produto sem link:", p.title);
+            return null;
+          }
+
+          const finalImage =
+            (p.image_url && p.image_url.trim()) ||
+            "/produtos/placeholder-amazon.jpg";
+
+          return {
+            id: p.id,
+            name: p.title || "Produto sem nome",
+            price: p.price || "",
+            image: [finalImage],
+            link: finalLink,
+            category: p.category || "Sem categoria",
+          };
+        })
+        .filter((product) => product !== null);
+
+      console.log(
+        "PRODUTOS FORMATADOS:",
+        JSON.stringify(formattedProducts, null, 2)
+      );
+
+      setProducts(formattedProducts);
     }
 
     loadProducts();

@@ -161,3 +161,7 @@
     height: 300px;
   }
 }
+.product-title-link {
+  text-decoration: none;
+  color: inherit;
+}

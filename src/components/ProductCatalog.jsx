@@ -2,76 +2,88 @@ import React from "react";
 import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [] }) {
-  const buildProxyImage = (imageUrl) => {
-    if (!imageUrl) return "/produtos/placeholder.jpg";
-
-    if (
-      imageUrl.startsWith("/produtos/") ||
-      imageUrl.startsWith("/images/") ||
-      imageUrl.startsWith("data:")
-    ) {
-      return imageUrl;
-    }
-
-    return `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`;
-  };
-
   return (
-    <div className="catalog-page">
-      <div className="catalog-header">
-        <h1 className="catalog-title">Produtos</h1>
-        <p className="catalog-subtitle">
-          Escolha seu produto e clique para comprar
-        </p>
-      </div>
+    <div className="product-catalog-page">
+      <h2>Produtos</h2>
+      <p>Escolha seu produto e clique para comprar</p>
 
-      <div className="catalog-grid">
-        {products.map((product) => (
-          <a
-            key={product.id}
-            href={product.link}
-            target="_blank"
-            rel="noreferrer"
-            className="product-card"
-          >
-            <div className="image-container">
-              {product.tag && (
-                <span className="promo-message">{product.tag}</span>
+      <div className="product-grid">
+        {products.map((product) => {
+          const safeLink =
+            product.link &&
+            product.link.trim() !== "" &&
+            product.link !== "#"
+              ? product.link.trim()
+              : "";
+
+          const safeImage =
+            Array.isArray(product.image) && product.image.length > 0
+              ? product.image[0]
+              : "/produtos/placeholder-amazon.jpg";
+
+          return (
+            <div key={product.id} className="product-card">
+              {safeLink ? (
+                <a
+                  href={safeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={safeImage}
+                    alt={product.name || "Produto"}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
+                    }}
+                  />
+                </a>
+              ) : (
+                <img
+                  src={safeImage}
+                  alt={product.name || "Produto"}
+                  className="product-image"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
+                  }}
+                />
               )}
 
-              <img
-                src={buildProxyImage(product.image)}
-                alt={product.name || product.title || "Produto"}
-                className="product-image"
-                loading="lazy"
-                onError={(e) => {
-                  const img = product.image || "";
-                  const store = product.store || "";
+              {safeLink ? (
+                <a
+                  href={safeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="product-title-link"
+                >
+                  <h3>{product.name}</h3>
+                </a>
+              ) : (
+                <h3>{product.name}</h3>
+              )}
 
-                  if (
-                    store === "amazon" ||
-                    img.includes("amazon") ||
-                    img.includes("m.media-amazon") ||
-                    img.includes("amazonaws")
-                  ) {
-                    e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
-                  } else {
-                    e.currentTarget.src = "/produtos/placeholder.jpg";
-                  }
-                }}
-              />
+              <p>{product.price}</p>
 
-              <span className="click-watermark">🔥 Clique</span>
+              {safeLink ? (
+                <a
+                  href={safeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="product-button"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  🔥 Clique
+                </a>
+              ) : (
+                <button type="button" className="product-button" disabled>
+                  Sem link
+                </button>
+              )}
             </div>
-
-            <div className="product-info">
-              <h3 className="product-name">
-                {product.name || product.title || "Produto"}
-              </h3>
-              <p className="product-price">{product.price || ""}</p>
-            </div>
-          </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
