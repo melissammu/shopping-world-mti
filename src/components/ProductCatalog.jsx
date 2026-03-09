@@ -3,11 +3,15 @@ import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [] }) {
   return (
-    <div className="product-catalog-page">
-      <h2>Produtos</h2>
-      <p>Escolha seu produto e clique para comprar</p>
+    <div className="catalog-page">
+      <div className="catalog-header">
+        <h2 className="catalog-title">Produtos</h2>
+        <p className="catalog-subtitle">
+          Escolha seu produto e clique para comprar
+        </p>
+      </div>
 
-      <div className="product-grid">
+      <div className="catalog-grid">
         {products.map((product) => {
           const safeLink =
             product.link &&
@@ -28,6 +32,7 @@ export default function ProductCatalog({ products = [] }) {
                   href={safeLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="image-container"
                 >
                   <img
                     src={safeImage}
@@ -38,49 +43,53 @@ export default function ProductCatalog({ products = [] }) {
                       e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
                     }}
                   />
+                  <span className="click-shortcut">🔥 Clique</span>
                 </a>
               ) : (
-                <img
-                  src={safeImage}
-                  alt={product.name || "Produto"}
-                  className="product-image"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
-                  }}
-                />
+                <div className="image-container">
+                  <img
+                    src={safeImage}
+                    alt={product.name || "Produto"}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
+                    }}
+                  />
+                </div>
               )}
 
-              {safeLink ? (
-                <a
-                  href={safeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="product-title-link"
-                >
-                  <h3>{product.name}</h3>
-                </a>
-              ) : (
-                <h3>{product.name}</h3>
-              )}
+              <div className="product-info">
+                {safeLink ? (
+                  <a
+                    href={safeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="product-title-link"
+                  >
+                    <h3 className="product-name">{product.name}</h3>
+                  </a>
+                ) : (
+                  <h3 className="product-name">{product.name}</h3>
+                )}
 
-              <p>{product.price}</p>
+                <p className="product-price">{product.price}</p>
 
-              {safeLink ? (
-                <a
-                  href={safeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="product-button"
-                  style={{ display: "inline-block", textDecoration: "none" }}
-                >
-                  🔥 Clique
-                </a>
-              ) : (
-                <button type="button" className="product-button" disabled>
-                  Sem link
-                </button>
-              )}
+                {safeLink ? (
+                  <a
+                    href={safeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="product-button"
+                  >
+                    Comprar agora
+                  </a>
+                ) : (
+                  <button type="button" className="product-button" disabled>
+                    Sem link
+                  </button>
+                )}
+              </div>
             </div>
           );
         })}
