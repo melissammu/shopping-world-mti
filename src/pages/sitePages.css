@@ -147,7 +147,7 @@
 
 .global-search-input {
   width: 100%;
-  max-width: 420px;
+  max-width: 100%;
   height: 52px;
   padding: 0 18px;
   border: 1.8px solid #dcdcdc;
