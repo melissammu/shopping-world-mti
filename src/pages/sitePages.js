@@ -99,35 +99,34 @@ export default function SitePage() {
         <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
 
         <div className="global-search">
-          <input
-            type="text"
-            placeholder="Buscar produto em toda a loja..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="global-search-input"
-          />
+  <input
+    type="text"
+    placeholder="Buscar produto..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="global-search-input"
+  />
+</div>
+
+{filteredProducts.length > 0 && (
+  <div className="global-search-results">
+    {filteredProducts.map((product) => (
+      <div
+        key={product.id}
+        className="global-search-item"
+        onClick={() => window.open(product.link, "_blank")}
+      >
+        <img src={product.image} alt={product.name} />
+
+        <div className="global-search-info">
+          <p className="global-search-name">{product.name}</p>
+          <p className="global-search-store">{product.store}</p>
+          <p className="global-search-price">{product.price}</p>
         </div>
-
-        {filteredProducts.length > 0 && (
-          <div className="global-search-results">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="global-search-item"
-                onClick={() => window.open(product.link, "_blank")}
-              >
-                <img src={product.image} alt={product.name} />
-
-                <div className="global-search-info">
-                  <p className="global-search-name">{product.name}</p>
-                  <p className="global-search-store">{product.store}</p>
-                  <p className="global-search-price">{product.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
+      </div>
+    ))}
+  </div>
+)}
         <div className="home-buttons">
           <Link to="/shein" className="home-button shein-btn">
             Shein
