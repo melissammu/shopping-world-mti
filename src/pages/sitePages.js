@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./sitePages.css";
 
 export default function SitePage() {
   const tiktokShopLink = "https://vt.tiktok.com/ZS9d9bUjTKgu9-eFlCm/";
-
+  const [search, setSearch] = useState ("")
   return (
     <div className="home-page">
       <div className="home-card">
@@ -23,6 +23,15 @@ export default function SitePage() {
           Seu shopping mundial num só lugar.
           
         </p>
+        <div className="global-search">
+  <input
+    type="text"
+    placeholder="🔍 Buscar produto em toda a loja..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="global-search-input"
+  />
+</div>
         
         <div className="home-buttons">
           <Link to="/shein" className="home-button shein-btn">

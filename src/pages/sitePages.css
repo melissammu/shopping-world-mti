@@ -134,5 +134,22 @@
     height: 80px;
     font-size: 22px;
   }
+.global-search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 25px;
+}
 
+.global-search-input {
+  width: 100%;
+  max-width: 420px;
+  height: 46px;
+  padding: 0 16px;
+  border-radius: 25px;
+  border: 2px solid #ddd;
+  font-size: 15px;
+  outline: none;
+  background: #ffffff;
+}
 }
