@@ -192,4 +192,74 @@
     font-size: 15px;
     padding: 0 16px;
   }
+  .global-search-results {
+  width: 100%;
+  max-width: 520px;
+  margin: -15px auto 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.global-search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.global-search-item:last-child {
+  border-bottom: none;
+}
+
+.global-search-item img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.global-search-info {
+  flex: 1;
+}
+
+.global-search-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #222222;
+}
+
+.global-search-store {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #8a8a8a;
+}
+
+.global-search-price {
+  margin: 3px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333333;
+}
+
+@media (max-width: 480px) {
+  .global-search-results {
+    max-width: calc(100% - 44px);
+    margin: -15px auto 20px;
+  }
+
+  .global-search-item {
+    padding: 10px;
+  }
+
+  .global-search-item img {
+    width: 46px;
+    height: 46px;
+  }
+}
 }
