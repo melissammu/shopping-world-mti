@@ -23,7 +23,7 @@ export default function SitePage() {
           Seu shopping mundial num só lugar.
           
         </p>
-        <div className="global-search">
+       <div className="global-search">
   <input
     type="text"
     placeholder="🔍 Buscar produto em toda a loja..."
