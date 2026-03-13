@@ -44,6 +44,7 @@ export default function SitePage() {
           (p.link && p.link.trim()) ||
           "",
         store: "Shein",
+        country: "GLOBAL",
       }));
 
       const amazonFormatted = (amazonData || []).map((p) => ({
@@ -59,6 +60,7 @@ export default function SitePage() {
           (p.link && p.link.trim()) ||
           "",
         store: "Amazon",
+        country: p.link_br && p.link_br.trim() ? "BR" : "US",
       }));
 
       setAllProducts([...sheinFormatted, ...amazonFormatted]);
@@ -82,6 +84,22 @@ export default function SitePage() {
     setFilteredProducts(results.slice(0, 8));
   }, [search, allProducts]);
 
+  const getStoreLabel = (product) => {
+    if (product.store === "Shein" && product.country === "GLOBAL") {
+      return "🖤 Shein 🌎";
+    }
+
+    if (product.store === "Amazon" && product.country === "BR") {
+      return "🟧 Amazon 🇧🇷";
+    }
+
+    if (product.store === "Amazon" && product.country === "US") {
+      return "🟧 Amazon 🇺🇸";
+    }
+
+    return product.store;
+  };
+
   return (
     <div className="home-page">
       <div className="home-card">
@@ -99,34 +117,37 @@ export default function SitePage() {
         <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
 
         <div className="global-search">
-  <input
-    type="text"
-    placeholder="Buscar produto..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    className="global-search-input"
-  />
-</div>
-
-{filteredProducts.length > 0 && (
-  <div className="global-search-results">
-    {filteredProducts.map((product) => (
-      <div
-        key={product.id}
-        className="global-search-item"
-        onClick={() => window.open(product.link, "_blank")}
-      >
-        <img src={product.image} alt={product.name} />
-
-        <div className="global-search-info">
-          <p className="global-search-name">{product.name}</p>
-          <p className="global-search-store">{product.store}</p>
-          <p className="global-search-price">{product.price}</p>
+          <input
+            type="text"
+            placeholder="Buscar produto em toda a loja..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="global-search-input"
+          />
         </div>
-      </div>
-    ))}
-  </div>
-)}
+
+        {filteredProducts.length > 0 && (
+          <div className="global-search-results">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="global-search-item"
+                onClick={() => window.open(product.link, "_blank")}
+              >
+                <img src={product.image} alt={product.name} />
+
+                <div className="global-search-info">
+                  <p className="global-search-name">{product.name}</p>
+                  <p className="global-search-store">
+                    {getStoreLabel(product)}
+                  </p>
+                  <p className="global-search-price">{product.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="home-buttons">
           <Link to="/shein" className="home-button shein-btn">
             Shein
