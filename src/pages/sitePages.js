@@ -101,72 +101,106 @@ export default function SitePage() {
   };
 
   return (
-    <div className="home-page">
-      <div className="home-card">
-        <img
-          src="/avatar/shop_word.png"
-          alt="Shopping World MTI"
-          className="home-logo"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
+  <div className="home-page">
+    <div className="home-card">
+      <img
+        src="/avatar/shop_word.png"
+        alt="Shopping World MTI"
+        className="home-logo"
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+        }}
+      />
 
-        <h1 className="home-title">Shopping World MTI</h1>
+      <h1 className="home-title">Shopping World MTI</h1>
+      <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
 
-        <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
+      <div className="home-layout">
+        {/* COLUMNA IZQUIERDA */}
+        <div className="search-column">
+          <div className="global-search">
+            <input
+              type="text"
+              placeholder="Buscar produto em todas as lojas..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="global-search-input"
+            />
+          </div>
 
-        <div className="global-search">
-          <input
-            type="text"
-            placeholder="Buscar produto em toda a loja..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="global-search-input"
-          />
+          {search && (
+            <div className="global-search-results">
+              {filteredProducts.length === 0 ? (
+                <p style={{ padding: "10px" }}>Nenhum produto encontrado</p>
+              ) : (
+                filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="global-search-item"
+                    onClick={() => {
+                      if (product.link) {
+                        window.open(product.link, "_blank");
+                      }
+                    }}
+                  >
+                    <img
+                      src={product.image || "/produtos/placeholder-amazon.png"}
+                      alt={product.name}
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          product.store === "Amazon"
+                            ? "/produtos/placeholder-amazon.png"
+                            : "/produtos/placeholder-shein.jpg";
+                      }}
+                    />
+
+                    <div className="global-search-info">
+                      <p className="global-search-name">{product.name}</p>
+                      <p className="global-search-store">{getStoreLabel(product)}</p>
+                      <p className="global-search-price">{product.price}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
 
-        {filteredProducts.length > 0 && (
-          <div className="global-search-results">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="global-search-item"
-                onClick={() => window.open(product.link, "_blank")}
-              >
-                <img src={product.image} alt={product.name} />
-
-                <div className="global-search-info">
-                  <p className="global-search-name">{product.name}</p>
-                  <p className="global-search-store">
-                    {getStoreLabel(product)}
-                  </p>
-                  <p className="global-search-price">{product.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="home-buttons">
-          <Link to="/shein" className="home-button shein-btn">
-            Shein
+        {/* COLUMNA DERECHA */}
+        <div className="store-column">
+          <Link to="/shein" className="store-button shein-br-btn">
+            Shein 🇧🇷
           </Link>
 
-          <Link to="/amazon" className="home-button amazon-btn">
-            Amazon
+          <a href="#" className="store-button shein-ve-btn">
+            Shein 🇻🇪
+          </a>
+
+          <Link to="/amazon" className="store-button amazon-br-btn">
+            Amazon 🇧🇷
           </Link>
+
+          <a href="#" className="store-button amazon-us-btn">
+            Amazon 🇺🇸
+          </a>
+
+          <a href="#" className="store-button mercado-btn">
+            Mercado Livre 🇧🇷
+          </a>
 
           <a
             href={tiktokShopLink}
             target="_blank"
             rel="noreferrer"
-            className="home-button tiktok-btn"
+            className="store-button tiktok-btn"
           >
             TikTok Shop
           </a>
+
         </div>
       </div>
     </div>
-  );
-}
+
+  </div>
+);
+ }

@@ -10,7 +10,7 @@
 
 .home-card {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   background: #ffffff;
   border-radius: 32px;
   padding: 42px 30px;
@@ -37,42 +37,74 @@
 .home-subtitle {
   font-size: 16px;
   line-height: 1.6;
-  color: #666;
+  color: #666666;
   margin: 0 0 30px;
 }
 
-.home-buttons {
+/* LAYOUT PRINCIPAL */
+.home-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 40px;
+  flex-wrap: nowrap;
+}
+
+.search-column {
+  width: 520px;
+  max-width: 100%;
+}
+
+.store-column {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 260px;
 }
 
-.home-button {
+/* BOTONES DE TIENDAS */
+.store-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70px;
-  border-radius: 18px;
+  height: 64px;
+  border-radius: 16px;
   text-decoration: none;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-.home-button:hover {
+.store-button:hover {
   transform: translateY(-2px);
   opacity: 0.96;
 }
 
-.shein-btn {
+.shein-br-btn {
   background: #111111;
   color: #ffffff;
 }
 
-.amazon-btn {
+.shein-ve-btn {
+  background: #ff4d7a;
+  color: #ffffff;
+}
+
+.amazon-br-btn {
   background: #f3a24f;
   color: #5c3317;
+}
+
+.amazon-us-btn {
+  background: #232f3e;
+  color: #ffffff;
+}
+
+.mercado-btn {
+  background: #ffe600;
+  color: #333333;
 }
 
 .tiktok-btn {
@@ -80,6 +112,132 @@
   color: #ffffff;
 }
 
+/* BUSCADOR */
+.global-search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.global-search-input {
+  width: 100%;
+  max-width: 100%;
+  height: 56px;
+  padding: 0 18px;
+  padding-left: 20px;
+  border: 1.8px solid #dcdcdc;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.global-search-input::placeholder {
+  color: #8a8a8a;
+}
+
+.global-search-input:focus {
+  border-color: #c89b6d;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* RESULTADOS */
+.global-search-results {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  text-align: left;
+}
+
+.global-search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.25s ease;
+}
+
+.global-search-item:hover {
+  background: #fafafa;
+}
+
+.global-search-item:last-child {
+  border-bottom: none;
+}
+
+.global-search-item img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.global-search-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.global-search-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #222222;
+  line-height: 1.4;
+}
+
+.global-search-store {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #666666;
+  font-weight: 600;
+}
+
+.global-search-price {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333333;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .home-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .search-column {
+    width: 100%;
+  }
+
+  .store-column {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .store-button {
+    width: 100%;
+  }
+}
+
+/* CELULAR */
 @media (max-width: 768px) {
   .home-page {
     padding: 18px;
@@ -104,165 +262,47 @@
     font-size: 14px;
   }
 
-  .home-button {
+  .home-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .search-column {
+    width: 100%;
+  }
+
+  .store-column {
+    width: 100%;
+  }
+
+  .store-button {
     height: 54px;
     font-size: 15px;
     border-radius: 14px;
-  }
-}
-@media (min-width: 1200px) {
-  .home-card {
-    max-width: 1000px;
-    padding: 60px 80px;
+    width: 100%;
   }
 
-  .home-logo {
-    width: 280px;
-    height: 280px;
-  }
-
-  .home-title {
-    font-size: 46px;
-  }
-
-  .home-subtitle {
-    font-size: 20px;
-  }
-
-  .home-button {
-    height: 80px;
-    font-size: 22px;
-  }
-}
-
-.global-search {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
-  margin-bottom: 34px;
-  padding: 0 20px;
-  box-sizing: border-box
-
-}
-
-.global-search-input {
-  width: 100%;
-  max-width: 100%;
-  height: 52px;
-  padding: 0 18px;
-  padding-left: 45px;
-  border: 1.8px solid #dcdcdc;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #333333;
-  font-size: 16px;
-  outline: none;
-  box-sizing: border-box;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
-}
-
-.global-search-input::placeholder {
-  color: #8a8a8a;
-}
-
-.global-search-input:focus {
-  border-color: #c89b6d;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-}
-
-/* RESPONSIVE PARA CELULAR */
-@media (max-width: 480px) {
   .global-search {
-    padding-left: 22px;
-    padding-right: 22px;
-    margin-top: 22px;
-    margin-bottom: 60px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 0;
+    margin-bottom: 16px;
   }
 
   .global-search-input {
     width: 100%;
-    max-width: 520px;
+    max-width: 100%;
     height: 48px;
     font-size: 15px;
     padding: 0 16px;
-    margin: 0 auto 28px;
-    background:#ffffff;
-    border-radius: 18px;
-    box-shadow: 0 10px 24px rgba(0,0,-0.08);
-    overflow: hidden;
-    box-sizing: border-box;
   }
-  .global-search-results {
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto 28px;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
 
-.global-search-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background 0.25 ease;
-}
-
-.global-search-item:last-hove {
-  background: #fafafa;
-}
-.global-search-item:last-child {
-  border-bottom: none;
-}
-
-.global-search-item img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  background: #ffffff;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
-.global-search-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.global-search-name {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: #222222;
-  line-height: 1.3;
-}
-
-.global-search-store {
-  margin: 4px 0 0;
-  font-size: 12px;
-  color: #8a8a8a;
-  font-weight: 600;
-}
-
-.global-search-price {
-  margin: 3px 0 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: #333333;
-}
-
-@media (max-width: 480px) {
   .global-search-results {
     width: 100%;
-    max-width: calc(100% - 44px);
-    margin: 0 auto 24px;
+    max-width: 100%;
+    margin: 0 auto 8px;
     border-radius: 16px;
   }
 
@@ -288,4 +328,32 @@
     font-size: 12px;
   }
 }
+
+/* TELAS GRANDES */
+@media (min-width: 1200px) {
+  .home-card {
+    max-width: 1100px;
+    padding: 60px 80px;
+  }
+
+  .home-logo {
+    width: 220px;
+    height: 220px;
+  }
+
+  .home-title {
+    font-size: 46px;
+  }
+
+  .home-subtitle {
+    font-size: 20px;
+  }
+
+  .search-column {
+    width: 540px;
+  }
+
+  .store-column {
+    width: 270px;
+  }
 }
