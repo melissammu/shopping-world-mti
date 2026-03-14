@@ -126,25 +126,47 @@ export default function SitePage() {
           />
         </div>
 
-        {{filteredProducts.length > 0 && (
-  <div className="global-search-results">
-    {filteredProducts.map((product) => (
-      <div
-        key={product.id}
-        className="global-search-item"
-        onClick={() => window.open(product.link, "_blank")}
-      >
-        <img src={product.image} alt={product.name} />
+        {filteredProducts.length > 0 && (
+          <div className="global-search-results">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="global-search-item"
+                onClick={() => window.open(product.link, "_blank")}
+              >
+                <img src={product.image} alt={product.name} />
 
-        <div className="global-search-info">
-          <p className="global-search-name">{product.name}</p>
-          <p className="global-search-store">
-            {getStoreLabel(product)}
-          </p>
-          <p className="global-search-price">{product.price}</p>
+                <div className="global-search-info">
+                  <p className="global-search-name">{product.name}</p>
+                  <p className="global-search-store">
+                    {getStoreLabel(product)}
+                  </p>
+                  <p className="global-search-price">{product.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="home-buttons">
+          <Link to="/shein" className="home-button shein-btn">
+            Shein
+          </Link>
+
+          <Link to="/amazon" className="home-button amazon-btn">
+            Amazon
+          </Link>
+
+          <a
+            href={tiktokShopLink}
+            target="_blank"
+            rel="noreferrer"
+            className="home-button tiktok-btn"
+          >
+            TikTok Shop
+          </a>
         </div>
       </div>
-    ))}
-  </div>
-);
+    </div>
+  );
 }
