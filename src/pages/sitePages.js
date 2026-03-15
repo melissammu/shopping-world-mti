@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import "./sitePages.css";
 
 export default function SitePage() {
-  const tiktokShopLink = "https://vt.tiktok.com/ZS9d9bUjTKgu9-eF1Cm/";
-
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -22,12 +19,21 @@ export default function SitePage() {
         .select("*")
         .eq("is_active", true);
 
+      const { data: mercadoData, error: mercadoError } = await supabase
+        .from("products")
+        .select("*")
+        .eq("store", "mercadoLi");
+
       if (sheinError) {
         console.error("Erro ao buscar Shein:", sheinError);
       }
 
       if (amazonError) {
         console.error("Erro ao buscar Amazon:", amazonError);
+      }
+
+      if (mercadoError) {
+        console.error("Erro ao buscar Mercado Livre:", mercadoError);
       }
 
       const sheinFormatted = (sheinData || []).map((p) => ({
@@ -44,26 +50,54 @@ export default function SitePage() {
           (p.link && p.link.trim()) ||
           "",
         store: "Shein",
-        country: "GLOBAL",
+        category: p.category || "Moda",
+        country: "BR",
       }));
 
-      const amazonFormatted = (amazonData || []).map((p) => ({
-        id: `amazon-${p.id}`,
+      const amazonFormatted = (amazonData || []).map((p) => {
+        const isAmazonBr = p.link_br && p.link_br.trim();
+        const isAmazonUs = p.link_us && p.link_us.trim();
+
+        return {
+          id: `amazon-${p.id}`,
+          name: p.title || p.name || "Produto sem nome",
+          price: p.price || "",
+          image:
+            (p.image_url && p.image_url.trim()) ||
+            "/produtos/placeholder-amazon.png",
+          link:
+            (p.link_br && p.link_br.trim()) ||
+            (p.link_us && p.link_us.trim()) ||
+            (p.link && p.link.trim()) ||
+            "",
+          store: "Amazon",
+          category: p.category || "Geral",
+          country: isAmazonBr ? "BR" : isAmazonUs ? "US" : "",
+        };
+      });
+
+      const mercadoFormatted = (mercadoData || []).map((p) => ({
+        id: `mercado-${p.id}`,
         name: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
           (p.image_url && p.image_url.trim()) ||
-          "/produtos/placeholder-amazon.png",
+          (typeof p.image === "string" && p.image.trim()) ||
+          "/produtos/placeholder-mercadoLi.png",
         link:
           (p.link_br && p.link_br.trim()) ||
-          (p.link_us && p.link_us.trim()) ||
           (p.link && p.link.trim()) ||
           "",
-        store: "Amazon",
-        country: p.link_br && p.link_br.trim() ? "BR" : "US",
+        store: "Mercado Livre",
+        category: p.category || "Geral",
+        country: "BR",
       }));
 
-      setAllProducts([...sheinFormatted, ...amazonFormatted]);
+      setAllProducts([
+        ...sheinFormatted,
+        ...amazonFormatted,
+        ...mercadoFormatted,
+      ]);
     }
 
     loadProducts();
@@ -78,100 +112,116 @@ export default function SitePage() {
     }
 
     const results = allProducts.filter((product) =>
-      product.name.toLowerCase().includes(term)
+      product.name?.toLowerCase().includes(term) ||
+      product.category?.toLowerCase().includes(term) ||
+      product.store?.toLowerCase().includes(term)
     );
 
     setFilteredProducts(results.slice(0, 8));
   }, [search, allProducts]);
 
-  const getStoreLabel = (product) => {
-    if (product.store === "Shein" && product.country === "GLOBAL") {
-      return "🖤 Shein 🌎";
-    }
-
-    if (product.store === "Amazon" && product.country === "BR") {
-      return "🟧 Amazon 🇧🇷";
-    }
-
+  const getPlaceholderByProduct = (product) => {
     if (product.store === "Amazon" && product.country === "US") {
-      return "🟧 Amazon 🇺🇸";
+      return "/produtos/placeholder-amazonUsa.png";
     }
 
-    return product.store;
+    if (product.store === "Amazon") {
+      return "/produtos/placeholder-amazon.png";
+    }
+
+    if (product.store === "Mercado Livre") {
+      return "/produtos/placeholder-mercadoLi.png";
+    }
+
+    return "/produtos/placeholder-shein.jpg";
   };
 
   return (
-  <div className="home-page">
-    <div className="home-card">
+    <div className="home-container">
       <img
-        src="/avatar/shop_word.png"
-        alt="Shopping World MTI"
-        className="home-logo"
-        onError={(e) => {
-          e.currentTarget.style.display = "none";
-        }}
+        src="/avatar/shop_word2.png"
+        alt="Shopping World"
+        className="logo"
       />
 
-      <h1 className="home-title">Shopping World melissa</h1>
-      <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
+      <h1 className="title">Tudo mais facil.</h1>
+      <p className="subtitle">Seu shopping mundial num só lugar.</p>
 
-      <div className="home-layout">
-        {/* COLUMNA IZQUIERDA */}
-        <div className="search-column">
-          <div className="global-search">
+      <div className="card">
+        <div className="search-area">
+          <div className="search-box">
+            {!search && <span className="search-icon">🔍</span>}
+
             <input
               type="text"
-              placeholder="Buscar produto em todas as lojas..."
+              placeholder="Busca inteligente..."
+              className="search-input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="global-search-input"
             />
           </div>
 
-       {search && (
-  <div className="global-search-results">
-    {filteredProducts.length === 0 ? (
-      <p style={{ padding: "10px" }}>Nenhum produto encontrado</p>
-    ) : (
-      filteredProducts.map((product) => (
-        <div
-          key={product.id}
-          className="global-search-item"
-          onClick={() => {
-            if (product.link) {
-              window.open(product.link, "_blank");
-            }
-          }}
-        >
-          <img
-            src={product.image || "/produtos/placeholder-amazon.png"}
-            alt={product.name}
-            onError={(e) => {
-              e.currentTarget.src =
-                product.store === "Amazon"
-                  ? "/produtos/placeholder-amazon.png"
-                  : product.store === "amazonUsa"
-                  ? "/produtos/placeholder-amazonUsa.png"
-                  : product.store === "mercadoLi"
-                  ? "/produtos/placeholder-mercadoLi.png"
-                  : "/produtos/placeholder-shein.jpg";
-            }}
-          />
+          {search && (
+            <div className="global-search-results">
+              {filteredProducts.length === 0 ? (
+                <p className="no-results">Nenhum produto encontrado</p>
+              ) : (
+                filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="global-search-item"
+                    onClick={() => {
+                      if (product.link) {
+                        window.open(product.link, "_blank");
+                      }
+                    }}
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="global-search-image"
+                      onError={(e) => {
+                        e.currentTarget.src = getPlaceholderByProduct(product);
+                      }}
+                    />
 
-          <div className="global-search-info">
-            <p className="global-search-name">{product.name}</p>
-            <p className="global-search-store">{getStoreLabel(product)}</p>
-            <p className="global-search-price">{product.price}</p>
-          </div>
+                    <div className="global-search-info">
+                      <p className="global-search-name">{product.name}</p>
+                      <p className="global-search-store">
+                        {product.store}
+                        {product.country ? ` - ${product.country}` : ""}
+                      </p>
+                      <p className="global-search-price">{product.price}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
-      ))
-    )}
-  </div>
-)}
+
+        <div className="stores">
+          <a href="/shein" className="store shein">
+            <span>SHEIN</span>
+            <span className="flag">BR</span>
+          </a>
+
+          <a href="/amazon" className="store amazon-br">
+            <span>Amazon Brasil</span>
+            <span className="flag">BR</span>
+          </a>
+
+          <a href="/amazonusa" className="store amazon-us">
+            <span>Amazon USA</span>
+            <span className="flag">US</span>
+          </a>
+
+          <a href="/mercadolivre" className="store mercado">
+            <span>Mercado Livre</span>
+            <span className="flag">BR</span>
+          </a>
         </div>
       </div>
     </div>
-
-  </div>
-);
- }
+  );
+}
