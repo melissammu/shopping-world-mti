@@ -112,7 +112,7 @@ export default function SitePage() {
         }}
       />
 
-      <h1 className="home-title">Shopping World MTI</h1>
+      <h1 className="home-title">Shopping World melissa</h1>
       <p className="home-subtitle">Seu shopping mundial num só lugar.</p>
 
       <div className="home-layout">
@@ -128,75 +128,46 @@ export default function SitePage() {
             />
           </div>
 
-          {search && (
-            <div className="global-search-results">
-              {filteredProducts.length === 0 ? (
-                <p style={{ padding: "10px" }}>Nenhum produto encontrado</p>
-              ) : (
-                filteredProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="global-search-item"
-                    onClick={() => {
-                      if (product.link) {
-                        window.open(product.link, "_blank");
-                      }
-                    }}
-                  >
-                    <img
-                      src={product.image || "/produtos/placeholder-amazon.png"}
-                      alt={product.name}
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          product.store === "Amazon"
-                            ? "/produtos/placeholder-amazon.png"
-                            : "/produtos/placeholder-shein.jpg";
-                      }}
-                    />
+       {search && (
+  <div className="global-search-results">
+    {filteredProducts.length === 0 ? (
+      <p style={{ padding: "10px" }}>Nenhum produto encontrado</p>
+    ) : (
+      filteredProducts.map((product) => (
+        <div
+          key={product.id}
+          className="global-search-item"
+          onClick={() => {
+            if (product.link) {
+              window.open(product.link, "_blank");
+            }
+          }}
+        >
+          <img
+            src={product.image || "/produtos/placeholder-amazon.png"}
+            alt={product.name}
+            onError={(e) => {
+              e.currentTarget.src =
+                product.store === "Amazon"
+                  ? "/produtos/placeholder-amazon.png"
+                  : product.store === "amazonUsa"
+                  ? "/produtos/placeholder-amazonUsa.png"
+                  : product.store === "mercadoLi"
+                  ? "/produtos/placeholder-mercadoLi.png"
+                  : "/produtos/placeholder-shein.jpg";
+            }}
+          />
 
-                    <div className="global-search-info">
-                      <p className="global-search-name">{product.name}</p>
-                      <p className="global-search-store">{getStoreLabel(product)}</p>
-                      <p className="global-search-price">{product.price}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
+          <div className="global-search-info">
+            <p className="global-search-name">{product.name}</p>
+            <p className="global-search-store">{getStoreLabel(product)}</p>
+            <p className="global-search-price">{product.price}</p>
+          </div>
         </div>
-
-        {/* COLUMNA DERECHA */}
-        <div className="store-column">
-          <Link to="/shein" className="store-button shein-br-btn">
-            Shein 🇧🇷
-          </Link>
-
-          <a href="#" className="store-button shein-ve-btn">
-            Shein 🇻🇪
-          </a>
-
-          <Link to="/amazon" className="store-button amazon-br-btn">
-            Amazon 🇧🇷
-          </Link>
-
-          <a href="#" className="store-button amazon-us-btn">
-            Amazon 🇺🇸
-          </a>
-
-          <a href="#" className="store-button mercado-btn">
-            Mercado Livre 🇧🇷
-          </a>
-
-          <a
-            href={tiktokShopLink}
-            target="_blank"
-            rel="noreferrer"
-            className="store-button tiktok-btn"
-          >
-            TikTok Shop
-          </a>
-
+      ))
+    )}
+  </div>
+)}
         </div>
       </div>
     </div>

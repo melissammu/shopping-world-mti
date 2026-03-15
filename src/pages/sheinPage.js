@@ -37,7 +37,7 @@ export default function SheinPage() {
             id: p.id,
             name: p.title || p.name || "Produto sem nome",
             price: p.price || "",
-            image: [finalImage],
+            image: finalImage,
             image_url: finalImage,
             link: finalLink,
             category: p.category || "Sem categoria",
