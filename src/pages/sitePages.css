@@ -182,7 +182,7 @@ border-color:#c89b6d;
 }
 
 .global-search-item img {
-  width: 100px;
+  width: 150px;
   height: 100px;
   object-fit: contain;
   background: #ffffff;
@@ -383,7 +383,7 @@ border-color:#c89b6d;
 
 .search-icon{
 position:absolute;
-left:160px;
+left:140px;
 top:50%;
 transform:translateY(-50%);
 font-size:18px;
