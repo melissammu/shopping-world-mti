@@ -7,45 +7,46 @@ export default function AmazonUsaPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    async function loadProducts() {
-     const { data, error } = await supabase
-             .from("amazon_usa_products")
-             .select("*")
-             .order("id", { ascending: false });
-      if (error) {
-        console.error("Erro ao buscar produtos amazonUsa:", error);
-        setErrorMessage(error.message);
-        return;
-      }
+async function loadProducts() {
+  const { data, error } = await supabase
+    .from("amazon_usa_products")
+    .select("*")
+    .order("id", { ascending: false });
 
-      const formattedProducts = (data || [])
-        .map((p) => {
-          const finalLink =
-            (p.link_br && p.link_br.trim()) ||
-            (p.link_us && p.link_us.trim()) ||
-            (p.link && p.link.trim()) ||
-            "";
+  if (error) {
+    console.error("Erro ao buscar produtos amazonUsa:", error);
+    setErrorMessage(error.message);
+    return;
+  }
 
-          const finalImage =
-            (p.image_url && p.image_url.trim()) ||
-            (p.image && typeof p.image === "string" && p.image.trim()) ||
-            "/produtos/placeholder-amazonUsa.jpg";
+  const formattedProducts = (data || [])
+    .map((p) => {
+      const finalLink =
+        (p.link_br && p.link_br.trim()) ||
+        (p.link_us && p.link_us.trim()) ||
+        (p.link && p.link.trim()) ||
+        "";
 
-          return {
-            id: p.id,
-            name: p.title || p.name || "Produto sem nome",
-            price: p.price || "",
-            image: finalImage,
-            image_url: finalImage,
-            link: finalLink,
-            category: p.category || "Sem categoria",
-            store: p.store || "amazonUsa",
-          };
-        })
-        .filter(Boolean);
+      const finalImage =
+        (p.image_url && p.image_url.trim()) ||
+        (p.image && typeof p.image === "string" && p.image.trim()) ||
+        "/produtos/placeholder-amazonUsa.jpg";
 
-      setProducts(formattedProducts);
-    }
+      return {
+        id: p.id,
+        name: p.title || p.name || "Produto sem nome",
+        price: p.price || "",
+        image: finalImage,
+        image_url: finalImage,
+        link: finalLink,
+        category: p.category || "Sem categoria",
+        store: p.store || "amazonUsa",
+      };
+    })
+    .filter(Boolean);
+
+  setProducts(formattedProducts);
+}
 
     loadProducts();
   }, []);
