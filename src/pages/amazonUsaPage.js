@@ -27,26 +27,22 @@ async function loadProducts() {
         (p.link && p.link.trim()) ||
         "";
 
-      const finalImage =
-        (p.image_url && p.image_url.trim()) ||
-        (p.image && typeof p.image === "string" && p.image.trim()) ||
-        "/produtos/placeholder-amazonUsa.jpg";
+     const finalImage =
+            (p.image_url && p.image_url.trim()) ||
+            "/produtos/placeholder-amazonUsa.jpg";
 
-      return {
-        id: p.id,
-        name: p.title || "productos",
-        price: p.price || "",
-        image: finalImage,
-        image_url: finalImage,
-        link: finalLink,
-        category: p.category || "Sem categoria",
-        store: p.store || "amazonUsa",
-      };
-    })
-    .filter(Boolean);
-
-  setProducts(formattedProducts);
-}
+          return {
+            id: p.id,
+            name: p.title || p.name || "Produto sem nome",
+            price: p.price || "",
+            image: finalImage,
+            image_url: finalImage,
+            link: finalLink,
+            category: p.category || "Sem categoria",
+            store: p.store || "amazonUsa",
+          };
+        })
+        .filter(Boolean);
 
     loadProducts();
   }, []);
