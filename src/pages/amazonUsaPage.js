@@ -34,7 +34,7 @@ async function loadProducts() {
 
       return {
         id: p.id,
-        name: p.title || p.name || "Produto sem nome",
+        name: p.title || "producto",
         price: p.price || "",
         image: finalImage,
         image_url: finalImage,
