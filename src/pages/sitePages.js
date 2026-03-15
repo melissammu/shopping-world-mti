@@ -139,12 +139,12 @@ export default function SitePage() {
   return (
     <div className="home-container">
       <img
-        src="/avatar/shop_word2.png"
+        src="/avatar/shop_word3.png"
         alt="Shopping World"
         className="logo"
       />
 
-      <h1 className="title">Tudo mais facil.</h1>
+      <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping mundial num só lugar.</p>
 
       <div className="card">
