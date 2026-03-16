@@ -278,8 +278,7 @@
   }
 
   .click-shortcut {
-    font-size: 11px;
-    padding: 6px 9px;
+   display: none;
   }
 }
 
@@ -294,7 +293,7 @@
   }
 
   .catalog-subtitle {
-    font-size: 13px;
+    font-size: 9px;
   }
 
   .catalog-grid {
