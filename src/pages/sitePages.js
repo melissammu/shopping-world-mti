@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import "./sitePages.css";
-
+import "./sitePages.css"
+import Header from "../components/header";
+import SideMenu from "../components/sideMenu";
 export default function SitePage() {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     async function loadProducts() {
       const { data: sheinData, error: sheinError } = await supabase
@@ -53,12 +54,16 @@ export default function SitePage() {
         category: p.category || "Moda",
         country: "BR",
       }));
+      <>
+  {/* aquí dejas tu home actual */}
+</>
 
       const amazonFormatted = (amazonData || []).map((p) => {
         const isAmazonBr = p.link_br && p.link_br.trim();
         const isAmazonUs = p.link_us && p.link_us.trim();
 
-        return {
+        return  {
+          
           id: `amazon-${p.id}`,
           name: p.title || p.name || "Produto sem nome",
           price: p.price || "",
@@ -75,6 +80,7 @@ export default function SitePage() {
           country: isAmazonBr ? "BR" : isAmazonUs ? "US" : "",
         };
       });
+      
 
       const mercadoFormatted = (mercadoData || []).map((p) => ({
         id: `mercado-${p.id}`,
@@ -88,7 +94,7 @@ export default function SitePage() {
           (p.link_br && p.link_br.trim()) ||
           (p.link && p.link.trim()) ||
           "",
-        store: "Mercado Livre",
+        store: "Mercado br",
         category: p.category || "Geral",
         country: "BR",
       }));
@@ -129,7 +135,7 @@ export default function SitePage() {
       return "/produtos/placeholder-amazon.png";
     }
 
-    if (product.store === "Mercado Livre") {
+    if (product.store === "Mercado br") {
       return "/produtos/placeholder-mercadoLi.png";
     }
 
@@ -137,13 +143,15 @@ export default function SitePage() {
   };
 
   return (
+
     <div className="home-container">
       <img
         src="/avatar/shop_word3.png"
         alt="Shopping World"
         className="logo"
       />
-
+<Header onMenuClick={() => setMenuOpen(true)} />
+<SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping mundial num só lugar.</p>
 

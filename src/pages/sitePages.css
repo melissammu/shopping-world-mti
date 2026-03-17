@@ -135,8 +135,9 @@ margin-bottom:20px;
 .global-search-input{
 width:100%;
 max-width:420px;
-height:16px;
-padding:0 10px;
+height:50px;
+padding:0 16px;
+padding-right: 45px;
 border-radius:999px;
 border:1.5px solid #ddd;
 font-size:14px;
@@ -383,11 +384,12 @@ border-color:#c89b6d;
 
 .search-icon{
 position:absolute;
-left:140px;
+right: 15px;
 top:50%;
 transform:translateY(-50%);
 font-size:18px;
 color:#777;
+pointer-events: none;
 }
 
 .search-input{
