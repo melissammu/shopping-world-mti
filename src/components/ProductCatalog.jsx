@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./ProductCatalog.css";
+
 export default function ProductCatalog({ products = [], onProductClick }) {
   const [search, setSearch] = useState("");
+
   const filteredProducts = products.filter((product) => {
     const texto = `
       ${product.name || ""}
@@ -13,20 +15,22 @@ export default function ProductCatalog({ products = [], onProductClick }) {
   });
 
   const handleClick = async (product) => {
-  console.log("CLICK DETECTADO", product);
+    console.log("CLICK DETECTADO:", product);
 
-  try {
-    if (onProductClick) {
-      await onProductClick(product);
-    }
+    try {
+      if (onProductClick) {
+        console.log("LLAMANDO onProductClick");
+        await onProductClick(product);
+      }
 
-    if (product.link) {
-      window.open(product.link, "_blank");
+      if (product.link) {
+        window.open(product.link, "_blank");
+      }
+    } catch (error) {
+      console.error("Erro ao abrir produto:", error);
     }
-  } catch (error) {
-    console.error("Erro ao abrir produto:", error);
-  }
-};
+  };
+
   return (
     <div className="catalog-page">
       <div className="catalog-header">
@@ -84,7 +88,7 @@ export default function ProductCatalog({ products = [], onProductClick }) {
                         e.currentTarget.src = "/produtos/placeholder-shein.jpg";
                       }}
                     />
-                    <span className="click-shortcut">🔥Clique</span>
+                    <span className="click-shortcut">🔥 Clique</span>
                   </a>
                 ) : (
                   <div className="image-container">
@@ -129,17 +133,21 @@ export default function ProductCatalog({ products = [], onProductClick }) {
                   {safeLink ? (
                     <button
                       className="buy-button"
-                      onClick={() =>
+                      onClick={() => {
+                        console.log("CLICK EN BOTÓN");
                         handleClick({
                           ...product,
                           link: safeLink,
-                        })
-                      }
+                        });
+                      }}
                     >
                       Comprar agora
                     </button>
                   ) : (
-                    <button className="buy-button product-button disabled" disabled>
+                    <button
+                      className="buy-button product-button disabled"
+                      disabled
+                    >
                       Sem link
                     </button>
                   )}

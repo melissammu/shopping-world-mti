@@ -61,43 +61,36 @@ export default function SheinPage() {
     loadProducts();
   }, []);
 
+ 
   const registrarClick = async (product) => {
-    try {
-      const ref = localStorage.getItem("ref_afiliado");
+  try {
+    const ref = new URLSearchParams(window.location.search).get("ref");
 
-      const { error } = await supabase.from("clicks").insert([
-        {
-          ref: ref || null,
-          product_id: String(product.id),
-          store: "shein",
-        },
-      ]);
+    console.log("REF CAPTURADO:", ref);
+    console.log("PRODUCTO CLICADO:", product);
 
-      if (error) {
-        console.error("Erro guardando click:", error);
-      }
-    } catch (err) {
-      console.error("Erro inesperado ao registrar click:", err);
-    }
-  };
-  useEffect(() => {
-  const testInsert = async () => {
     const { data, error } = await supabase.from("clicks").insert([
       {
-        ref: "TEST-MANUAL",
-        product_id: "999999",
-        store: "shein-test",
+        ref: ref || "sin-ref",
+        product_id: String(product.id),
+        store: "shein",
       },
     ]);
 
-    console.log("TEST INSERT DATA:", data);
-    console.log("TEST INSERT ERROR:", error);
-  };
+    console.log("RESULTADO INSERT DATA:", data);
+    console.log("RESULTADO INSERT ERROR:", error);
 
-  testInsert();
-}, []);
+    if (error) {
+      console.error("Error guardando click:", error);
+      return;
+    }
 
-  return (
+    console.log("Click guardado correctamente");
+  } catch (err) {
+    console.error("Error inesperado al registrar click:", err);
+  }
+};
+    return (
     <div className="shein-page">
       {errorMessage && (
         <div style={{ padding: "10px", color: "red" }}>
