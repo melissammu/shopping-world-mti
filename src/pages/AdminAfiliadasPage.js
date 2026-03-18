@@ -24,11 +24,9 @@ export default function AdminAfiliadasPage() {
 
     setAfiliadas(data || []);
   }
-  function gerarCodigo(nome) {
-  const base = nome
-    .split(" ")[0]
-    .substring(0, 4)
-    .toUpperCase();
+ function gerarCodigo(nome) {
+  const primeraPalabra = (nome || "AFILIADA").trim().split(" ")[0];
+  const base = primeraPalabra.substring(0, 4).toUpperCase().padEnd(4, "X");
 
   const random = Math.random().toString(36).substring(2, 8).toUpperCase();
 
