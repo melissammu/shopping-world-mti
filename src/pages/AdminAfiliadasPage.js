@@ -9,7 +9,6 @@ export default function AdminAfiliadasPage() {
   useEffect(() => {
     fetchAfiliadas();
   }, []);
-  
 
   async function fetchAfiliadas() {
     const { data, error } = await supabase
@@ -24,36 +23,69 @@ export default function AdminAfiliadasPage() {
 
     setAfiliadas(data || []);
   }
- function gerarCodigo(nome) {
-  const primeraPalabra = (nome || "AFILIADA").trim().split(" ")[0];
-  const base = primeraPalabra.substring(0, 4).toUpperCase().padEnd(4, "X");
 
-  const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+  function gerarCodigo(nome) {
+    const primeiraPalavra = (nome || "AFILIADA").trim().split(" ")[0];
+    const base = primeiraPalavra.substring(0, 4).toUpperCase().padEnd(4, "X");
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-  return `SWMTI-${base}-${random}`;
-}
-async function aprovar(afiliada) {
-  const codigoGerado = await gerarCodigoUnico(afiliada.nome);
-
-  const { error } = await supabase
-    .from("afiliadas")
-    .update({
-      status: "aprovada",
-      codigo_ref: codigoGerado,
-    })
-    .eq("id", afiliada.id);
-
-  if (error) {
-    setMensagem("❌ Erro ao aprovar.");
-    setTipoMensagem("error");
-    return;
+    return `SWMTI-${base}-${random}`;
   }
 
-  setMensagem("🎉 Parabéns! Você foi aprovada.");
-  setTipoMensagem("success");
+  async function gerarCodigoUnico(nome) {
+    let codigo = "";
+    let existe = true;
 
-  await fetchAfiliadas();
-}
+    while (existe) {
+      codigo = gerarCodigo(nome);
+
+      const { data, error } = await supabase
+        .from("afiliadas")
+        .select("id")
+        .eq("codigo_ref", codigo);
+
+      if (error) {
+        console.log("Erro ao verificar código:", error);
+        return codigo;
+      }
+
+      if (!data || data.length === 0) {
+        existe = false;
+      }
+    }
+
+    return codigo;
+  }
+
+  async function aprovar(afiliada) {
+    let codigoFinal = afiliada.codigo_ref;
+
+    if (!codigoFinal || codigoFinal.trim() === "") {
+      codigoFinal = await gerarCodigoUnico(afiliada.nome);
+    }
+
+    const { error } = await supabase
+      .from("afiliadas")
+      .update({
+        status: "aprovada",
+        codigo_ref: codigoFinal,
+      })
+      .eq("id", afiliada.id);
+
+    if (error) {
+      console.log("Erro ao aprovar:", error);
+      setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+      setTipoMensagem("error");
+      setTimeout(() => setMensagem(""), 3000);
+      return;
+    }
+
+    setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+    setTipoMensagem("success");
+    await fetchAfiliadas();
+    setTimeout(() => setMensagem(""), 4000);
+  }
+
   async function rechazar(id) {
     const { error } = await supabase
       .from("afiliadas")
@@ -61,6 +93,7 @@ async function aprovar(afiliada) {
       .eq("id", id);
 
     if (error) {
+      console.log("Erro ao rejeitar:", error);
       setMensagem("❌ Houve um erro ao rejeitar a afiliada.");
       setTipoMensagem("error");
       setTimeout(() => setMensagem(""), 3000);
@@ -68,10 +101,10 @@ async function aprovar(afiliada) {
     }
 
     setMensagem(
-      "✨ Obrigada pelo seu interesse. Continue se preparando e, ao atender aos critérios da Shopping World MTI, você poderá tentar novamente."
+      "⚠️ Obrigada pelo seu interesse. Continue se preparando e, ao atender aos critérios da Shopping World MTI, você poderá tentar novamente."
     );
     setTipoMensagem("info");
-    fetchAfiliadas();
+    await fetchAfiliadas();
     setTimeout(() => setMensagem(""), 5000);
   }
 
@@ -100,13 +133,13 @@ async function aprovar(afiliada) {
                 ? "#d4edda"
                 : tipoMensagem === "error"
                 ? "#f8d7da"
-                : "#e2e3e5",
+                : "#fff3cd",
             color:
               tipoMensagem === "success"
                 ? "#155724"
                 : tipoMensagem === "error"
                 ? "#721c24"
-                : "#383d41",
+                : "#856404",
             fontWeight: "bold",
             textAlign: "center",
           }}
@@ -134,21 +167,27 @@ async function aprovar(afiliada) {
             <p>
               <strong>Nome:</strong> {a.nome || "-"}
             </p>
+
             <p>
               <strong>Email:</strong> {a.email || "-"}
             </p>
+
             <p>
               <strong>WhatsApp:</strong> {a.whatsapp || "-"}
             </p>
+
             <p>
               <strong>País:</strong> {a.pais || "-"}
             </p>
+
             <p>
               <strong>Instagram:</strong> {a.instagram || "-"}
             </p>
+
             <p>
               <strong>Método de pagamento:</strong> {a.metodo_pagamento || "-"}
             </p>
+
             <p>
               <strong>Código:</strong> {a.codigo_ref || "-"}
             </p>
