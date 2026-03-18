@@ -80,6 +80,22 @@ export default function SheinPage() {
       console.error("Erro inesperado ao registrar click:", err);
     }
   };
+  useEffect(() => {
+  const testInsert = async () => {
+    const { data, error } = await supabase.from("clicks").insert([
+      {
+        ref: "TEST-MANUAL",
+        product_id: "999999",
+        store: "shein-test",
+      },
+    ]);
+
+    console.log("TEST INSERT DATA:", data);
+    console.log("TEST INSERT ERROR:", error);
+  };
+
+  testInsert();
+}, []);
 
   return (
     <div className="shein-page">
