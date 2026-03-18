@@ -13,19 +13,20 @@ export default function ProductCatalog({ products = [], onProductClick }) {
   });
 
   const handleClick = async (product) => {
-    try {
-      if (onProductClick) {
-        await onProductClick(product);
-      }
+  console.log("CLICK DETECTADO", product);
 
-      if (product.link) {
-        window.open(product.link, "_blank");
-      }
-    } catch (error) {
-      console.error("Erro ao abrir produto:", error);
+  try {
+    if (onProductClick) {
+      await onProductClick(product);
     }
-  };
 
+    if (product.link) {
+      window.open(product.link, "_blank");
+    }
+  } catch (error) {
+    console.error("Erro ao abrir produto:", error);
+  }
+};
   return (
     <div className="catalog-page">
       <div className="catalog-header">
