@@ -3,8 +3,8 @@ import { supabase } from "../lib/supabase";
 
 export default function AdminAfiliadasPage() {
   const [afiliadas, setAfiliadas] = useState([]);
-  const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const [tipoMensagem, setTipoMensagem] = useState("");
 
   useEffect(() => {
     fetchAfiliadas();
@@ -24,23 +24,23 @@ export default function AdminAfiliadasPage() {
     setAfiliadas(data || []);
   }
 
-  async function aprobar(id) {
+  async function aprovar(id) {
     const { error } = await supabase
       .from("afiliadas")
       .update({ status: "aprovada" })
       .eq("id", id);
 
     if (error) {
-      setMensaje("❌ Houve um erro ao aprovar a afiliada.");
-      setTipoMensaje("error");
-      setTimeout(() => setMensaje(""), 3000);
+      setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+      setTipoMensagem("error");
+      setTimeout(() => setMensagem(""), 3000);
       return;
     }
 
-    setMensaje("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
-    setTipoMensaje("success");
+    setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+    setTipoMensagem("success");
     fetchAfiliadas();
-    setTimeout(() => setMensaje(""), 4000);
+    setTimeout(() => setMensagem(""), 4000);
   }
 
   async function rechazar(id) {
@@ -50,18 +50,18 @@ export default function AdminAfiliadasPage() {
       .eq("id", id);
 
     if (error) {
-      setMensaje("❌ Houve um erro ao rejeitar a afiliada.");
-      setTipoMensaje("error");
-      setTimeout(() => setMensaje(""), 3000);
+      setMensagem("❌ Houve um erro ao rejeitar a afiliada.");
+      setTipoMensagem("error");
+      setTimeout(() => setMensagem(""), 3000);
       return;
     }
 
-    setMensaje(
+    setMensagem(
       "✨ Obrigada pelo seu interesse. Continue se preparando e, ao atender aos critérios da Shopping World MTI, você poderá tentar novamente."
     );
-    setTipoMensaje("info");
+    setTipoMensagem("info");
     fetchAfiliadas();
-    setTimeout(() => setMensaje(""), 5000);
+    setTimeout(() => setMensagem(""), 5000);
   }
 
   function getStatusColor(status) {
@@ -78,29 +78,29 @@ export default function AdminAfiliadasPage() {
 
   return (
     <div style={{ padding: 30 }}>
-      {mensaje && (
+      {mensagem && (
         <div
           style={{
             marginBottom: 20,
             padding: 15,
             borderRadius: 10,
             backgroundColor:
-              tipoMensaje === "success"
+              tipoMensagem === "success"
                 ? "#d4edda"
-                : tipoMensaje === "error"
+                : tipoMensagem === "error"
                 ? "#f8d7da"
                 : "#e2e3e5",
             color:
-              tipoMensaje === "success"
+              tipoMensagem === "success"
                 ? "#155724"
-                : tipoMensaje === "error"
+                : tipoMensagem === "error"
                 ? "#721c24"
                 : "#383d41",
             fontWeight: "bold",
             textAlign: "center",
           }}
         >
-          {mensaje}
+          {mensagem}
         </div>
       )}
 
@@ -121,25 +121,25 @@ export default function AdminAfiliadasPage() {
             }}
           >
             <p>
-              <strong>Nome:</strong> {a.nome}
+              <strong>Nome:</strong> {a.nome || "-"}
             </p>
             <p>
-              <strong>Email:</strong> {a.email}
+              <strong>Email:</strong> {a.email || "-"}
             </p>
             <p>
-              <strong>WhatsApp:</strong> {a.whatsapp}
+              <strong>WhatsApp:</strong> {a.whatsapp || "-"}
             </p>
             <p>
-              <strong>País:</strong> {a.pais}
+              <strong>País:</strong> {a.pais || "-"}
             </p>
             <p>
-              <strong>Instagram:</strong> {a.instagram}
+              <strong>Instagram:</strong> {a.instagram || "-"}
             </p>
             <p>
-              <strong>Método de pagamento:</strong> {a.metodo_pagamento}
+              <strong>Método de pagamento:</strong> {a.metodo_pagamento || "-"}
             </p>
             <p>
-              <strong>Código:</strong> {a.codigo_ref}
+              <strong>Código:</strong> {a.codigo_ref || "-"}
             </p>
 
             <p>
@@ -159,7 +159,7 @@ export default function AdminAfiliadasPage() {
 
             <div style={{ marginTop: 12 }}>
               <button
-                onClick={() => aprobar(a.id)}
+                onClick={() => aprovar(a.id)}
                 style={{
                   marginRight: 10,
                   padding: "10px 16px",
