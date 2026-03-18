@@ -9,6 +9,7 @@ export default function AdminAfiliadasPage() {
   useEffect(() => {
     fetchAfiliadas();
   }, []);
+  
 
   async function fetchAfiliadas() {
     const { data, error } = await supabase
@@ -23,9 +24,18 @@ export default function AdminAfiliadasPage() {
 
     setAfiliadas(data || []);
   }
-async function aprovar(id) {
-  const codigoGerado =
-    "SWMTI-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+  function gerarCodigo(nome) {
+  const base = nome
+    .split(" ")[0]
+    .substring(0, 4)
+    .toUpperCase();
+
+  const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+  return `SWMTI-${base}-${random}`;
+}
+async function aprovar(afiliada) {
+  const codigoGerado = await gerarCodigoUnico(afiliada.nome);
 
   const { error } = await supabase
     .from("afiliadas")
@@ -33,19 +43,18 @@ async function aprovar(id) {
       status: "aprovada",
       codigo_ref: codigoGerado,
     })
-    .eq("id", id);
+    .eq("id", afiliada.id);
 
   if (error) {
-    setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+    setMensagem("❌ Erro ao aprovar.");
     setTipoMensagem("error");
-    setTimeout(() => setMensagem(""), 3000);
     return;
   }
 
-  setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+  setMensagem("🎉 Parabéns! Você foi aprovada.");
   setTipoMensagem("success");
+
   await fetchAfiliadas();
-  setTimeout(() => setMensagem(""), 4000);
 }
   async function rechazar(id) {
     const { error } = await supabase
@@ -163,7 +172,7 @@ async function aprovar(id) {
 
             <div style={{ marginTop: 12 }}>
               <button
-                onClick={() => aprovar(a.id)}
+                onClick={() => aprovar(a)}
                 style={{
                   marginRight: 10,
                   padding: "10px 16px",
