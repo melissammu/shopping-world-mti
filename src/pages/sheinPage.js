@@ -5,18 +5,15 @@ import { supabase } from "../lib/supabase";
 export default function SheinPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [codigoAfiliada, setCodigoAfiliada] = useState("");
 
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const ref = params.get("ref");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
 
-  if (ref) {
-    setCodigoAfiliada(ref);
-    localStorage.setItem("codigoAfiliada", ref);
-    console.log("Código de afiliada detectado:", ref);
-  }
-}, []);
+    if (ref) {
+      localStorage.setItem("ref_afiliado", ref);
+    }
+  }, []);
 
   useEffect(() => {
     async function loadProducts() {
@@ -42,17 +39,17 @@ useEffect(() => {
 
           const finalImage =
             (p.image_url && p.image_url.trim()) ||
-            (p.image && typeof p.image === "string" && p.image.trim()) ||
+            (typeof p.image === "string" && p.image.trim()) ||
             "/produtos/placeholder-shein.jpg";
 
           return {
             id: p.id,
             name: p.title || p.name || "Produto sem nome",
-            price: p.price || "",
+            price: p.price || p.preco || "",
             image: finalImage,
             image_url: finalImage,
             link: finalLink,
-            category: p.category || "Sem categoria",
+            category: p.category || p.categoria || "Sem categoria",
             store: p.store || "shein",
           };
         })
@@ -64,6 +61,26 @@ useEffect(() => {
     loadProducts();
   }, []);
 
+  const registrarClick = async (product) => {
+    try {
+      const ref = localStorage.getItem("ref_afiliado");
+
+      const { error } = await supabase.from("clicks").insert([
+        {
+          ref: ref || null,
+          product_id: String(product.id),
+          store: "shein",
+        },
+      ]);
+
+      if (error) {
+        console.error("Erro guardando click:", error);
+      }
+    } catch (err) {
+      console.error("Erro inesperado ao registrar click:", err);
+    }
+  };
+
   return (
     <div className="shein-page">
       {errorMessage && (
@@ -72,7 +89,10 @@ useEffect(() => {
         </div>
       )}
 
-      <ProductCatalog products={products} />
+      <ProductCatalog
+        products={products}
+        onProductClick={registrarClick}
+      />
     </div>
   );
 }

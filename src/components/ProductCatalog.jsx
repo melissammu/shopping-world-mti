@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProductCatalog.css";
-import { useState } from "react";
-export default function ProductCatalog({ products = [] }) {
+export default function ProductCatalog({ products = [], onProductClick }) {
+  const [search, setSearch] = useState("");
+  const filteredProducts = products.filter((product) => {
+    const texto = `
+      ${product.name || ""}
+      ${product.category || ""}
+      ${product.store || ""}
+    `.toLowerCase();
 
-const [search, setSearch] = useState("");
+    return texto.includes(search.toLowerCase());
+  });
 
-const filteredProducts = products.filter((product) =>
-  product.name?.toLowerCase().includes(search.toLowerCase())
-);
+  const handleClick = async (product) => {
+    try {
+      if (onProductClick) {
+        await onProductClick(product);
+      }
+
+      if (product.link) {
+        window.open(product.link, "_blank");
+      }
+    } catch (error) {
+      console.error("Erro ao abrir produto:", error);
+    }
+  };
+
   return (
     <div className="catalog-page">
       <div className="catalog-header">
@@ -15,100 +33,124 @@ const filteredProducts = products.filter((product) =>
         <p className="catalog-subtitle">
           Escolha seu produto e clique para comprar
         </p>
-  <div className="search-box">
-  <input
-    type="text"
-    className="search-input"
-    placeholder="🔍 Buscar produto..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
-</div>
+
+        <div className="search-box">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="🔍 Buscar produto..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="catalog-grid">
-        {filteredProducts.map((product) => {
-          const safeLink =
-            (product.link_br &&
-            product.link_br.trim())||
-            (product.link_us &&
-            product.link_us.trim())||
-            (product.link &&
-            product.link.trim())||
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => {
+            const safeLink =
+              (product.link_br && product.link_br.trim()) ||
+              (product.link_us && product.link_us.trim()) ||
+              (product.link && product.link.trim()) ||
+              "";
 
-            "";
+            const safeImage =
+              (product.image_url && product.image_url.trim()) ||
+              (product.image && product.image.trim()) ||
+              "/produtos/placeholder-shein.jpg";
 
-           const safeImage =
-           (product.image_url && 
-            product.image_url.trim()) ||
-           (Array.isArray(product.image) ?
-           product.image[0] : product.image) ||
-            "/produtos/placeholder-shein.jpg";
-
-          return (
-            <div key={product.id} className="product-card">
-              {safeLink ? (
-                <a
-                  href={safeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="image-container"
-                >
-                  <img
-                    src={safeImage}
-                    alt={product.name || "Produto"}
-                    className="product-image"
-                    onError={(e) => {
-                      e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
-                    }}
-                  />
-                  <span className="click-shortcut">🔥 Clique</span>
-                </a>
-              ) : (
-                <div className="image-container">
-                  <img
-                    src={safeImage}
-                    alt={product.name || "Produto"}
-                    className="product-image"
-                    onError={(e) => {
-                      e.currentTarget.src = "/produtos/placeholder-amazon.jpg";
-                    }}
-                  />
-                </div>
-              )}
-
-              <div className="product-info">
+            return (
+              <div key={product.id} className="product-card">
                 {safeLink ? (
                   <a
                     href={safeLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="product-title-link"
+                    className="image-container"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await handleClick({
+                        ...product,
+                        link: safeLink,
+                      });
+                    }}
                   >
-                    <h3 className="product-name">{product.name}</h3>
+                    <img
+                      src={safeImage}
+                      alt={product.name || "Produto"}
+                      className="product-image"
+                      onError={(e) => {
+                        e.currentTarget.src = "/produtos/placeholder-shein.jpg";
+                      }}
+                    />
+                    <span className="click-shortcut">🔥Clique</span>
                   </a>
                 ) : (
-                  <h3 className="product-name">{product.name}</h3>
+                  <div className="image-container">
+                    <img
+                      src={safeImage}
+                      alt={product.name || "Produto"}
+                      className="product-image"
+                      onError={(e) => {
+                        e.currentTarget.src = "/produtos/placeholder-shein.jpg";
+                      }}
+                    />
+                  </div>
                 )}
 
-                <p className="product-price">{product.price}</p>
+                <div className="product-info">
+                  {safeLink ? (
+                    <a
+                      href={safeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="product-title-link"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await handleClick({
+                          ...product,
+                          link: safeLink,
+                        });
+                      }}
+                    >
+                      <h3 className="product-name">
+                        {product.name || "Produto sem nome"}
+                      </h3>
+                    </a>
+                  ) : (
+                    <h3 className="product-name">
+                      {product.name || "Produto sem nome"}
+                    </h3>
+                  )}
 
-                {safeLink ? (
-                  <button
-                  className="buy-button"
-                  onClick={() => window.open(product.link, "_blank")}
-                >               
-                 Comprar agora
-                 </button>
-                ) : (
-                  <button type="button" className="product-button" disabled>
-                    Sem link
-                  </button>
-                )}
+                  <p className="product-price">{product.price || ""}</p>
+
+                  {safeLink ? (
+                    <button
+                      className="buy-button"
+                      onClick={() =>
+                        handleClick({
+                          ...product,
+                          link: safeLink,
+                        })
+                      }
+                    >
+                      Comprar agora
+                    </button>
+                  ) : (
+                    <button className="buy-button product-button disabled" disabled>
+                      Sem link
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <p style={{ textAlign: "center", width: "100%" }}>
+            Nenhum produto encontrado.
+          </p>
+        )}
       </div>
     </div>
   );
