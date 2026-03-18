@@ -5,6 +5,18 @@ import { supabase } from "../lib/supabase";
 export default function SheinPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [codigoAfiliada, setCodigoAfiliada] = useState("");
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+
+  if (ref) {
+    setCodigoAfiliada(ref);
+    localStorage.setItem("codigoAfiliada", ref);
+    console.log("Código de afiliada detectado:", ref);
+  }
+}, []);
 
   useEffect(() => {
     async function loadProducts() {
