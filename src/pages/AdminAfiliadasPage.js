@@ -23,26 +23,30 @@ export default function AdminAfiliadasPage() {
 
     setAfiliadas(data || []);
   }
+async function aprovar(id) {
+  const codigoGerado =
+    "SWMTI-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
-  async function aprovar(id) {
-    const { error } = await supabase
-      .from("afiliadas")
-      .update({ status: "aprovada" })
-      .eq("id", id);
+  const { error } = await supabase
+    .from("afiliadas")
+    .update({
+      status: "aprovada",
+      codigo_ref: codigoGerado,
+    })
+    .eq("id", id);
 
-    if (error) {
-      setMensagem("❌ Houve um erro ao aprovar a afiliada.");
-      setTipoMensagem("error");
-      setTimeout(() => setMensagem(""), 3000);
-      return;
-    }
-
-    setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
-    setTipoMensagem("success");
-    fetchAfiliadas();
-    setTimeout(() => setMensagem(""), 4000);
+  if (error) {
+    setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+    setTipoMensagem("error");
+    setTimeout(() => setMensagem(""), 3000);
+    return;
   }
 
+  setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+  setTipoMensagem("success");
+  await fetchAfiliadas();
+  setTimeout(() => setMensagem(""), 4000);
+}
   async function rechazar(id) {
     const { error } = await supabase
       .from("afiliadas")
