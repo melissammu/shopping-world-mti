@@ -69,6 +69,7 @@ export default function ProductCatalog({ products = [], onProductClick }) {
                 <div
                   className="image-container"
                   onClick={async () => {
+                    console.log("click en imagen");
                     if (!safeLink) return;
 
                     await handleClick({
