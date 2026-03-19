@@ -66,8 +66,8 @@ export default function SheinPage() {
   try {
     const ref = new URLSearchParams(window.location.search).get("ref");
 
-    console.log("REF CAPTURADO:", ref);
-    console.log("PRODUCTO CLICADO:", product);
+    console.log("ref capturado:", ref);
+    console.log("producto clicado:", product);
 
     const { data, error } = await supabase.from("clicks").insert([
       {
@@ -77,17 +77,17 @@ export default function SheinPage() {
       },
     ]);
 
-    console.log("RESULTADO INSERT DATA:", data);
-    console.log("RESULTADO INSERT ERROR:", error);
+    console.log("resultado insert data:", data);
+    console.log("resultado insert error:", error);
 
     if (error) {
-      console.error("Error guardando click:", error);
+      console.error("error guardando click:", error);
       return;
     }
 
-    console.log("Click guardado correctamente");
+    console.log("click guardado correctamente");
   } catch (err) {
-    console.error("Error inesperado al registrar click:", err);
+    console.error("error inesperado al registrar click:", err);
   }
 };
     return (

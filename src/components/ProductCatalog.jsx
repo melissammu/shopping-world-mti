@@ -15,21 +15,21 @@ export default function ProductCatalog({ products = [], onProductClick }) {
   });
 
   const handleClick = async (product) => {
-    console.log("CLICK DETECTADO:", product);
+  console.log("click detectado:", product);
 
-    try {
-      if (onProductClick) {
-        console.log("LLAMANDO onProductClick");
-        await onProductClick(product);
-      }
-
-      if (product.link) {
-        window.open(product.link, "_blank");
-      }
-    } catch (error) {
-      console.error("Erro ao abrir produto:", error);
+  try {
+    if (onProductClick) {
+      console.log("llamando onProductClick");
+      await onProductClick(product);
     }
-  };
+
+    if (product.link) {
+      window.open(product.link, "_blank");
+    }
+  } catch (error) {
+    console.error("erro ao abrir produto:", error);
+  }
+};
 
   return (
     <div className="catalog-page">
@@ -132,18 +132,17 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 
                   {safeLink ? (
                     <button
-                      className="buy-button"
-                      onClick={() => {
-                        console.log("CLICK EN BOTÓN");
-                        handleClick({
-                          ...product,
-                          link: safeLink,
-                        });
-                      }}
-                    >
-                      Comprar agora
-                    </button>
-                  ) : (
+  className="buy-button"
+  onClick={() => {
+    console.log("click en botón");
+    handleClick({
+      ...product,
+      link: safeLink,
+    });
+  }}
+>
+  comprar agora
+</button>                  ) : (
                     <button
                       className="buy-button product-button disabled"
                       disabled
