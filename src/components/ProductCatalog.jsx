@@ -49,7 +49,9 @@ export default function ProductCatalog({ products = [], onProductClick }) {
           />
         </div>
       </div>
-
+      <p style={{ color: "red", fontWeight: "bold" }}>
+  version debug activa
+</p>
       <div className="catalog-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
