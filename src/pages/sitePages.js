@@ -128,6 +128,7 @@ export default function SitePage() {
 
   const getPlaceholderByProduct = (product) => {
     if (product.store === "Amazon" && product.country === "US") {
+      
       return "/produtos/placeholder-amazonUsa.png";
     }
 
@@ -141,7 +142,31 @@ export default function SitePage() {
 
     return "/produtos/placeholder-shein.jpg";
   };
+const registerClick = async (product) => {
+  try {
+    const { error } = await supabase.from("clicks").insert([
+      {
+        product_id: product.id,
+        product_name: product.name || "Producto sem nome",
+        product_link: product.link || "",
+        store: product.store || "",
+        country: product.country || "",
+        created_at: new Date().toISOString(),
+      },
+    ]);
 
+    if (error) {
+      console.error("Erro ao registrar clique:", error);
+      return false;
+    }
+
+    console.log("Clique registrado com sucesso");
+    return true;
+  } catch (err) {
+    console.error("Erro inesperado ao registrar clique:", err);
+    return false;
+  }
+};
   return (
 
     <div className="home-container">
@@ -175,34 +200,38 @@ export default function SitePage() {
                 <p className="no-results">Nenhum produto encontrado</p>
               ) : (
                 filteredProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="global-search-item"
-                    onClick={() => {
-                      if (product.link) {
-                        window.open(product.link, "_blank");
-                      }
-                    }}
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="global-search-image"
-                      onError={(e) => {
-                        e.currentTarget.src = getPlaceholderByProduct(product);
-                      }}
-                    />
+  <div
+    key={product.id}
+    className="global-search-item"
+    onClick={async () => {
+      if (!product.link) return;
 
-                    <div className="global-search-info">
-                      <p className="global-search-name">{product.name}</p>
-                      <p className="global-search-store">
-                        {product.store}
-                        {product.country ? ` - ${product.country}` : ""}
-                      </p>
-                      <p className="global-search-price">{product.price}</p>
-                    </div>
-                  </div>
-                ))
+      const ok = await registerClick(product);
+
+      if (ok) {
+        window.open(product.link, "_blank", "noopener,noreferrer");
+      }
+    }}
+  >
+    <img
+      src={product.image}
+      alt={product.name}
+      className="global-search-image"
+      onError={(e) => {
+        e.currentTarget.src = getPlaceholderByProduct(product);
+      }}
+    />
+
+    <div className="global-search-info">
+      <p className="global-search-name">{product.name}</p>
+      <p className="global-search-store">
+        {product.store}
+        {product.country ? ` - ${product.country}` : ""}
+      </p>
+      <p className="global-search-price">{product.price}</p>
+    </div>
+  </div>
+))
               )}
             </div>
           )}

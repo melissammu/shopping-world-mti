@@ -13,23 +13,35 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 
     return texto.includes(search.toLowerCase());
   });
+const handleClick = async (product) => {
+  console.log("click detectado:", product);
 
-  const handleClick = async (product) => {
-    console.log("click detectado:", product);
+  const safeLink =
+    (product.link_br && product.link_br.trim()) ||
+    (product.link_us && product.link_us.trim()) ||
+    (product.link && product.link.trim()) ||
+    "";
 
-    try {
-      if (onProductClick) {
-        console.log("llamando onProductClick");
-        await onProductClick(product);
-      }
+  if (!safeLink) {
+    console.warn("Producto sin link válido");
+    return;
+  }
 
-      if (product.link) {
-        window.open(product.link, "_blank");
-      }
-    } catch (error) {
-      console.error("erro ao abrir produto:", error);
+  try {
+    if (onProductClick) {
+      console.log("llamando onProductClick");
+      await onProductClick({
+        ...product,
+        link: safeLink,
+      });
+      console.log("clic registrado con éxito");
     }
-  };
+
+    window.open(safeLink, "_blank", "noopener,noreferrer");
+  } catch (error) {
+    console.error("erro ao registrar/abrir produto:", error);
+  }
+};
 
   return (
     <div className="catalog-page">
@@ -68,19 +80,11 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 
             return (
               <div key={product.id} className="product-card">
+                
                 <div
-                  className="image-container"
-                  onClick={async () => {
-                    console.log("click en imagen");
-                    if (!safeLink) return;
-
-                    await handleClick({
-                      ...product,
-                      link: safeLink,
-                    });
-                  }}
-                  style={{ cursor: safeLink ? "pointer" : "default" }}
-                >
+                   className="image-container"
+                   style={{ cursor: "default" }}
+>
                   <img
                     src={safeImage}
                     alt={product.name || "Produto"}
@@ -102,28 +106,24 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 
                   <p className="product-price">{product.price || ""}</p>
 
-                  {safeLink ? (
-                    <button
-                      className="buy-button"
-                      onClick={async () => {
-                        console.log("click en botón");
-
-                        await handleClick({
-                          ...product,
-                          link: safeLink,
-                        });
-                      }}
-                    >
-                      comprar agora
-                    </button>
-                  ) : (
-                    <button
-                      className="buy-button product-button disabled"
-                      disabled
-                    >
-                      sem link
-                    </button>
-                  )}
+                 {safeLink ? (
+                   <button
+                    className="buy-button"
+                    onClick={async () => {
+                    console.log("click en botón");
+                 await handleClick(product);
+                }}
+  >
+              comprar agora
+                 </button>
+            ) : (
+                <button
+                 className="buy-button product-button disabled"
+                   disabled
+                >
+                sem link
+               </button>
+             )}
                 </div>
               </div>
             );
