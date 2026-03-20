@@ -53,26 +53,31 @@ export default function RegistroAliadaPage() {
     if (error) throw error;
 
     const user = data.user;
+    const gerarCodigoRef = () => {
+  return "MTI-" + Date.now().toString().slice(-5);
+};
+
+const codigoRef = gerarCodigoRef();
 
     // 💾 Guardar en tabla afiliadas
     const { error: insertError } = await supabase
       .from("afiliadas")
       .insert([
-        {
-          auth_user_id: user.id,
-          nome: form.nome,
-          email: form.email,
-          whatsapp: `${form.codigo_pais} ${form.whatsapp}`,
-          pais: form.pais,
-          plataforma: form.plataforma,
-          metodo_pagamento: form.metodo_pagamento,
-          nome_titular: form.nome_titular,
-          chave_pix: form.metodo_pagamento === "pix" ? form.chave_pix : null,
-          paypal_email: form.metodo_pagamento === "paypal" ? form.paypal_email : null,
-          role: "aliada",
-          status: "pendente",
-        }
-      ]);
+  {
+    auth_user_id: user.id,
+    nome: form.nome,
+    email: form.email,
+    whatsapp: `${form.codigo_pais} ${form.whatsapp}`,
+    pais: form.pais,
+    plataforma: form.plataforma,
+    metodo_pagamento: form.metodo_pagamento,
+    nome_titular: form.nome_titular,
+    chave_pix: form.metodo_pagamento === "pix" ? form.chave_pix : null,
+    paypal_email: form.metodo_pagamento === "paypal" ? form.paypal_email : null,
+    role: "aliada",
+    status: "pendente",
+  }
+])
 
     if (insertError) throw insertError;
 

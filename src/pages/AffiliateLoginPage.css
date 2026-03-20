@@ -1,0 +1,160 @@
+.affiliate-login-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8f8f8, #efefef);
+  overflow: hidden;
+}
+
+.affiliate-login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/public/avatar/shop_word2.png");
+  background-repeat: repeat;
+  background-size: 80px auto;
+  background-position: 0 0;
+  opacity: 0.08;
+  pointer-events: none;
+}
+.affiliate-login-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.affiliate-login-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  padding: 34px 28px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ececec;
+  backdrop-filter: blur(6px);
+}
+
+.affiliate-login-brand {
+  margin-bottom: 24px;
+}
+
+.brand-badge {
+  display: inline-block;
+  background: #111111;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.affiliate-login-brand h1 {
+  margin: 0 0 10px;
+  font-size: 32px;
+  line-height: 1.1;
+  color: #161616;
+}
+
+.affiliate-login-brand p {
+  margin: 0;
+  color: #666666;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.affiliate-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.affiliate-login-form label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #222222;
+  margin-top: 4px;
+}
+
+.affiliate-login-form input {
+  height: 48px;
+  border: 1px solid #dddddd;
+  border-radius: 14px;
+  padding: 0 14px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+  background: #fafafa;
+}
+
+.affiliate-login-form input:focus {
+  border-color: #d7a400;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(215, 164, 0, 0.12);
+}
+
+.affiliate-login-form button {
+  margin-top: 8px;
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #111111, #2b2b2b);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.affiliate-login-form button:hover {
+  transform: translateY(-1px);
+}
+
+.affiliate-login-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-message {
+  margin-top: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff4e8;
+  color: #a14d00;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #ffd9b0;
+}
+
+@media (max-width: 768px) {
+  .affiliate-login-page::before {
+    background-size: 100px auto;
+    opacity: 0.04;
+  }
+
+  .affiliate-login-card {
+    max-width: 92%;
+    padding: 26px 20px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .affiliate-login-page::before {
+    background-size: 80px auto;
+    opacity: 0.035;
+  }
+
+  .affiliate-login-brand h1 {
+    font-size: 28px;
+  }
+}

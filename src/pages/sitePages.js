@@ -3,7 +3,9 @@ import { supabase } from "../lib/supabase";
 import "./sitePages.css"
 import Header from "../components/header";
 import SideMenu from "../components/sideMenu";
+import { useNavigate } from "react-router-dom";
 export default function SitePage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -179,7 +181,9 @@ const registerClick = async (product) => {
 <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping mundial num só lugar.</p>
-
+<button onClick={() => navigate("/login-afiliada")}>
+  Área da Afiliada
+</button>
       <div className="card">
         <div className="search-area">
           <div className="search-box">

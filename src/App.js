@@ -8,10 +8,13 @@ import SheinPage from "./pages/sheinPage";
 import SearchPage from "./pages/searchPage";
 import RegistroAliadaPage from "./pages/RegistroAliadaPage";
 import AdminAfiliadasPage from "./pages/AdminAfiliadasPage";
-
+import AffiliateLoginPage from "./pages/AffiliateLoginPage";
+import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
 export default function App() {
   return (
     <Routes>
+      <Route path="/dashboard-afiliada" element={<AffiliateDashboardPage />} />
+      <Route path="/login-afiliada" element={<AffiliateLoginPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/" element={<OpenBrowserPage />} />
       <Route path="/home" element={<SitePage />} />
