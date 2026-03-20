@@ -38,10 +38,6 @@ export default function SideMenu({ isOpen, onClose }) {
         <p className="dropdown-title">Conta</p>
 
         <button className="dropdown-item">
-          👤 Conta de afiliadas
-        </button>
-
-        <button className="dropdown-item">
           ⚙️ Configuração
         </button>
 

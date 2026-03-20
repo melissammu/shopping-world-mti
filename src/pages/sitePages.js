@@ -181,9 +181,6 @@ const registerClick = async (product) => {
 <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping mundial num só lugar.</p>
-<button onClick={() => navigate("/login-afiliada")}>
-  Área da Afiliada
-</button>
       <div className="card">
         <div className="search-area">
           <div className="search-box">
