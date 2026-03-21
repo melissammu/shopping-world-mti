@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
-import Header from "../components/header";
-import SideMenu from "../components/sideMenu";
-import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import SideMenu from "../components/SideMenu";
+
 export default function SitePage() {
-  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);

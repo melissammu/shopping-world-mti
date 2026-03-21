@@ -2,7 +2,7 @@ import "./Header.css";
 
 export default function Header({ onMenuClick }) {
   return (
-    <header className="Header">
+    <header className="header">
       <button className="menu-button" onClick={onMenuClick}>
         ☰
       </button>
