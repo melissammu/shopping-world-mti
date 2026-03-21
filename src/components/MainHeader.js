@@ -3,7 +3,7 @@ import "./MainHeader.css";
 import SideMenu from "./SideMenu";
 import { useNavigate } from "react-router-dom";
 
-export default function Header() {
+export default function MainHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   return (
