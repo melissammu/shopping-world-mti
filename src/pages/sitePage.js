@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
-import Header from "../components/HeaderTEMP";
+import Header from "../components/MainHeader";
 
 export default function SitePage() {
   const [search, setSearch] = useState("");
@@ -168,7 +168,7 @@ const registerClick = async (product) => {
 };
 return ( 
     <div className="home-container">
-      <Header />
+      <Header/>
       <img
         src="/avatar/shop_word3.png"
         alt="Shopping World"

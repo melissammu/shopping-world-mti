@@ -1,7 +1,7 @@
-import "./SideMenuTEMP.css";
+import "./SideMenu.css";
 import { useNavigate } from "react-router-dom";
 
-export default function SideMenuTEMP({ isOpen, onClose }) {
+export default function SideMenu({ isOpen, onClose }) {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
