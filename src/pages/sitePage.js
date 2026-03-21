@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
-import Header from "../components/Header";
+import Header from "../components/header";
 
 export default function SitePage() {
   const [search, setSearch] = useState("");
