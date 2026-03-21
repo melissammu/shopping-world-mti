@@ -17,11 +17,11 @@ export default function App() {
       <Route path="/login-afiliada" element={<AffiliateLoginPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/" element={<OpenBrowserPage />} />
-      <Route path="/home" element={<SitePage />} />
+      <Route path="/home" element={<SitePages />} />
       <Route path="/amazon" element={<AmazonPage />} />
       <Route path="/amazonusa" element={<AmazonUsaPage />} />
       <Route path="/shein" element={<SheinPage />} />
-      <Route path="/home" element={<SitePage />} />
+      <Route path="/home" element={<SitePages/>} />
       <Route path="/registro-aliada" element={<RegistroAliadaPage />} />
       <Route path="/admin-afiliadas" element={<AdminAfiliadasPage />} />
     </Routes>
