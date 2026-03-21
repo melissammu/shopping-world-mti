@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Header.css";
-import SideMenu from "./SideMenu";
+import SideMenu from "./SideMenu.js ";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
