@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import "./sitePages.css"
+import "./sitePage.css"
 import Header from "../components/header";
 import SideMenu from "../components/sideMenu";
 import { useNavigate } from "react-router-dom";
