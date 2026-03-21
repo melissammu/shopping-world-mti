@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./Header.css";
-import SideMenu from "./SideMenu.js ";
+import "./HeaderTEMP.css";
+import SideMenu from "./SideMenuTEMP";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
               Login
     </button>
 
-      <SideMenu
+      <SideMenuTEMP
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
       />
