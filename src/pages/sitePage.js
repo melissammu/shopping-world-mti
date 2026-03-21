@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
 import Header from "../components/Header";
-import SideMenu from "../components/SideMenu";
 
 export default function SitePage() {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     async function loadProducts() {
       const { data: sheinData, error: sheinError } = await supabase
@@ -168,16 +166,14 @@ const registerClick = async (product) => {
     return false;
   }
 };
-  return (
-
+return ( 
     <div className="home-container">
+      <Header />
       <img
         src="/avatar/shop_word3.png"
         alt="Shopping World"
         className="logo"
       />
-<Header onMenuClick={() => setMenuOpen(true)} />
-<SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping mundial num só lugar.</p>
       <div className="card">

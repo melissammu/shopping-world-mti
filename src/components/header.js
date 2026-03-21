@@ -1,18 +1,31 @@
+import { useState } from "react";
 import "./Header.css";
+import SideMenu from "./SideMenu";
+import { useNavigate } from "react-router-dom";
 
-export default function Header({ onMenuClick }) {
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <header className="header">
-      <button className="menu-button" onClick={onMenuClick}>
+      <button
+        className="menu-button"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
         ☰
       </button>
 
-      <div className="header-brand">
-      </div>
+     <button
+       className="login-button"
+       onClick={() => navigate("/login")}
+      >
+              Login
+    </button>
 
-      <button className="login-button">
-        Login
-      </button>
+      <SideMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
     </header>
   );
 }

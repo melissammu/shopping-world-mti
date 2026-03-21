@@ -10,9 +10,15 @@ import RegistroAliadaPage from "./pages/RegistroAliadaPage";
 import AdminAfiliadasPage from "./pages/AdminAfiliadasPage";
 import AffiliateLoginPage from "./pages/AffiliateLoginPage";
 import AffiliateDashboardPage from "./pages/AffiliateDashboardPage";
+import AboutPage from "./pages/AboutPage";
+import AjudaPage from "./pages/AjudaPage";
+import LoginPage from "./pages/LoginPage";
 export default function App() {
   return (
     <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/ajuda" element={<AjudaPage />} />
       <Route path="/dashboard-afiliada" element={<AffiliateDashboardPage />} />
       <Route path="/login-afiliada" element={<AffiliateLoginPage />} />
       <Route path="/search" element={<SearchPage />} />
