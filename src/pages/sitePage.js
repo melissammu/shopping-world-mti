@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
 import MainHeader from "../components/MainHeader";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 export default function SitePage() {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     async function loadProducts() {
       const { data: sheinData, error: sheinError } = await supabase
@@ -52,11 +53,11 @@ export default function SitePage() {
         store: "Shein",
         category: p.category || "Moda",
         country: "BR",
+         catalogPath:"/shein",
+
       }));
       <>
-  {/* aquí dejas tu home actual */}
 </>
-
       const amazonFormatted = (amazonData || []).map((p) => {
         const isAmazonBr = p.link_br && p.link_br.trim();
         const isAmazonUs = p.link_us && p.link_us.trim();
@@ -77,6 +78,8 @@ export default function SitePage() {
           store: "Amazon",
           category: p.category || "Geral",
           country: isAmazonBr ? "BR" : isAmazonUs ? "US" : "",
+         catalogPath: isAmazonBr ? "/amazon" : isAmazonUs ? "/amazonusa" : "/amazon",
+        
         };
       });
       
@@ -96,6 +99,8 @@ export default function SitePage() {
         store: "Mercado br",
         category: p.category || "Geral",
         country: "BR",
+         catalogPath:"/mercadoLi",
+
       }));
 
       setAllProducts([
@@ -199,14 +204,11 @@ return (
   <div
     key={product.id}
     className="global-search-item"
-    onClick={async () => {
-      if (!product.link) return;
+   onClick={async () => {
+  if (!product.catalogPath) return;
 
-      const ok = await registerClick(product);
-
-      if (ok) {
-        window.open(product.link, "_blank", "noopener,noreferrer");
-      }
+  await registerClick(product);
+  navigate(product.catalogPath);
     }}
   >
     <img
