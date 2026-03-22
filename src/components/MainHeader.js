@@ -7,25 +7,35 @@ export default function MainHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   return (
-    <header className="header">
+  <header className="header">
+
+    <div className="left">
       <button
         className="menu-button"
         onClick={() => setMenuOpen(!menuOpen)}
       >
         ☰
       </button>
+    </div>
 
-     <button
-       className="login-button"
-       onClick={() => navigate("/login")}
+    <div className="center">
+      <span className="logo">Shopping World</span>
+    </div>
+
+    <div className="right">
+      <button
+        className="login-button"
+        onClick={() => navigate("/login")}
       >
-              Login
-    </button>
+        Login
+      </button>
+    </div>
 
-      <SideMenu
-        isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-      />
-    </header>
-  );
-}
+    <SideMenu
+      isOpen={menuOpen}
+      onClose={() => setMenuOpen(false)}
+    />
+
+  </header>
+);
+ }

@@ -1,27 +1,35 @@
-.Header {
-  position: relative;
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
-  padding: 20px 30px;
-  box-sizing: border-box;
+  padding: 15px 25px;
+  z-index: 1000;
+  background: transparent;
 }
 
+/* Agrupa botones */
+.header button {
+  margin-left: 10px;
+}
+
+/* Botón menú */
 .menu-button {
+  font-size: 22px;
   background: transparent;
   border: none;
-  font-size: 26px;
   cursor: pointer;
-  color: #555;
 }
 
+/* Botón login */
 .login-button {
-  background: hsl(54, 99%, 64%);
-  border: 1px solid #ddd;
-  border-radius: 20px;
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  border: none;
   padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
 }

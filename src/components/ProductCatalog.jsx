@@ -45,7 +45,7 @@ const handleClick = async (product) => {
 
   return (
     <div className="catalog-page">
-      <div className="catalog-header">
+      <div className="catalog-Header">
         <h2 className="catalog-title">Produtos</h2>
         <p className="catalog-subtitle">
           Escolha seu produto e clique para comprar
@@ -61,9 +61,6 @@ const handleClick = async (product) => {
           />
         </div>
       </div>
-      <p style={{ color: "red", fontWeight: "bold" }}>
-  version debug activa
-</p>
       <div className="catalog-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {

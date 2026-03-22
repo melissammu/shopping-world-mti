@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
 import MainHeader from "../components/MainHeader";
-
+import {Link} from "react-router-dom";
 export default function SitePage() {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
@@ -183,7 +183,7 @@ return (
 
             <input
               type="text"
-              placeholder="Busca inteligente..."
+              placeholder="Busca inteligente nas lojas..."
               className="search-input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -233,27 +233,27 @@ return (
           )}
         </div>
 
-        <div className="stores">
-          <a href="/shein" className="store shein">
-            <span>SHEIN</span>
-            <span className="flag">BR</span>
-          </a>
+       <div className="stores">
+  <Link to="/shein" className="store shein">
+    <span>SHEIN</span>
+    <span className="flag">BR</span>
+  </Link>
 
-          <a href="/amazon" className="store amazon-br">
-            <span>Amazon Brasil</span>
-            <span className="flag">BR</span>
-          </a>
+  <Link to="/amazon" className="store amazon-br">
+    <span>Amazon Brasil</span>
+    <span className="flag">BR</span>
+  </Link>
 
-          <a href="/amazonusa" className="store amazon-us">
-            <span>Amazon USA</span>
-            <span className="flag">US</span>
-          </a>
+  <Link to="/amazonusa" className="store amazon-us">
+    <span>Amazon USA</span>
+    <span className="flag">US</span>
+  </Link>
 
-          <a href="/mercadolivre" className="store mercado">
-            <span>Mercado Livre</span>
-            <span className="flag">BR</span>
-          </a>
-        </div>
+  <Link to="/mercadoli" className="store mercado">
+    <span>Mercado Livre</span>
+    <span className="flag">BR</span>
+  </Link>
+</div>
       </div>
     </div>
   );
