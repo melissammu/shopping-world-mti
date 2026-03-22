@@ -9,10 +9,13 @@ export default function MercadoLiPage() {
   useEffect(() => {
     async function loadProducts() {
       const { data, error } = await supabase
-        .from("products")
+        .from("mercado-livre-br")
         .select("*")
-        .eq("store", "mercadoLi")
+        .eq("store", "mercado.br")
         .order("id", { ascending: false });
+
+      console.log("MERCADO LIVRE DATA:", data);
+      console.log("MERCADO LIVRE ERROR:", error);
 
       if (error) {
         console.error("Erro ao buscar produtos Mercado Livre:", error);
@@ -20,31 +23,30 @@ export default function MercadoLiPage() {
         return;
       }
 
-      const formattedProducts = (data || [])
-        .map((p) => {
-          const finalLink =
-            (p.link_br && p.link_br.trim()) ||
-            (p.link_us && p.link_us.trim()) ||
-            (p.link && p.link.trim()) ||
-            "";
+      const formattedProducts = (data || []).map((p) => {
+        const finalLink =
+          (p.link_br && String(p.link_br).trim()) ||
+          (p.link_us && String(p.link_us).trim()) ||
+          (p.link && String(p.link).trim()) ||
+          "";
 
-          const finalImage =
-            (p.image_url && p.image_url.trim()) ||
-            (p.image && typeof p.image === "string" && p.image.trim()) ||
-            "/produtos/placeholder-mercadoLi.jpg";
+        const finalImage =
+          (p.image_url && String(p.image_url).trim()) ||
+          (p.image && String(p.image).trim()) ||
+          "/produtos/placeholder-mercadoli.jpg";
 
-          return {
-            id: p.id,
-            name: p.title || p.name || "Produto sem nome",
-            price: p.price || "",
-            image: finalImage,
-            image_url: finalImage,
-            link: finalLink,
-            category: p.category || "Sem categoria",
-            store: p.store || "mercadoLi",
-          };
-        })
-        .filter(Boolean);
+        return {
+          id: p.id,
+          name: p.title || p.name || "Produto sem nome",
+          price: p.price || "",
+          image: finalImage,
+          image_url: finalImage,
+          link: finalLink,
+          category: p.category || "Sem categoria",
+          store: p.store || "mercado.br",
+          is_creative: p.is_creative ?? false,
+        };
+      });
 
       setProducts(formattedProducts);
     }

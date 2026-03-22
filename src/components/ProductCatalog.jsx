@@ -76,7 +76,12 @@ const handleClick = async (product) => {
               "/produtos/placeholder-shein.jpg";
 
             return (
-              <div key={product.id} className="product-card">
+             <div
+  key={product.id}
+  className="product-card"
+  onClick={() => safeLink && window.open(safeLink, "_blank")}
+  style={{ cursor: "pointer" }}
+>
                 
                 <div
                    className="image-container"
@@ -91,9 +96,6 @@ const handleClick = async (product) => {
                     }}
                   />
 
-                  {safeLink && (
-                    <span className="click-shortcut">🔥 Clique</span>
-                  )}
                 </div>
 
                 <div className="product-info">
