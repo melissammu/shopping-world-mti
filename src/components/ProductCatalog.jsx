@@ -35,7 +35,8 @@ const handleClick = async (product) => {
       {
         ref: ref || "sin-ref",
         product_id: String(product.id || "no-id"),
-        product_name: product.name || "Produto sem nome",
+        product_name: product.title ||
+        product.name  || "Produto sem nome",
         store: product.store || "unknown"
       }
     ]);
