@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ProductCatalog.css";
+import { supabase } from "../lib/supabase";
 
 export default function ProductCatalog({ products = [], onProductClick }) {
   const [search, setSearch] = useState("");
@@ -28,21 +29,33 @@ const handleClick = async (product) => {
   }
 
   try {
-    if (onProductClick) {
-      console.log("llamando onProductClick");
-      await onProductClick({
-        ...product,
-        link: safeLink,
-      });
-      console.log("clic registrado con éxito");
+    // 🔥 OBTENER REF
+    const ref = localStorage.getItem("affiliate_ref");
+
+    console.log("REF:", ref);
+
+    // 🔥 INSERT DIRECTO EN SUPABASE
+    const { error } = await supabase.from("clicks").insert([
+      {
+        ref: ref || "sin-ref",
+        product_id: product.id,
+        store: product.store || "unknown"
+      }
+    ]);
+
+    if (error) {
+      console.error("ERROR AL GUARDAR:", error);
+    } else {
+      console.log("CLICK GUARDADO ✅");
     }
 
+    // 🔗 REDIRECCIÓN
     window.open(safeLink, "_blank", "noopener,noreferrer");
+
   } catch (error) {
-    console.error("erro ao registrar/abrir produto:", error);
+    console.error("error general:", error);
   }
 };
-
   return (
     <div className="catalog-page">
       <div className="catalog-Header">

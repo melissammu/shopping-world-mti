@@ -180,7 +180,7 @@ const codigoRef = gerarCodigoRef();
                 userSelect: "none",
               }}
             >
-              {showPassword ? "👁️" : "🙈"}
+              {showPassword ? "👁️" : "😌"}
             </span>
           </div>
 
@@ -211,7 +211,7 @@ const codigoRef = gerarCodigoRef();
                 userSelect: "none",
               }}
             >
-              {showConfirmPassword ? "👁️" : "🙈"}
+              {showConfirmPassword ? "👁️" : "😌"}
             </span>
           </div>
 

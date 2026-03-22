@@ -1,5 +1,5 @@
 import OpenBrowserPage from "./pages/OpenBrowserPage";
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import SitePage from "./pages/sitePage";
 import AmazonPage from "./pages/amazonPage";
@@ -15,6 +15,15 @@ import AboutPage from "./pages/AboutPage";
 import AjudaPage from "./pages/AjudaPage";
 import LoginPage from "./pages/LoginPage";
 export default function App() {
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+
+  if (ref) {
+    localStorage.setItem("affiliate_ref", ref);
+    console.log("REF guardado:", ref);
+  }
+}, []);
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
@@ -31,6 +40,7 @@ export default function App() {
       <Route path="/mercadoli" element={<MercadoLiPage />} />
       <Route path="/registro-aliada" element={<RegistroAliadaPage />} />
       <Route path="/admin-afiliadas" element={<AdminAfiliadasPage />} />
+      
     </Routes>
   );
 }
