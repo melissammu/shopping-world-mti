@@ -46,7 +46,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 gap:80px;
-margin-top:60px;
+margin-top:20px;
 flex-wrap:wrap;
 width:100%;
 max-width:1100px;
@@ -72,7 +72,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 height:60px;
-border-radius:14px;
+border-radius:13px;
 font-weight:700;
 font-size:18px;
 text-decoration:none;
@@ -253,7 +253,8 @@ border-color:#c89b6d;
 
 
   .home-subtitle {
-    font-size: 14px;
+    font-size: 15px;
+    margin-top: 16px;
   }
 
   .search-column {
@@ -456,4 +457,19 @@ max-width:100%;
   .stores{
     width:100%;
   }
+}
+@media (max-width:480px){
+
+  .home-subtitle{
+    margin-bottom:12px;
+  }
+
+  .home-layout{
+    margin-top:12px;
+  }
+
+  .home-card{
+    margin-top:0;
+  }
+
 }
