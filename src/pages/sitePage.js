@@ -149,13 +149,13 @@ export default function SitePage() {
 
     const registerClick = async (product) => {
   try {
-    const ref = localStorage.getItem("affiliate_ref") || "sin-ref";
+    const codigo_ref = localStorage.getItem("affiliate_ref") || "sin-ref";
     const productId = String(product.id);
 
     // 🔥 1. GUARDAR CLICK NORMAL
     await supabase.from("clicks").insert([
       {
-        ref,
+        codigo_ref: codigo_ref,
         product_id: productId,
         product_name: product.name || "Producto sin nombre",
         store: product.store || "unknown",
@@ -167,7 +167,7 @@ export default function SitePage() {
     const { data: existing } = await supabase
       .from("clicks_resumen")
       .select("*")
-      .eq("ref", ref)
+      .eq("codigo_ref",codigo_ref)
       .eq("product_id", productId)
       .maybeSingle();
 
@@ -188,7 +188,7 @@ export default function SitePage() {
         .from("clicks_resumen")
         .insert([
           {
-            ref,
+           codigo_ref:codigo_ref,
             product_id: productId,
             product_name: product.name || "Producto sin nombre",
             store: product.store || "unknown",

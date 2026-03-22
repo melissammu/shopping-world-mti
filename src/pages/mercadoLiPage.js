@@ -28,7 +28,7 @@ export default function MercadoLiPage() {
 
         const finalImage =
           (p.image_url && String(p.image_url).trim()) ||
-          "/produtos/placeholder-mercadoLi.jpg";
+          "/produtos/placeholder-mercadoLi.png";
 
         return {
           id: p.id,

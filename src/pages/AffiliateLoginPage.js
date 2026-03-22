@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
 import "./AffiliateLoginPage.css";
-
 export default function AffiliateLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +32,6 @@ export default function AffiliateLoginPage() {
         .select("*")
         .eq("email", email)
         .single();
-
       if (errAfiliada || !afiliada) {
         setMessage("Seu acesso não está autorizado como afiliada.");
         setLoading(false);
