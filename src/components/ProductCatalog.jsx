@@ -15,46 +15,65 @@ export default function ProductCatalog({ products = [], onProductClick }) {
     return texto.includes(search.toLowerCase());
   });
 const handleClick = async (product) => {
-  console.log("click detectado:", product);
-
-  const safeLink =
-    (product.link_br && product.link_br.trim()) ||
-    (product.link_us && product.link_us.trim()) ||
-    (product.link && product.link.trim()) ||
-    "";
-
-  if (!safeLink) {
-    console.warn("Producto sin link válido");
-    return;
-  }
-
   try {
-    // 🔥 OBTENER REF
+
     const ref = localStorage.getItem("affiliate_ref");
 
-    console.log("REF:", ref);
+    const safeLink =
+      (product.link_br && product.link_br.trim()) ||
+      (product.link_us && product.link_us.trim()) ||
+      (product.link && product.link.trim()) ||
+      "";
 
-    // 🔥 INSERT DIRECTO EN SUPABASE
-    const { error } = await supabase.from("clicks").insert([
-  {
-    ref: ref || "sin-ref",
-    product_id: String(product.id || "no-id"),
-    product_name: product.name || "Produto sem nome",
-    store: product.store || "unknown"
-  }
-]);
-
-    if (error) {
-      console.error("ERROR AL GUARDAR:", error);
-    } else {
-      console.log("CLICK GUARDADO ✅");
+    if (!safeLink) {
+      console.warn("Producto sin link válido");
+      return;
     }
 
-    // 🔗 REDIRECCIÓN
+    // 🔥 1. GUARDAR HISTORIAL
+    await supabase.from("clicks").insert([
+      {
+        ref: ref || "sin-ref",
+        product_id: String(product.id || "no-id"),
+        product_name: product.name || "Produto sem nome",
+        store: product.store || "unknown"
+      }
+    ]);
+
+    // 🔥 2. ACTUALIZAR RESUMEN
+    const { data: existing } = await supabase
+      .from("clicks_resumen")
+      .select("*")
+      .eq("ref", ref || "sin-ref")
+      .eq("product_id", String(product.id))
+      .maybeSingle();
+
+    if (existing) {
+      await supabase
+        .from("clicks_resumen")
+        .update({
+          total_clicks: existing.total_clicks + 1,
+          updated_at: new Date()
+        })
+        .eq("id", existing.id);
+
+    } else {
+      await supabase.from("clicks_resumen").insert([
+        {
+          ref: ref || "sin-ref",
+          product_id: String(product.id),
+          product_name: product.name || "Produto sem nome",
+          store: product.store || "unknown",
+          total_clicks: 1
+        }
+      ]);
+    }
+
+    // 🔗 3. REDIRECCIÓN (SIEMPRE AL FINAL)
     window.open(safeLink, "_blank", "noopener,noreferrer");
 
   } catch (error) {
-    console.error("error general:", error);
+    console.error("Error general:", error);
   }
 };
   return (
