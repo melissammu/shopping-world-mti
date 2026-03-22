@@ -9,9 +9,8 @@ export default function MercadoLiPage() {
   useEffect(() => {
     async function loadProducts() {
       const { data, error } = await supabase
-        .from("mercado-livre-br")
+        .from("mercado_livre_br")
         .select("*")
-        .eq("store", "mercado.br")
         .order("id", { ascending: false });
 
       console.log("MERCADO LIVRE DATA:", data);
@@ -25,19 +24,15 @@ export default function MercadoLiPage() {
 
       const formattedProducts = (data || []).map((p) => {
         const finalLink =
-          (p.link_br && String(p.link_br).trim()) ||
-          (p.link_us && String(p.link_us).trim()) ||
-          (p.link && String(p.link).trim()) ||
-          "";
+          (p.link_br && String(p.link_br).trim()) || "";
 
         const finalImage =
           (p.image_url && String(p.image_url).trim()) ||
-          (p.image && String(p.image).trim()) ||
-          "/produtos/placeholder-mercadoli.jpg";
+          "/produtos/placeholder-mercadoLi.jpg";
 
         return {
           id: p.id,
-          name: p.title || p.name || "Produto sem nome",
+          name: p.title || "Produto sem nome",
           price: p.price || "",
           image: finalImage,
           image_url: finalImage,
@@ -48,6 +43,7 @@ export default function MercadoLiPage() {
         };
       });
 
+      console.log("FORMATADOS:", formattedProducts);
       setProducts(formattedProducts);
     }
 

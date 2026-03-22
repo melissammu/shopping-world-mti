@@ -79,13 +79,13 @@ const handleClick = async (product) => {
              <div
   key={product.id}
   className="product-card"
-  onClick={() => safeLink && window.open(safeLink, "_blank")}
-  style={{ cursor: "pointer" }}
+  
 >
                 
-                <div
-                   className="image-container"
-                   style={{ cursor: "default" }}
+               <div
+  className="image-container"
+  onClick={() => handleClick(product)}
+  style={{ cursor: "pointer" }}
 >
                   <img
                     src={safeImage}
@@ -108,7 +108,7 @@ const handleClick = async (product) => {
                  {safeLink ? (
                    <button
                     className="buy-button"
-                    onClick={async () => {
+                    onClick={async (e) => { e.stopPropagation(); //evita doble click
                     console.log("click en botón");
                  await handleClick(product);
                 }}
@@ -119,6 +119,7 @@ const handleClick = async (product) => {
                 <button
                  className="buy-button product-button disabled"
                    disabled
+
                 >
                 sem link
                </button>
