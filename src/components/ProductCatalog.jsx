@@ -36,12 +36,13 @@ const handleClick = async (product) => {
 
     // 🔥 INSERT DIRECTO EN SUPABASE
     const { error } = await supabase.from("clicks").insert([
-      {
-        ref: ref || "sin-ref",
-        product_id: product.id,
-        store: product.store || "unknown"
-      }
-    ]);
+  {
+    ref: ref || "sin-ref",
+    product_id: String(product.id || "no-id"),
+    product_name: product.name || "Produto sem nome",
+    store: product.store || "unknown"
+  }
+]);
 
     if (error) {
       console.error("ERROR AL GUARDAR:", error);
