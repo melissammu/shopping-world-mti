@@ -147,11 +147,15 @@ export default function SitePage() {
     return "/produtos/placeholder-shein.jpg";
   };
 const registerClick = async (product) => {
+  const ref = localStorage.getItem("affiliate_ref") || "sin-ref";
+  const productId = String(product.id);
+
   try {
     const { error } = await supabase.from("clicks").insert([
       {
-        product_id: product.id,
-        product_name: product.name || "Producto sem nome",
+        ref: ref,
+        product_id: productId,
+        product_name: product.name || "Produto sem nome",
         product_link: product.link || "",
         store: product.store || "",
         country: product.country || "",
@@ -164,7 +168,149 @@ const registerClick = async (product) => {
       return false;
     }
 
-    console.log("Clique registrado com sucesso");
+    const { data: existing, error: selectError } = await supabase
+      .from("clicks_resumen")
+      .select("id, total_clicks")
+      .eq("ref", ref)
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (selectError) {
+      console.error("Erro ao buscar resumo:", selectError);
+      return false;
+    }
+
+    if (existing) {
+      const { error: updateError } = await supabase
+        .from("clicks_resumen")
+        .update({
+          total_clicks: (existing.total_clicks || 0) + 1,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existing.id);
+
+      if (updateError) {
+        console.error("Erro ao atualizar resumo:", updateError);
+        return false;
+      }
+    } else {
+     const registerClick = async (product) => {
+  const ref = localStorage.getItem("affiliate_ref") || "sin-ref";
+  const productId = String(product.id);
+
+  try {
+    const { error } = await supabase.from("clicks").insert([
+      {
+        ref: ref,
+        product_id: productId,
+        product_name: product.name || "Produto sem nome",
+        product_link: product.link || "",
+        store: product.store || "",
+        country: product.country || "",
+        created_at: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Erro ao registrar clique:", error);
+      return false;
+    }
+
+    const { data: existing, error: selectError } = await supabase
+      .from("clicks_resumen")
+      .select("id, total_clicks")
+      .eq("ref", ref)
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (selectError) {
+      console.error("Erro ao buscar resumo:", selectError);
+      return false;
+    }
+
+    if (existing) {
+      const { error: updateError } = await supabase
+        .from("clicks_resumen")
+        .update({
+          total_clicks: (existing.total_clicks || 0) + 1,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existing.id);
+
+      if (updateError) {
+        console.error("Erro ao atualizar resumo:", updateError);
+        return false;
+      }
+    } else {
+     const registerClick = async (product) => {
+  const ref = localStorage.getItem("affiliate_ref") || "sin-ref";
+  const productId = String(product.id);
+
+  try {
+    const { error } = await supabase.from("clicks").insert([
+      {
+        ref: ref,
+        product_id: productId,
+        product_name: product.name || "Produto sem nome",
+        product_link: product.link || "",
+        store: product.store || "",
+        country: product.country || "",
+        created_at: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.error("Erro ao registrar clique:", error);
+      return false;
+    }
+
+    const { data: existing, error: selectError } = await supabase
+      .from("clicks_resumen")
+      .select("id, total_clicks")
+      .eq("ref", ref)
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (selectError) {
+      console.error("Erro ao buscar resumo:", selectError);
+      return false;
+    }
+
+    if (existing) {
+      const { error: updateError } = await supabase
+        .from("clicks_resumen")
+        .update({
+          total_clicks: (existing.total_clicks || 0) + 1,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existing.id);
+
+      if (updateError) {
+        console.error("Erro ao atualizar resumo:", updateError);
+        return false;
+      }
+    } else {
+      const { error: insertResumenError } = await supabase
+        .from("clicks_resumen")
+        .insert([
+          {
+            ref: ref,
+            product_id: productId,
+            product_name: product.name || "Produto sem nome",
+            store: product.store || "",
+            country: product.country || "",
+            total_clicks: 1,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        ]);
+
+      if (insertResumenError) {
+        console.error("Erro ao inserir resumo:", insertResumenError);
+        return false;
+      }
+    }
+
     return true;
   } catch (err) {
     console.error("Erro inesperado ao registrar clique:", err);
