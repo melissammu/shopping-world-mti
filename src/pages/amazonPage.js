@@ -1,10 +1,31 @@
 import React, { useEffect, useState } from "react";
 import ProductCatalog from "../components/ProductCatalog";
 import { supabase } from "../lib/supabase";
+import { registerAfiliateClick } from "../lib/registerAfiliateClick";
 
 export default function AmazonPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleAffiliateRedirect = async (product) => {
+    const safeLink =
+      (product.link_br && String(product.link_br).trim()) ||
+      (product.link && String(product.link).trim()) ||
+      "";
+
+    if (!safeLink) {
+      console.log("Producto Amazon sin link válido");
+      return;
+    }
+
+    try {
+      await registerAfiliateClick(product);
+      window.open(safeLink, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error("Error en redirect Amazon:", error);
+      window.open(safeLink, "_blank", "noopener,noreferrer");
+    }
+  };
 
   useEffect(() => {
     async function loadProducts() {
@@ -23,8 +44,8 @@ export default function AmazonPage() {
       const formattedProducts = (data || [])
         .map((p) => {
           const finalLink =
-            (p.link_br && p.link_br.trim()) ||
-            (p.link_us && p.link_us.trim()) ||
+            (p.link_br && String(p.link_br).trim()) ||
+            (p.link && String(p.link).trim()) ||
             "";
 
           if (!finalLink) {
@@ -32,16 +53,21 @@ export default function AmazonPage() {
           }
 
           const finalImage =
-            (p.image_url && p.image_url.trim()) ||
-            "/produtos/placeholder-amazon.jpg";
+            (p.image_url && String(p.image_url).trim()) ||
+            (p.image && String(p.image).trim()) ||
+            "/produtos/placeholder-amazon.png";
 
           return {
             id: p.id,
-            name: p.title || "Produto sem nome",
+            name: p.title || p.name || "Produto sem nome",
             price: p.price || "",
             image: finalImage,
+            image_url: finalImage,
             link: finalLink,
-            category: p.category || "Sem categoria",
+            link_br: finalLink,
+            category: p.category || p.categoria || "Sem categoria",
+            store: "Amazon",
+            country: "BR",
           };
         })
         .filter(Boolean);
@@ -60,7 +86,10 @@ export default function AmazonPage() {
         </div>
       )}
 
-      <ProductCatalog products={products} />
+      <ProductCatalog
+        products={products}
+        onProductClick={handleAffiliateRedirect}
+      />
     </div>
   );
 }
