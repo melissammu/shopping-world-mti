@@ -159,6 +159,7 @@ export default function SitePage() {
         product_id: productId,
         product_name: product.name || "Producto sin nombre",
         store: product.store || "unknown",
+
         country: product.country || "BR"
       }
     ]);
@@ -170,6 +171,12 @@ export default function SitePage() {
       .eq("codigo_ref",codigo_ref)
       .eq("product_id", productId)
       .maybeSingle();
+  
+      if (selectError) {
+  console.error("ERROR select clicks_resumen:", selectError);
+  return false;
+}
+
 
     if (existing) {
       // 🔥 ACTUALIZA (SUMA +1)
@@ -188,7 +195,7 @@ export default function SitePage() {
         .from("clicks_resumen")
         .insert([
           {
-           codigo_ref:codigo_ref,
+            codigo_ref:codigo_ref,
             product_id: productId,
             product_name: product.name || "Producto sin nombre",
             store: product.store || "unknown",
