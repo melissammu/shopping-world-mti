@@ -146,41 +146,40 @@ export default function SitePage() {
 
     return "/produtos/placeholder-shein.jpg";
   };
-
-    const registerClick = async (product) => {
+const registerClick = async (product) => {
   try {
-    const codigo_ref = localStorage.getItem("affiliate_ref") || "sin-ref".trim();
+    const codigo_ref = (localStorage.getItem("affiliate_ref") || "sin-ref").trim();
     const productId = String(product.id);
 
-    // 🔥 1. GUARDAR CLICK NORMAL
-    await supabase.from("clicks").insert([
+    const { error: clickError } = await supabase.from("clicks").insert([
       {
         codigo_ref: codigo_ref,
         product_id: productId,
         product_name: product.name || "Producto sin nombre",
         store: product.store || "unknown",
-
         country: product.country || "BR"
       }
     ]);
 
-    // 🔥 2. BUSCAR SI YA EXISTE EN RESUMEN
-    const { data: existing, error:selectError } = await supabase
+    if (clickError) {
+      console.error("ERROR insert clicks:", clickError);
+      return false;
+    }
+
+    const { data: existing, error: selectError } = await supabase
       .from("clicks_resumen")
       .select("*")
-      .eq("codigo_ref",codigo_ref)
+      .eq("codigo_ref", codigo_ref)
       .eq("product_id", productId)
       .maybeSingle();
-  
-      if (selectError) {
-  console.error("ERROR select clicks_resumen:", selectError);
-  return false;
-}
 
+    if (selectError) {
+      console.error("ERROR select clicks_resumen:", selectError);
+      return false;
+    }
 
     if (existing) {
-      // 🔥 ACTUALIZA (SUMA +1)
-      await supabase
+      const { error: updateError } = await supabase
         .from("clicks_resumen")
         .update({
           total_clicks: existing.total_clicks + 1,
@@ -189,13 +188,16 @@ export default function SitePage() {
         })
         .eq("id", existing.id);
 
+      if (updateError) {
+        console.error("ERROR update clicks_resumen:", updateError);
+        return false;
+      }
     } else {
-      // 🔥 CREA NUEVO REGISTRO
-      await supabase
+      const { error: insertResumenError } = await supabase
         .from("clicks_resumen")
         .insert([
           {
-            codigo_ref:codigo_ref,
+            codigo_ref: codigo_ref,
             product_id: productId,
             product_name: product.name || "Producto sin nombre",
             store: product.store || "unknown",
@@ -203,12 +205,17 @@ export default function SitePage() {
             country: product.country || "BR"
           }
         ]);
+
+      if (insertResumenError) {
+        console.error("ERROR insert clicks_resumen:", insertResumenError);
+        return false;
+      }
     }
 
+    console.log("CLICK REGISTRADO OK");
     return true;
-
   } catch (error) {
-    console.error("Error:", error);
+    console.error("ERROR GENERAL registerClick:", error);
     return false;
   }
 };
@@ -245,12 +252,15 @@ return (
   <div
     key={product.id}
     className="global-search-item"
-   onClick={async () => {
+    onClick={async () => {
   if (!product.catalogPath) return;
 
-  await registerClick(product);
-  navigate(product.catalogPath);
-    }}
+  const ok = await registerClick(product);
+
+  if (ok) {
+    navigate(product.catalogPath);
+  }
+}}
   >
     <img
       src={product.image}
