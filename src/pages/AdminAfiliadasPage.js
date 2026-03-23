@@ -192,9 +192,12 @@ export default function AdminAfiliadasPage() {
               <strong>Código:</strong> {a.codigo_ref || "-"}
             </p>
 <p>
-  {new Date(click.created_at).toLocaleString("pt-BR", {
-    timeZone: "America/Sao_Paulo"
-  })}
+  <strong>Registrada em:</strong>{" "}
+  {a.created_at
+    ? new Date(a.created_at).toLocaleString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+      })
+    : "--"}
 </p>
             <p>
               <strong>Status:</strong>{" "}
