@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./ProductCatalog.css";
-import { supabase } from "../lib/supabase";
 
 export default function ProductCatalog({ products = [], onProductClick }) {
   const [search, setSearch] = useState("");
@@ -16,62 +15,11 @@ export default function ProductCatalog({ products = [], onProductClick }) {
   });
 const handleClick = async (product) => {
   try {
+    console.log("CLICK EN PRODUCT:", product);
 
-    const ref = localStorage.getItem("affiliate_ref");
-
-    const safeLink =
-      (product.link_br && product.link_br.trim()) ||
-      (product.link_us && product.link_us.trim()) ||
-      (product.link && product.link.trim()) ||
-      "";
-
-    if (!safeLink) {
-      console.warn("Producto sin link válido");
-      return;
+    if (onProductClick) {
+      await onProductClick(product);
     }
-
-    // 🔥 1. GUARDAR HISTORIAL
-    await supabase.from("clicks").insert([
-      {
-        ref: ref || "sin-ref",
-        product_id: String(product.id || "no-id"),
-        product_name: product.title ||
-        product.name  || "Produto sem nome",
-        store: product.store || "unknown"
-      }
-    ]);
-
-    // 🔥 2. ACTUALIZAR RESUMEN
-    const { data: existing } = await supabase
-      .from("clicks_resumen")
-      .select("*")
-      .eq("ref", ref || "sin-ref")
-      .eq("product_id", String(product.id))
-      .maybeSingle();
-
-    if (existing) {
-      await supabase
-        .from("clicks_resumen")
-        .update({
-          total_clicks: existing.total_clicks + 1,
-          updated_at: new Date()
-        })
-        .eq("id", existing.id);
-
-    } else {
-      await supabase.from("clicks_resumen").insert([
-        {
-          ref: ref || "sin-ref",
-          product_id: String(product.id),
-          product_name: product.name || "Produto sem nome",
-          store: product.store || "unknown",
-          total_clicks: 1
-        }
-      ]);
-    }
-
-    // 🔗 3. REDIRECCIÓN (SIEMPRE AL FINAL)
-    window.open(safeLink, "_blank", "noopener,noreferrer");
 
   } catch (error) {
     console.error("Error general:", error);

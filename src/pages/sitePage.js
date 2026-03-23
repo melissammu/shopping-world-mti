@@ -112,6 +112,15 @@ export default function SitePage() {
 
     loadProducts();
   }, []);
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+
+  if (ref && !localStorage.getItem("affiliate_ref")) {
+    localStorage.setItem("affiliate_ref", ref);
+    console.log("REF guardado en HOME:", ref);
+  }
+}, []);
 
   useEffect(() => {
     const term = search.toLowerCase().trim();
@@ -145,79 +154,7 @@ export default function SitePage() {
     }
 
     return "/produtos/placeholder-shein.jpg";
-  };
-const registerClick = async (product) => {
-  try {
-    const codigo_ref = (localStorage.getItem("affiliate_ref") || "sin-ref").trim();
-    const productId = String(product.id);
 
-    const { error: clickError } = await supabase.from("clicks").insert([
-      {
-        codigo_ref: codigo_ref,
-        product_id: productId,
-        product_name: product.name || "Producto sin nombre",
-        store: product.store || "unknown",
-        country: product.country || "BR"
-      }
-    ]);
-
-    if (clickError) {
-      console.error("ERROR insert clicks:", clickError);
-      return false;
-    }
-
-    const { data: existing, error: selectError } = await supabase
-      .from("clicks_resumen")
-      .select("*")
-      .eq("codigo_ref", codigo_ref)
-      .eq("product_id", productId)
-      .maybeSingle();
-
-    if (selectError) {
-      console.error("ERROR select clicks_resumen:", selectError);
-      return false;
-    }
-
-    if (existing) {
-      const { error: updateError } = await supabase
-        .from("clicks_resumen")
-        .update({
-          total_clicks: existing.total_clicks + 1,
-          updated_at: new Date().toISOString(),
-          country: product.country || "BR"
-        })
-        .eq("id", existing.id);
-
-      if (updateError) {
-        console.error("ERROR update clicks_resumen:", updateError);
-        return false;
-      }
-    } else {
-      const { error: insertResumenError } = await supabase
-        .from("clicks_resumen")
-        .insert([
-          {
-            codigo_ref: codigo_ref,
-            product_id: productId,
-            product_name: product.name || "Producto sin nombre",
-            store: product.store || "unknown",
-            total_clicks: 1,
-            country: product.country || "BR"
-          }
-        ]);
-
-      if (insertResumenError) {
-        console.error("ERROR insert clicks_resumen:", insertResumenError);
-        return false;
-      }
-    }
-
-    console.log("CLICK REGISTRADO OK");
-    return true;
-  } catch (error) {
-    console.error("ERROR GENERAL registerClick:", error);
-    return false;
-  }
 };
 return ( 
     <div className="home-container">
@@ -254,12 +191,7 @@ return (
     className="global-search-item"
     onClick={async () => {
   if (!product.catalogPath) return;
-
-  const ok = await registerClick(product);
-
-  if (ok) {
-    navigate(product.catalogPath);
-  }
+  navigate(product.catalogPath);
 }}
   >
     <img
