@@ -165,7 +165,7 @@ export default function SitePage() {
     ]);
 
     // 🔥 2. BUSCAR SI YA EXISTE EN RESUMEN
-    const { data: existing } = await supabase
+    const { data: existing, error:selectError } = await supabase
       .from("clicks_resumen")
       .select("*")
       .eq("codigo_ref",codigo_ref)
