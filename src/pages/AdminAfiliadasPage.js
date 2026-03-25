@@ -57,57 +57,85 @@ export default function AdminAfiliadasPage() {
     return codigo;
   }
 
-  async function aprovar(afiliada) {
-    let codigoFinal = afiliada.codigo_ref;
+ async function aprovar(afiliada) {
+  let codigoFinal = afiliada.codigo_ref;
 
-    if (!codigoFinal || codigoFinal.trim() === "") {
-      codigoFinal = await gerarCodigoUnico(afiliada.nome);
-    }
-
-    const { error } = await supabase
-      .from("afiliadas")
-      .update({
-        status: "aprovada",
-        codigo_ref: codigoFinal,
-      })
-      .eq("id", afiliada.id);
-
-    if (error) {
-      console.log("Erro ao aprovar:", error);
-      setMensagem("❌ Houve um erro ao aprovar a afiliada.");
-      setTipoMensagem("error");
-      setTimeout(() => setMensagem(""), 3000);
-      return;
-    }
-
-    setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
-    setTipoMensagem("success");
-    await fetchAfiliadas();
-    setTimeout(() => setMensagem(""), 4000);
+  if (!codigoFinal || codigoFinal.trim() === "") {
+    codigoFinal = await gerarCodigoUnico(afiliada.nome);
   }
 
-  async function rechazar(id) {
-    const { error } = await supabase
-      .from("afiliadas")
-      .update({ status: "rejeitada" })
-      .eq("id", id);
+  const { error } = await supabase
+    .from("afiliadas")
+    .update({
+      status: "aprovada",
+      codigo_ref: codigoFinal,
+    })
+    .eq("id", afiliada.id);
 
-    if (error) {
-      console.log("Erro ao rejeitar:", error);
-      setMensagem("❌ Houve um erro ao rejeitar a afiliada.");
-      setTipoMensagem("error");
-      setTimeout(() => setMensagem(""), 3000);
-      return;
-    }
-
-    setMensagem(
-      "⚠️ Obrigada pelo seu interesse. Continue se preparando e, ao atender aos critérios da Shopping World MTI, você poderá tentar novamente."
-    );
-    setTipoMensagem("info");
-    await fetchAfiliadas();
-    setTimeout(() => setMensagem(""), 5000);
+  if (error) {
+    console.log("Erro ao aprovar:", error);
+    setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+    setTipoMensagem("error");
+    setTimeout(() => setMensagem(""), 3000);
+    return;
   }
 
+  await fetch("https://shopping-world-mti.onrender.com/send-approval-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      to: afiliada.email,
+      name: afiliada.nome,
+      loginLink: `https://shoppingworldmti.com/?ref=${SWMTI-MELU-L6T8UV}`,
+    }),
+  });
+
+  setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+  setTipoMensagem("success");
+  await fetchAfiliadas();
+  setTimeout(() => setMensagem(""), 4000);
+}async function aprovar(afiliada) {
+  let codigoFinal = afiliada.codigo_ref;
+
+  if (!codigoFinal || codigoFinal.trim() === "") {
+    codigoFinal = await gerarCodigoUnico(afiliada.nome);
+  }
+
+  const { error } = await supabase
+    .from("afiliadas")
+    .update({
+      status: "aprovada",
+      codigo_ref: codigoFinal,
+    })
+    .eq("id", afiliada.id);
+
+  if (error) {
+    console.log("Erro ao aprovar:", error);
+    setMensagem("❌ Houve um erro ao aprovar a afiliada.");
+    setTipoMensagem("error");
+    setTimeout(() => setMensagem(""), 3000);
+    return;
+  }
+
+  await fetch("https://shopping-world-mti.onrender.com/send-approval-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      to: afiliada.email,
+      name: afiliada.nome,
+      loginLink: `https://shoppingworldmti.com/?ref=${codigoFinal}`,
+    }),
+  });
+
+  setMensagem("🎉 Parabéns! Você foi aprovada na Shopping World MTI.");
+  setTipoMensagem("success");
+  await fetchAfiliadas();
+  setTimeout(() => setMensagem(""), 4000);
+}
   function getStatusColor(status) {
     if (status === "aprovada") return "#155724";
     if (status === "rejeitada") return "#721c24";
