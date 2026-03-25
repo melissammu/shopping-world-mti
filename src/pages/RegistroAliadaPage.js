@@ -183,15 +183,29 @@ export default function RegistroAliadaPage() {
         }
         return;
         }
-await fetch("http://localhost:3001/send-registration-email", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    to: formData.email,
-    name: formData.nome,
-  }),
+try {
+  const emailResponse = await fetch(
+    `${import.meta.env.VITE_API_URL || "http://localhost:3001"}/send-registration-email`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: formData.email,
+        name: formData.nome,
+      }),
+    }
+  );
+
+  const emailResult = await emailResponse.json();
+
+  if (!emailResponse.ok) {
+    console.error("Erro ao enviar e-mail de cadastro:", emailResult);
+  }
+} catch (emailError) {
+  console.error("Erro ao chamar rota de e-mail:", emailError);
+}
 });
       setMensagem(
         "Seu cadastro foi enviado com sucesso e está em análise. Se for aprovado, a Shopping World MTI enviará seu ID e link de afiliado."
