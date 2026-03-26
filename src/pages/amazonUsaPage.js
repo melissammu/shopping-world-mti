@@ -85,7 +85,22 @@ export default function AmazonUsaPage() {
           Erro: {errorMessage}
         </div>
       )}
-
+<div
+  style={{
+    background: "#fff3cd",
+    color: "#856404",
+    border: "1px solid #ffe69c",
+    padding: "12px 14px",
+    margin: "12px",
+    borderRadius: "10px",
+    fontSize: "14px",
+    lineHeight: "1.4",
+    textAlign: "left"
+  }}
+>
+  🇺🇸 Produtos disponíveis na Amazon USA. Compras indicadas para clientes nos
+  Estados Unidos ou para quem utiliza casillero / redirecionamento internacional.
+</div>
       <ProductCatalog
         products={products}
         onProductClick={handleAffiliateRedirect}

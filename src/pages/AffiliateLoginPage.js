@@ -33,7 +33,7 @@ export default function AffiliateLoginPage() {
         .eq("email", email)
         .single();
       if (errAfiliada || !afiliada) {
-        setMessage("Seu acesso não está autorizado como afiliado.");
+        setMessage("Seu acesso não está autorizado como afiliada.");
         setLoading(false);
         return;
       }
@@ -59,7 +59,7 @@ export default function AffiliateLoginPage() {
       <div className="affiliate-login-card">
         <div className="affiliate-login-brand">
           <span className="brand-badge">Shopping World MTI</span>
-          <h1>Área da Afiliados</h1>
+          <h1>Área da Afiliada</h1>
           <p>
             Entre com seu email e senha para acompanhar seus cliques,
             oportunidades e ganhos.

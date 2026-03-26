@@ -45,7 +45,7 @@ export default function RegistroAliadaPage() {
         .maybeSingle();
 
       if (error) {
-        throw new Error("Erro ao validar código da afiliado.");
+        throw new Error("Erro ao validar código da afiliada.");
       }
 
       if (!data) {
@@ -177,38 +177,15 @@ export default function RegistroAliadaPage() {
 
       if (insertError) {
         if (insertError.message?.includes("afiliadas_codigo_ref_key")) {
-          setErroMsg("Erro ao gerar o código da afiliado. Tente novamente.");
+          setErroMsg("Erro ao gerar o código da afiliada. Tente novamente.");
         } else {
           setErroMsg("Não foi possível concluir seu cadastro. Tente novamente.");
         }
         return;
-        }
-try {
-  const emailResponse = await fetch(
-    `${import.meta.env.VITE_API_URL || "http://localhost:3001"}/send-registration-email`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: formData.email,
-        name: formData.nome,
-      }),
-    }
-  );
+      }
 
-  const emailResult = await emailResponse.json();
-
-  if (!emailResponse.ok) {
-    console.error("Erro ao enviar e-mail de cadastro:", emailResult);
-  }
-} catch (emailError) {
-  console.error("Erro ao chamar rota de e-mail:", emailError);
-}
-});
       setMensagem(
-        "Seu cadastro foi enviado com sucesso e está em análise. Se for aprovado, a Shopping World MTI enviará seu ID e link de afiliado."
+        "Seu cadastro foi enviado com sucesso e está em análise. Se for aprovado, a Shopping World MTI enviará seu ID e link de afiliada."
       );
 
       setFormData({
@@ -236,9 +213,9 @@ try {
   return (
     <div className="registro-aliada-page">
       <div className="registro-card">
-        <h1 className="registro-title">Cadastro de Afiliado</h1>
+        <h1 className="registro-title">Cadastro de Afiliada</h1>
         <p className="registro-subtitle">
-          Preencha seus dados para participar do programa de afiliados da Shopping World MTI.
+          Preencha seus dados para participar do programa de afiliadas da Shopping World MTI.
         </p>
 
         <form onSubmit={handleSubmit} className="registro-form">
@@ -377,7 +354,7 @@ try {
           )}
 
           <div className="termos-box">
-            <h2>Políticas do Programa de Afiliados</h2>
+            <h2>Políticas do Programa de Afiliadas</h2>
 
             <p>
               <strong>1. Objeto do Programa</strong><br />
@@ -448,7 +425,7 @@ try {
 
             <p>
               <strong>10. Aceitação dos Termos</strong><br />
-              Para concluir o cadastro, o afiliado deverá declarar que concorda com os acordos, políticas e termos da Shopping World MTI.
+              Para concluir o cadastro, a afiliada deverá declarar que concorda com os acordos, políticas e termos da Shopping World MTI.
             </p>
           </div>
 
