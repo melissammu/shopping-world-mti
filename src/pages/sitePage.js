@@ -3,13 +3,32 @@ import { supabase } from "../lib/supabase";
 import "./sitePage.css";
 import MainHeader from "../components/MainHeader";
 import {Link, useNavigate} from "react-router-dom";
+
 export default function SitePage() {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
+
+ const normalizeText = (text) =>
+  (text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+const shuffleArray = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+
+  return newArray;
+};
   useEffect(() => {
     async function loadProducts() {
+      
       const { data: sheinData, error: sheinError } = await supabase
         .from("products")
         .select("*")
@@ -122,22 +141,30 @@ export default function SitePage() {
   }
 }, []);
 
-  useEffect(() => {
-    const term = search.toLowerCase().trim();
+ useEffect(() => {
+  const term = normalizeText(search);
 
-    if (!term) {
-      setFilteredProducts([]);
-      return;
-    }
+  if (!term) {
+    setFilteredProducts([]);
+    return;
+  }
 
-    const results = allProducts.filter((product) =>
-      product.name?.toLowerCase().includes(term) ||
-      product.category?.toLowerCase().includes(term) ||
-      product.store?.toLowerCase().includes(term)
+  const results = allProducts.filter((product) => {
+    const productName = normalizeText(product.name);
+    const productCategory = normalizeText(product.category);
+    const productStore = normalizeText(product.store);
+
+    return (
+      productName.includes(term) ||
+      productCategory.includes(term) ||
+      productStore.includes(term)
     );
+  });
 
-    setFilteredProducts(results.slice(0, 8));
-  }, [search, allProducts]);
+  const mixedResults = shuffleArray(results);
+
+  setFilteredProducts(mixedResults.slice(0, 20));
+}, [search, allProducts]);
 
   const getPlaceholderByProduct = (product) => {
     if (product.store === "Amazon" && product.country === "US") {
