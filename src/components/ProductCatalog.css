@@ -164,7 +164,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, #f77a18, #ff944d);
+  background: linear-gradient(135deg, #fecc02, #fe1b02);
   color: #ffffff;
   text-decoration: none;
   border: none;
@@ -340,4 +340,21 @@
   .product-price {
     font-size: 19px;
   }
+}
+.share-button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: #f3f3f3;
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.share-button:hover {
+  background: #e7e7e7;
 }

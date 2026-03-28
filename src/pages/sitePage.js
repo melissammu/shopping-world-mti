@@ -56,7 +56,8 @@ const shuffleArray = (array) => {
         console.error("Erro ao buscar Mercado Livre:", mercadoError);
       }
 
-      const sheinFormatted = (sheinData || []).map((p) => ({
+      const sheinFormatted = (sheinData || []).map((p) => ( {
+          
         id: `shein-${p.id}`,
         name: p.title || p.name || "Produto sem nome",
         price: p.price || "",
@@ -231,13 +232,41 @@ return (
     />
 
     <div className="global-search-info">
-      <p className="global-search-name">{product.name}</p>
-      <p className="global-search-store">
-        {product.store}
-        {product.country ? ` - ${product.country}` : ""}
-      </p>
-      <p className="global-search-price">{product.price}</p>
-    </div>
+  <p className="global-search-name">{product.name}</p>
+
+  <p className="global-search-store">
+    {product.store}
+    {product.country ? ` - ${product.country}` : ""}
+  </p>
+
+  <p className="global-search-price">{product.price}</p>
+
+<button
+  className="buy-button"
+  onClick={(e) => {
+    e.stopPropagation();
+
+    if (!product.catalogPath) return;
+
+    navigate(product.catalogPath);
+  }}
+>
+  comprar agora
+</button>
+
+  <button
+    className="share-button"
+    onClick={(e) => {
+      e.stopPropagation();
+
+      const link = `${window.location.origin}/product/${product.id}`;
+      navigator.clipboard.writeText(link);
+      alert("Link copiado");
+    }}
+  >
+    Compartir
+  </button>
+</div>
   </div>
 ))
               )}

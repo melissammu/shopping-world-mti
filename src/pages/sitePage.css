@@ -470,3 +470,18 @@ max-width:100%;
   }
 
 }
+.global-search-info .share-button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #f3f3f3;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.global-search-info .share-button:hover {
+  background: #e7e7e7;
+}

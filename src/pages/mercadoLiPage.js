@@ -19,7 +19,7 @@ export default function MercadoLiPage() {
     }
 
     try {
-      await registerAfiliateClick(product);
+      await registerAffiliateClick(product);
       window.open(safeLink, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error en redirect Mercado Livre:", error);

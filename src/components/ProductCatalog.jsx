@@ -87,25 +87,55 @@ const handleClick = async (product) => {
 
                   <p className="product-price">{product.price || ""}</p>
 
-                 {safeLink ? (
-                   <button
-                    className="buy-button"
-                    onClick={async (e) => { e.stopPropagation(); //evita doble click
-                    console.log("click en botón");
-                 await handleClick(product);
-                }}
-  >
-              comprar agora
-                 </button>
-            ) : (
-                <button
-                 className="buy-button product-button disabled"
-                   disabled
+                {safeLink ? (
+  <>
+    <button
+      className="buy-button"
+      onClick={async (e) => {
+        e.stopPropagation();
+        console.log("click en botón");
+        await handleClick(product);
+      }}
+    >
+      comprar agora
+    </button>
 
-                >
-                sem link
-               </button>
-             )}
+    <button
+      className="share-button"
+      onClick={(e) => {
+        e.stopPropagation();
+
+        const link = `${window.location.origin}/product/${product.id}`;
+        navigator.clipboard.writeText(link);
+        alert("Link copiado");
+      }}
+    >
+      Compartir
+    </button>
+  </>
+) : (
+  <>
+    <button
+      className="buy-button product-button disabled"
+      disabled
+    >
+      sem link
+    </button>
+
+    <button
+      className="share-button"
+      onClick={(e) => {
+        e.stopPropagation();
+
+        const link = `${window.location.origin}/product/${product.id}`;
+        navigator.clipboard.writeText(link);
+        alert("Link copiado");
+      }}
+    >
+      Compartir
+    </button>
+  </>
+)}
                 </div>
               </div>
             );
