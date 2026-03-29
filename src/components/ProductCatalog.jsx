@@ -6,7 +6,7 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 const handleShare = async (product, e) => {
   e.stopPropagation();
 
-  const shareLink = `${window.location.origin}${product.catalogPath}?product=${product.id}`;
+  const shareLink = `${window.location.origin}/api/og?name=${encodeURIComponent(product.name)}&price=${encodeURIComponent(product.price)}&image=${encodeURIComponent(product.image_url)}&link=${encodeURIComponent(`${window.location.origin}${product.catalogPath}?product=${product.id}`)}`;
   const shareText = `${product.name}$`;
 
   try {
