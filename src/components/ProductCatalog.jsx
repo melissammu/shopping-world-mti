@@ -15,9 +15,9 @@ const handleShare = async (product, e) => {
       ? "shein"
       : product.store === "Mercado Livre"
       ? "mercadoli"
-      : "produto";
+      : "produtos";
 
-const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`;
+const shareLink = `${window.location.origin}/api/share?store=${storeSlug}&id=${product.id}`;
   try {
     if (navigator.share) {
       await navigator.share({
