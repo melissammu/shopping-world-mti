@@ -6,14 +6,22 @@ export default function ProductCatalog({ products = [], onProductClick }) {
 const handleShare = async (product, e) => {
   e.stopPropagation();
 
-  const shareLink = `${window.location.origin}/api/og?name=${encodeURIComponent(product.name)}&price=${encodeURIComponent(product.price)}&image=${encodeURIComponent(product.image_url)}&link=${encodeURIComponent(`${window.location.origin}${product.catalogPath}?product=${product.id}`)}`;
-  const shareText = `${product.name}$`;
+  const storeSlug =
+    product.country === "US"
+      ? "amazonusa"
+      : product.store === "Amazon"
+      ? "amazon"
+      : product.store === "Shein"
+      ? "shein"
+      : product.store === "Mercado Livre"
+      ? "mercadoli"
+      : "produto";
+
+  const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
 
   try {
     if (navigator.share) {
       await navigator.share({
-        title: product.name || "Produto",
-        text: shareText,
         url: shareLink,
       });
     } else {

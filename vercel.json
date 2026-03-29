@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/s/:store/:id",
+      "destination": "/api/share?store=:store&id=:id"
+    }
+  ]
+}
