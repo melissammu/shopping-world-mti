@@ -16,7 +16,7 @@ const handleShare = async (product, e) => {
     : product.store?.toLowerCase().includes("mercado")
     ? "mercadoli"
     : "shein";
-const shareLink = `${window.location.origin}/s/${storeSlug}&id=${product.id}`;
+const shareLink = `${window.location.origin}/p/${product.id}?store=${storeSlug}&v={Date.now()}`;
   try {
     if (navigator.share) {
       await navigator.share({
