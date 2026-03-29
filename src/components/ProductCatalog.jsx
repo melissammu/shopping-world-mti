@@ -3,7 +3,8 @@ import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [], onProductClick }) {
   const [search, setSearch] = useState("");
-const handleShare = async (product, e) => {
+  
+  const handleShare = async (product, e) => {
   e.stopPropagation();
 
   const storeSlug =
@@ -39,19 +40,30 @@ const shareLink = `${window.location.origin}/p/${product.id}?store=${storeSlug}&
 
     return texto.includes(search.toLowerCase());
   });
-const handleClick = async (product) => {
-  try {
-    console.log("CLICK EN PRODUCT:", product);
+const handleClick = (product) => {
+  console.log("CLICK EN PRODUCT:", product);
 
-    if (onProductClick) {
-      await onProductClick(product);
-    }
+  const safeLink =
+    (product.link_br && product.link_br.trim()) ||
+    (product.link_us && product.link_us.trim()) ||
+    (product.link && product.link.trim()) ||
+    "";
 
-  } catch (error) {
-    console.error("Error general:", error);
+  if (!safeLink) {
+    console.log("Producto sin link válido");
+    return;
   }
-};
-  return (
+
+  // 🔥 REDIRECCIÓN INMEDIATA (CLAVE PARA iPhone)
+  window.location.href = safeLink;
+
+  // 🔄 Ejecuta lógica después (sin bloquear)
+  if (onProductClick) {
+    onProductClick(product).catch((err) =>
+      console.error("Error async:", err)
+    );
+  }
+};  return (
     <div className="catalog-page">
       <div className="catalog-Header">
         <h2 className="catalog-title">Produtos</h2>
