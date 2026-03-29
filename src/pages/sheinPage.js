@@ -7,72 +7,53 @@ export default function SheinPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const safeTrim = (value) => {
-  return typeof value === "string" ? value.trim() : "";
-};
 
-  // Registrar click afiliado y luego abrir link externo
-const handleAffiliateRedirect = async (product) => {
-  console.log("CLICK REAL EN SHEIN:", product);
+  const handleAffiliateRedirect = async (product) => {
+    const safeLink =
+      (product.link_br && String(product.link_br).trim()) ||
+      (product.link && String(product.link).trim()) ||
+      "";
 
- const safeLink =
-  safeTrim(product.link_br) ||
-  safeTrim(product.link_us) ||
-  safeTrim(product.link) ||
-  "";
-
-  if (!safeLink) {
-    console.log("Producto sin link válido");
-    return;
-  }
-
- try { registerAfiliateClick(product);
-
-  window.location.href = safeLink;
-
-} catch (error) {
-  console.error("Error en redirect:", error);
-
-  window.location.href = safeLink;
-}
-};
-  // Guardar ref de afiliada
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-
-    if (ref) {
-      localStorage.setItem("affiliate_ref", ref);
-      console.log("REF guardado en SHEIN:", ref);
+    if (!safeLink) {
+      console.log("Producto Shein sin link válido");
+      return;
     }
-  }, []);
 
-  // Cargar productos Shein
+    try {
+      await registerAfiliateClick(product);
+      window.open(safeLink, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error("Error en redirect Shein:", error);
+      window.open(safeLink, "_blank", "noopener,noreferrer");
+    }
+  };
+
   useEffect(() => {
     async function loadProducts() {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .eq("store", "shein")
         .order("id", { ascending: false });
 
+      console.log("SHEIN DATA:", data);
+      console.log("SHEIN ERROR:", error);
+
       if (error) {
-        console.error("Erro ao buscar produtos Shein:", error);
+        console.error("Erro ao buscar produtos Mercado Livre:", error);
         setErrorMessage(error.message);
         return;
       }
 
       const formattedProducts = (data || []).map((p) => {
-      const finalLink =
-  safeTrim(p.link_br) ||
-  safeTrim(p.link_us) ||
-  safeTrim(p.link) ||
-  "";
+        const finalLink =
+          (p.link_br && String(p.link_br).trim()) ||
+          (p.link && String(p.link).trim()) ||
+          "";
 
-const finalImage =
-  safeTrim(p.image_url) ||
-  safeTrim(p.image) ||
-  "/produtos/placeholder-shein.jpg";
+        const finalImage =
+          (p.image_url && String(p.image_url).trim()) ||
+          (p.image && String(p.image).trim()) ||
+          "/produtos/placeholder-shein.png";
 
         return {
           id: p.id,
@@ -81,14 +62,16 @@ const finalImage =
           image: finalImage,
           image_url: finalImage,
           link: finalLink,
+          link_br: finalLink,
           category: p.category || p.categoria || "Sem categoria",
           store: p.store || "shein",
+          is_creative: p.is_creative ?? false,
           country: "BR",
-          catalogPath: "/shein",
+          catalogPath: "/shein", 
         };
       });
 
-      console.log("Produtos Shein carregados:", formattedProducts);
+      console.log("FORMATADOS:", formattedProducts);
      
       setProducts(formattedProducts);
       const params = new URLSearchParams(window.location.search);
@@ -105,7 +88,7 @@ if (productId) {
   return (
     <div className="shein-page">
       {errorMessage && (
-        <div style={{ padding: "10px", color: "red", textAlign: "center" }}>
+        <div style={{ padding: "10px", color: "red" }}>
           Erro: {errorMessage}
         </div>
       )}
