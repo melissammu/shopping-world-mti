@@ -1,21 +1,25 @@
 export default function handler(req, res) {
-  const { name, image, price, link } = req.query;
+  const { image, link } = req.query;
 
   const html = `
   <!DOCTYPE html>
   <html>
     <head>
-      <meta property="og:title" content="${name}" />
+
+      <!--  SOLO IMAGEN -->
       <meta property="og:image" content="${image}" />
+      <meta property="og:type" content="website" />
       <meta property="og:url" content="${link}" />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content="${image}" />
 
       <script>
         window.location.href = "${link}";
       </script>
+
     </head>
-    <body>
-      Redirecionando...
-    </body>
+    <body></body>
   </html>
   `;
 

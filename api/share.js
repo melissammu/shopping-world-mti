@@ -65,25 +65,13 @@ export default async function handler(req, res) {
     console.error("Erro geral ao buscar produto:", error);
   }
 
-  const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${id}`;
-
-  const productTitle =
-    product?.title2 ||
-    product?.title ||
-    product?.name ||
-    "Shopping World MTI";
-
-  const productPrice = product?.price
-    ? `Preço: ${product.price}`
-    : "Confira este produto";
+  const finalLink = `https://www.shoppingworldmti.com${config.redirectPath}?product=${cleanId}`;
 
   const productImage =
     product?.image_url ||
     product?.image ||
-    "https://shoppingworldmti.com/avatar/shop_word3.png";
+    "https://www.shoppingworldmti.com/avatar/shop_word3.png";
 
-  const safeTitle = escapeHtml(productTitle);
-  const safePrice = escapeHtml(productPrice);
   const safeImage = escapeHtml(productImage);
   const safeLink = escapeHtml(finalLink);
 
@@ -92,20 +80,14 @@ export default async function handler(req, res) {
   <html lang="pt-BR">
     <head>
       <meta charset="UTF-8" />
-      <title>${safeTitle}</title>
 
-      <meta property="og:title" content="${safeTitle}" />
-      <meta property="og:description" content="${safePrice}" />
       <meta property="og:image" content="${safeImage}" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/jpeg" />
       <meta property="og:url" content="${safeLink}" />
       <meta property="og:type" content="website" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="${safeTitle}" />
-      <meta name="twitter:description" content="${safePrice}" />
       <meta name="twitter:image" content="${safeImage}" />
 
       <script>
