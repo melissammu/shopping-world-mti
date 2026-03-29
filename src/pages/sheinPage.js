@@ -56,19 +56,16 @@ export default function SheinPage() {
           "/produtos/placeholder-shein.png";
 
         return {
-          id: p.id,
-          name: p.title || p.name || "Produto sem nome",
-          price: p.price || "",
-          image: finalImage,
-          image_url: finalImage,
-          link: finalLink,
-          link_br: finalLink,
-          category: p.category || p.categoria || "Sem categoria",
-          store: p.store || "shein",
-          is_creative: p.is_creative ?? false,
-          country: "BR",
-          catalogPath: "/shein", 
-        };
+  id: `shein-${p.id}`,
+  name: p.title || p.name || "Produto sem nome",
+  price: p.price || "",
+  image: finalImage,
+  link: finalLink,
+  store: "Shein",
+  category: p.category || "Moda",
+  country: "BR",
+  catalogPath: "/shein",
+};
       });
 
       console.log("FORMATADOS:", formattedProducts);
@@ -93,10 +90,11 @@ if (productId) {
         </div>
       )}
 
-      <ProductCatalog
-        products={products}
-        onProductClick={handleAffiliateRedirect}
-      />
+     <ProductCatalog
+             products={products}
+             onProductClick={handleAffiliateRedirect}
+             selectedProductId={selectedProductId}
+           />
     </div>
   );
 }

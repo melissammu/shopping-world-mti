@@ -56,20 +56,18 @@ export default function AmazonUsaPage() {
           (p.image && String(p.image).trim()) ||
           "/produtos/placeholder-amazonUsa.jpg";
 
-        return {
-          id: p.id,
-          name: p.title2 || p.title || p.name || "Producto",
-          price: p.price || "",
-          image: finalImage,
-          image_url: finalImage,
-          link: finalLink,
-          link_us: p.link_us || "",
-          link_br: p.link_br || "",
-          category: p.category || p.categoria || "Sem categoria",
-          store: "Amazon USA",
-          country: "US",
-          catalogPath: "/amazonUsa",
-        };
+       return {
+  id: `amazonusa-${p.id}`,
+  name: p.title2 || p.title || p.name || "Producto",
+  price: p.price || "",
+  image: finalImage,
+  link: finalLink,
+  link_us: p.link_us || "",
+  store: "Amazon",
+  category: p.category || p.categoria || "Sem categoria",
+  country: "US",
+  catalogPath: "/amazonusa",
+};
       });
 
       console.log("AMAZON USA FORMATADOS:", formattedProducts);
@@ -113,9 +111,10 @@ if (productId) {
       </div>
 
       <ProductCatalog
-        products={products}
-        onProductClick={handleAffiliateRedirect}
-      />
+              products={products}
+              onProductClick={handleAffiliateRedirect}
+              selectedProductId={selectedProductId}
+            />
     </div>
   );
 }

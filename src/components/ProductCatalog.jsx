@@ -1,36 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ProductCatalog.css";
 
-export default function ProductCatalog({ products = [], onProductClick }) {
+export default function ProductCatalog({
+  products = [],
+  onProductClick,
+  selectedProductId,
+}) {
   const [search, setSearch] = useState("");
-  
-  const handleShare = async (product, e) => {
-  e.stopPropagation();
 
-  const storeSlug =
-  product.country === "US"
-    ? "amazonusa"
-    : product.store?.toLowerCase() === "amazon"
-    ? "amazon"
-    : product.store?.toLowerCase() === "shein"
-    ? "shein"
-    : product.store?.toLowerCase().includes("mercado")
-    ? "mercadoli"
-    : "shein";
-const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        url: shareLink,
-      });
-    } else {
-      await navigator.clipboard.writeText(shareLink);
-      alert("Link do produto copiado com sucesso.");
+  const handleShare = async (product, e) => {
+    e.stopPropagation();
+
+    const storeSlug =
+      product.country === "US"
+        ? "amazonusa"
+        : product.store === "Amazon"
+        ? "amazon"
+        : product.store === "Shein"
+        ? "shein"
+        : product.store === "Mercado Livre" || product.store === "Mercado br"
+        ? "mercadoli"
+        : "produto";
+
+    const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name || "Produto",
+          text: product.price
+            ? `${product.name} - ${product.price}`
+            : product.name || "Produto",
+          url: shareLink,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareLink);
+        alert("Link do produto copiado com sucesso.");
+      }
+    } catch (error) {
+      console.error("Erro ao compartilhar:", error);
     }
-  } catch (error) {
-    console.error("Erro ao compartilhar:", error);
-  }
-};
+  };
+
+  useEffect(() => {
+    if (!selectedProductId) return;
+
+    const selectedElement = document.querySelector(
+      `[data-product-id="${selectedProductId}"]`
+    );
+
+    if (selectedElement) {
+      selectedElement.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [selectedProductId, products]);
+
   const filteredProducts = products.filter((product) => {
     const texto = `
       ${product.name || ""}
@@ -40,32 +66,17 @@ const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${prod
 
     return texto.includes(search.toLowerCase());
   });
-const handleClick = (product) => {
-  console.log("CLICK EN PRODUCT:", product);
 
-  const safeLink =
-    (product.link_br && product.link_br.trim()) ||
-    (product.link_us && product.link_us.trim()) ||
-    (product.link && product.link.trim()) ||
-    "";
+  const handleBuy = (product, e) => {
+    e.stopPropagation();
+    if (onProductClick) {
+      onProductClick(product);
+    }
+  };
 
-  if (!safeLink) {
-    console.log("Producto sin link válido");
-    return;
-  }
-
-  // 🔥 REDIRECCIÓN INMEDIATA (CLAVE PARA iPhone)
-  window.location.href = safeLink;
-
-  // 🔄 Ejecuta lógica después (sin bloquear)
-  if (onProductClick) {
-    onProductClick(product).catch((err) =>
-      console.error("Error async:", err)
-    );
-  }
-};  return (
+  return (
     <div className="catalog-page">
-      <div className="catalog-Header">
+      <div className="catalog-header">
         <h2 className="catalog-title">Produtos</h2>
         <p className="catalog-subtitle">
           Escolha seu produto e clique para comprar
@@ -75,82 +86,55 @@ const handleClick = (product) => {
           <input
             type="text"
             className="search-input"
-            placeholder="🔍 Buscar produto..."
+            placeholder="Buscar produto..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
+
       <div className="catalog-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
-            const safeLink =
-              (product.link_br && product.link_br.trim()) ||
-              (product.link_us && product.link_us.trim()) ||
-              (product.link && product.link.trim()) ||
-              "";
-
             const safeImage =
-              (product.image_url && product.image_url.trim()) ||
-              (product.image && product.image.trim()) ||
+              product.image ||
+              product.image_url ||
               "/produtos/placeholder-shein.jpg";
 
             return (
-             <div
-  key={product.id}
-  className="product-card"
-  
->
-                
-               <div
-  className="image-container"
-  onClick={() => handleClick(product)}
-  style={{ cursor: "pointer" }}
->
-                  <img
-                    src={safeImage}
-                    alt={product.name || "Produto"}
-                    className="product-image"
-                    onError={(e) => {
-                      e.currentTarget.src = "/produtos/placeholder-shein.jpg";
-                    }}
-                  />
-
-                </div>
+              <div
+                key={product.id}
+                data-product-id={product.id}
+                className={`product-card ${
+                  selectedProductId === product.id ? "highlight-product" : ""
+                }`}
+              >
+                <img
+                  src={safeImage}
+                  alt={product.name}
+                  className="product-image"
+                  onError={(e) => {
+                    e.currentTarget.src = "/produtos/placeholder-shein.jpg";
+                  }}
+                />
 
                 <div className="product-info">
-                  <h3 className="product-name">
-                    {product.name || "Produto sem nome"}
-                  </h3>
+                  <h3 className="product-name">{product.name}</h3>
+                  <p className="product-price">{product.price}</p>
 
-                  <p className="product-price">{product.price || ""}</p>
-
-                 {safeLink ? (
-                   <button
+                  <button
                     className="buy-button"
-                    onClick={async (e) => { e.stopPropagation(); //evita doble click
-                    console.log("click en botón");
-                 await handleClick(product);
-                }}
-  >
-              comprar agora
-                 </button>
-            ) : (
-                <button
-                 className="buy-button product-button disabled"
-                   disabled
+                    onClick={(e) => handleBuy(product, e)}
+                  >
+                    comprar agora
+                  </button>
 
-                >
-                sem link
-               </button>
-               
-             )}
-             <button
-  className="share-button"
-  onClick={(e) => handleShare(product, e)}
->
-  Compartir
-</button>
+                  <button
+                    className="share-button"
+                    onClick={(e) => handleShare(product, e)}
+                  >
+                    Compartir
+                  </button>
                 </div>
               </div>
             );

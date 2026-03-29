@@ -56,19 +56,16 @@ export default function MercadoLiPage() {
           "/produtos/placeholder-mercadoLi.png";
 
         return {
-          id: p.id,
-          name: p.title || p.name || "Produto sem nome",
-          price: p.price || "",
-          image: finalImage,
-          image_url: finalImage,
-          link: finalLink,
-          link_br: finalLink,
-          category: p.category || p.categoria || "Sem categoria",
-          store: p.store || "mercado.br",
-          is_creative: p.is_creative ?? false,
-          country: "BR",
-          catalogPath: "/mercadoLi", 
-        };
+  id: `mercado-${p.id}`,
+  name: p.title || p.name || "Produto sem nome",
+  price: p.price || "",
+  image: finalImage,
+  link: finalLink,
+  store: "Mercado Livre",
+  category: p.category || "Geral",
+  country: "BR",
+  catalogPath: "/mercadoLi",
+};
       });
 
       console.log("FORMATADOS:", formattedProducts);
@@ -96,6 +93,7 @@ if (productId) {
       <ProductCatalog
         products={products}
         onProductClick={handleAffiliateRedirect}
+        selectedProductId={selectedProductId}
       />
     </div>
   );

@@ -57,19 +57,17 @@ const handleAffiliateRedirect = async (product) => {
             (p.image && String(p.image).trim()) ||
             "/produtos/placeholder-amazon.png";
 
-          return {
-            id: p.id,
-            name: p.title || p.name || "Produto sem nome",
-            price: p.price || "",
-            image: finalImage,
-            image_url: finalImage,
-            link: finalLink,
-            link_br: finalLink,
-            category: p.category || p.categoria || "Sem categoria",
-            store: "Amazon",
-            country: "BR",
-            catalogPath: "/amazon",
-          };
+         return {
+  id: `amazon-${p.id}`,
+  name: p.title || p.name || "Produto sem nome",
+  price: p.price || "",
+  image: finalImage,
+  link: finalLink,
+  store: "Amazon",
+  category: p.category || "Geral",
+  country: "BR",
+  catalogPath: "/amazon",
+};
         })
         .filter(Boolean);
 
@@ -94,9 +92,10 @@ if (productId) {
       )}
 
       <ProductCatalog
-        products={products}
-        onProductClick={handleAffiliateRedirect}
-      />
+              products={products}
+              onProductClick={handleAffiliateRedirect}
+              selectedProductId={selectedProductId}
+            />
     </div>
   );
 }
