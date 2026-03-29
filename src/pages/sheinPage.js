@@ -7,24 +7,26 @@ export default function SheinPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const safeTrim = (value) => {
+  return typeof value === "string" ? value.trim() : "";
+};
 
   // Registrar click afiliado y luego abrir link externo
 const handleAffiliateRedirect = async (product) => {
   console.log("CLICK REAL EN SHEIN:", product);
 
-  const safeLink =
-    (product.link_br && product.link_br.trim()) ||
-    (product.link_us && product.link_us.trim()) ||
-    (product.link && product.link.trim()) ||
-    "";
+ const safeLink =
+  safeTrim(product.link_br) ||
+  safeTrim(product.link_us) ||
+  safeTrim(product.link) ||
+  "";
 
   if (!safeLink) {
     console.log("Producto sin link válido");
     return;
   }
 
- try {
- registerAfiliateClick(product);
+ try { registerAfiliateClick(product);
 
   window.location.href = safeLink;
 
@@ -61,16 +63,16 @@ const handleAffiliateRedirect = async (product) => {
       }
 
       const formattedProducts = (data || []).map((p) => {
-        const finalLink =
-          (p.link_br && p.link_br.trim()) ||
-          (p.link_us && p.link_us.trim()) ||
-          (p.link && p.link.trim()) ||
-          "";
+      const finalLink =
+  safeTrim(p.link_br) ||
+  safeTrim(p.link_us) ||
+  safeTrim(p.link) ||
+  "";
 
-        const finalImage =
-          (p.image_url && p.image_url.trim()) ||
-          (typeof p.image === "string" && p.image.trim()) ||
-          "/produtos/placeholder-shein.jpg";
+const finalImage =
+  safeTrim(p.image_url) ||
+  safeTrim(p.image) ||
+  "/produtos/placeholder-shein.jpg";
 
         return {
           id: p.id,
