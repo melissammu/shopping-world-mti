@@ -17,7 +17,7 @@ export default function ProductCatalog({ products = [], onProductClick }) {
     : product.store?.toLowerCase().includes("mercado")
     ? "mercadoli"
     : "shein";
-const shareLink = `${window.location.origin}/p/${product.id}?store=${storeSlug}&v={Date.now()}`;
+const shareLink = `${window.location.origin}/api/share?store=${storeSlug}&id=${product.id}&v=${Date.now()}`;
   try {
     if (navigator.share) {
       await navigator.share({

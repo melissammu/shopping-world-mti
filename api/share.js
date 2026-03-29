@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     shein: {
       table: "products",
       redirectPath: "/shein",
-      extraFilter: { column: "store", value: "shein" },
     },
     amazon: {
       table: "amazon_products",
@@ -27,7 +26,7 @@ export default async function handler(req, res) {
     mercadoli: {
       table: "mercado_livre_br",
       redirectPath: "/mercadoLi",
-      extraFilter: { column: "store", value: "mercadoLi" },
+      
     },
   };
 
