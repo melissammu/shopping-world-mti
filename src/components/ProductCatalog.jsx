@@ -7,17 +7,16 @@ const handleShare = async (product, e) => {
   e.stopPropagation();
 
   const storeSlug =
-    product.country === "US"
-      ? "amazonusa"
-      : product.store === "Amazon"
-      ? "amazon"
-      : product.store === "Shein"
-      ? "shein"
-      : product.store === "Mercado Livre"
-      ? "mercadoli"
-      : "shein";
-
-const shareLink = `${window.location.origin}/api/share?store=${storeSlug}&id=${product.id}`;
+  product.country === "US"
+    ? "amazonusa"
+    : product.store?.toLowerCase() === "amazon"
+    ? "amazon"
+    : product.store?.toLowerCase() === "shein"
+    ? "shein"
+    : product.store?.toLowerCase().includes("mercado")
+    ? "mercadoli"
+    : "shein";
+const shareLink = `${window.location.origin}/s/${storeSlug}&id=${product.id}`;
   try {
     if (navigator.share) {
       await navigator.share({

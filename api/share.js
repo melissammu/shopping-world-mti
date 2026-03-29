@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       redirectPath: "/amazonUsa",
     },
     mercadoli: {
-      table: "products",
+      table: "mercado_livre_br",
       redirectPath: "/mercadoLi",
       extraFilter: { column: "store", value: "mercadoLi" },
     },
@@ -74,26 +74,28 @@ const html = `
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <title>${safeTitle}</title>
 
+    <meta property="og:title" content="${safeTitle}" />
+    <meta property="og:description" content="${safePrice}" />
     <meta property="og:image" content="${safeImage}" />
-    <meta property="og:url" content="${safeLink}" />
-    <meta property="og:type" content="website" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="${safeLink}" />
+    <meta property="og:type" content="website" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${safeTitle}" />
+    <meta name="twitter:description" content="${safePrice}" />
     <meta name="twitter:image" content="${safeImage}" />
 
-    <script>
-      window.location.replace("${safeLink}");
-    </script>
+    <meta http-equiv="refresh" content="2;url=${safeLink}" />
   </head>
   <body>
     Redirecionando...
   </body>
 </html>
 `;
-
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   return res.status(200).send(html);
 }
