@@ -5,9 +5,9 @@ import { registerAfiliateClick } from "../lib/registerAfiliateClick";
 
 export default function AmazonPage() {
   const [products, setProducts] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleAffiliateRedirect = async (product) => {
+const [errorMessage, setErrorMessage] = useState("");
+const [selectedProductId, setSelectedProductId] = useState(null);
+const handleAffiliateRedirect = async (product) => {
     const safeLink =
       (product.link_br && String(product.link_br).trim()) ||
       (product.link && String(product.link).trim()) ||
@@ -68,11 +68,18 @@ export default function AmazonPage() {
             category: p.category || p.categoria || "Sem categoria",
             store: "Amazon",
             country: "BR",
+            catalogPath: "/amazon",
           };
         })
         .filter(Boolean);
 
       setProducts(formattedProducts);
+      const params = new URLSearchParams(window.location.search);
+const productId = params.get("product");
+
+if (productId) {
+  setSelectedProductId(productId);
+}
     }
 
     loadProducts();

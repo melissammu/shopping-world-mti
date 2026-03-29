@@ -6,6 +6,7 @@ import { registerAfiliateClick } from "../lib/registerAfiliateClick";
 export default function SheinPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   // Registrar click afiliado y luego abrir link externo
 const handleAffiliateRedirect = async (product) => {
@@ -84,11 +85,19 @@ const handleAffiliateRedirect = async (product) => {
           category: p.category || p.categoria || "Sem categoria",
           store: p.store || "shein",
           country: "BR",
+          catalogPath: "/shein",
         };
       });
 
       console.log("Produtos Shein carregados:", formattedProducts);
+     
       setProducts(formattedProducts);
+      const params = new URLSearchParams(window.location.search);
+const productId = params.get("product");
+
+if (productId) {
+  setSelectedProductId(productId);
+}
     }
 
     loadProducts();

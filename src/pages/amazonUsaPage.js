@@ -6,6 +6,7 @@ import { registerAfiliateClick } from "../lib/registerAfiliateClick";
 export default function AmazonUsaPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState(null);  
 
   const handleAffiliateRedirect = async (product) => {
     const safeLink =
@@ -65,14 +66,21 @@ export default function AmazonUsaPage() {
           link_us: p.link_us || "",
           link_br: p.link_br || "",
           category: p.category || p.categoria || "Sem categoria",
-          store: "Amazon",
+          store: "Amazon USA",
           country: "US",
+          catalogPath: "/amazonUsa",
         };
       });
 
       console.log("AMAZON USA FORMATADOS:", formattedProducts);
 
       setProducts(formattedProducts);
+      const params = new URLSearchParams(window.location.search);
+const productId = params.get("product");
+
+if (productId) {
+  setSelectedProductId(productId);
+}
     }
 
     loadProducts();

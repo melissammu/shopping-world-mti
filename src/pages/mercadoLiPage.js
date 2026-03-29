@@ -6,6 +6,7 @@ import { registerAfiliateClick } from "../lib/registerAfiliateClick";
 export default function MercadoLiPage() {
   const [products, setProducts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const handleAffiliateRedirect = async (product) => {
     const safeLink =
@@ -19,7 +20,7 @@ export default function MercadoLiPage() {
     }
 
     try {
-      await registerAffiliateClick(product);
+      await registerAfiliateClick(product);
       window.open(safeLink, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error en redirect Mercado Livre:", error);
@@ -66,11 +67,19 @@ export default function MercadoLiPage() {
           store: p.store || "mercado.br",
           is_creative: p.is_creative ?? false,
           country: "BR",
+          catalogPath: "/mercadoLi", 
         };
       });
 
       console.log("FORMATADOS:", formattedProducts);
+     
       setProducts(formattedProducts);
+      const params = new URLSearchParams(window.location.search);
+const productId = params.get("product");
+
+if (productId) {
+  setSelectedProductId(productId);
+}
     }
 
     loadProducts();

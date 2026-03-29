@@ -3,7 +3,27 @@ import "./ProductCatalog.css";
 
 export default function ProductCatalog({ products = [], onProductClick }) {
   const [search, setSearch] = useState("");
+const handleShare = async (product, e) => {
+  e.stopPropagation();
 
+  const shareLink = `${window.location.origin}${product.catalogPath}?product=${product.id}`;
+  const shareText = `${product.name}${product.price ? " - " + product.price : ""}`;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: product.name || "Produto",
+        text: shareText,
+        url: shareLink,
+      });
+    } else {
+      await navigator.clipboard.writeText(shareLink);
+      alert("Link do produto copiado com sucesso.");
+    }
+  } catch (error) {
+    console.error("Erro ao compartilhar:", error);
+  }
+};
   const filteredProducts = products.filter((product) => {
     const texto = `
       ${product.name || ""}
@@ -87,55 +107,32 @@ const handleClick = async (product) => {
 
                   <p className="product-price">{product.price || ""}</p>
 
-                {safeLink ? (
-  <>
-    <button
-      className="buy-button"
-      onClick={async (e) => {
-        e.stopPropagation();
-        console.log("click en botón");
-        await handleClick(product);
-      }}
-    >
-      comprar agora
-    </button>
+                 {safeLink ? (
+                   <button
+                    className="buy-button"
+                    onClick={async (e) => { e.stopPropagation(); //evita doble click
+                    console.log("click en botón");
+                 await handleClick(product);
+                }}
+  >
+              comprar agora
+                 </button>
+            ) : (
+                <button
+                 className="buy-button product-button disabled"
+                   disabled
 
-    <button
-      className="share-button"
-      onClick={(e) => {
-        e.stopPropagation();
-
-        const link = `${window.location.origin}/product/${product.id}`;
-        navigator.clipboard.writeText(link);
-        alert("Link copiado");
-      }}
-    >
-      Compartir
-    </button>
-  </>
-) : (
-  <>
-    <button
-      className="buy-button product-button disabled"
-      disabled
-    >
-      sem link
-    </button>
-
-    <button
-      className="share-button"
-      onClick={(e) => {
-        e.stopPropagation();
-
-        const link = `${window.location.origin}/product/${product.id}`;
-        navigator.clipboard.writeText(link);
-        alert("Link copiado");
-      }}
-    >
-      Compartir
-    </button>
-  </>
-)}
+                >
+                sem link
+               </button>
+               
+             )}
+             <button
+  className="share-button"
+  onClick={(e) => handleShare(product, e)}
+>
+  Compartir
+</button>
                 </div>
               </div>
             );
