@@ -3,8 +3,8 @@ export default function handler(req, res) {
     const { store, id } = req.query;
 
     const image = "https://shoppingworldmti.com/produtos/placeholder-shein.jpg";
-    const link = `https://shoppingworldmti.com/${store || "shein"}?product=${id || ""}`;
-
+   const link = `https://shoppingworldmti.com/${store || "shein"}`;
+   
     const html = `
     <!DOCTYPE html>
     <html>
