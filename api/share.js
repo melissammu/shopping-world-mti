@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     },
     amazonusa: {
       table: "amazon_usa_products",
-      redirectPath: "/amazonusa",
+      redirectPath: "/amazonUsa",
     },
     mercadoli: {
       table: "products",
