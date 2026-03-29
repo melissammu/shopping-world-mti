@@ -23,20 +23,17 @@ const handleAffiliateRedirect = async (product) => {
     return;
   }
 
-  try {
-    await registerAfiliateClick(product); // lo dejamos pero no bloquea
+ try {
+  await registerAfiliateClick(product);
 
-    // 🔥 REDIRECCIÓN SIEMPRE
-    window.open(safeLink, "_blank", "noopener,noreferrer");
+  window.location.href = safeLink;
 
-  } catch (error) {
-    console.error("Error en redirect:", error);
+} catch (error) {
+  console.error("Error en redirect:", error);
 
-    // 🔥 INCLUSO SI FALLA, REDIRIGE
-    window.open(safeLink, "_blank", "noopener,noreferrer");
-  }
+  window.location.href = safeLink;
+}
 };
-
   // Guardar ref de afiliada
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

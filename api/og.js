@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-  const { image, link } = req.query;
+  const { store, id } = req.query;
 
   const html = `
   <!DOCTYPE html>
