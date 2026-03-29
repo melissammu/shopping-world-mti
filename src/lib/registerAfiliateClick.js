@@ -24,7 +24,7 @@ export const registerAfiliateClick = async (product) => {
       "";
 
     if (!productId) {
-      console.warn("registerAffiliateClick: producto sin id");
+      console.warn("registerAfiliateClick: producto sin id");
       return false;
     }
 
