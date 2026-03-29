@@ -7,7 +7,7 @@ const handleShare = async (product, e) => {
   e.stopPropagation();
 
   const shareLink = `${window.location.origin}${product.catalogPath}?product=${product.id}`;
-  const shareText = `${product.name}${product.price ? " - " + product.price : ""}`;
+  const shareText = `${product.name}$`;
 
   try {
     if (navigator.share) {
