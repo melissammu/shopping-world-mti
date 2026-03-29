@@ -24,7 +24,7 @@ const handleAffiliateRedirect = async (product) => {
   }
 
  try {
-  await registerAfiliateClick(product);
+ registerAfiliateClick(product);
 
   window.location.href = safeLink;
 
