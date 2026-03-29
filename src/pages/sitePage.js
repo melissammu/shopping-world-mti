@@ -42,7 +42,7 @@ const shuffleArray = (array) => {
       const { data: mercadoData, error: mercadoError } = await supabase
         .from("products")
         .select("*")
-        .eq("store", "mercadoLi");
+        .eq("store", "mercado_livre_br");
 
       if (sheinError) {
         console.error("Erro ao buscar Shein:", sheinError);
@@ -128,7 +128,7 @@ const shuffleArray = (array) => {
         ...amazonFormatted,
         ...mercadoFormatted,
       ]);
-    }
+ }
 
     loadProducts();
   }, []);
