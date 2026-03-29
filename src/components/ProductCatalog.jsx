@@ -10,19 +10,18 @@ export default function ProductCatalog({
 
   const handleShare = async (product, e) => {
     e.stopPropagation();
-
-   const storeSlug =
-  product.store === "amazon USA"
+const storeSlug =
+  product.store === "Amazon USA"
     ? "amazonusa"
     : product.store === "Amazon"
     ? "amazon"
     : product.store === "Shein"
     ? "shein"
     : product.store === "Mercado Livre"
-    ? "mercadoLi"
+    ? "mercadoli"
     : "produto";
-  const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
 
+const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
     try {
       if (navigator.share) {
         await navigator.share({

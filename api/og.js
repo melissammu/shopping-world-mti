@@ -6,121 +6,128 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-  const { store, id } = req.query;
-
-  const cleanId = extractNumericId(id);
-
-  const storeConfig = {
-    shein: {
-      table: "products",
-      redirectPath: "/shein",
-      extraFilter: { column: "store", value: "shein" },
-    },
-    amazon: {
-      table: "amazon_products",
-      redirectPath: "/amazon",
-    },
-    amazonUsa: {
-      table: "amazon_usa_products",
-      redirectPath: "/amazonusa",
-    },
-    mercadoLi: {
-      table: "mercado_livre_br",
-      redirectPath: "/mercadoLi",
-    },
-  };
-
-  const config = storeConfig[store];
-
-  if (!config) {
-    return res.status(400).send("Store inválida.");
-  }
-
-  let product = null;
-
   try {
+    const { store, id } = req.query;
+
+    console.log("STORE:", store);
+    console.log("RAW ID:", id);
+
+    const cleanId = extractNumericId(id);
+    console.log("CLEAN ID:", cleanId);
+
+    const storeConfig = {
+      shein: {
+        table: "products",
+        redirectPath: "/shein",
+        extraFilter: { column: "store", value: "shein" },
+      },
+      amazon: {
+        table: "amazon_products",
+        redirectPath: "/amazon",
+      },
+      amazonusa: {
+        table: "amazon_usa_products",
+        redirectPath: "/amazonusa",
+      },
+      mercadoli: {
+        table: "mercado_livre_br",
+        redirectPath: "/mercadoli",
+      },
+    };
+
+    const config = storeConfig[store];
+    console.log("CONFIG:", config);
+
+    if (!config) {
+      return res.status(400).send(`Store inválida: ${store}`);
+    }
+
+    if (!cleanId) {
+      return res.status(400).send(`ID inválido: ${id}`);
+    }
+
     let query = supabase
       .from(config.table)
       .select("*")
       .eq("id", Number(cleanId));
 
     if (config.extraFilter) {
-      query = query.eq(config.extraFilter.column, config.extraFilter.value);
+      query = query.eq(
+        config.extraFilter.column,
+        config.extraFilter.value
+      );
     }
 
-    const { data, error } = await query.single();
+    const { data: product, error } = await query.single();
+
+    console.log("SUPABASE ERROR:", error);
+    console.log("PRODUCT:", product);
 
     if (error) {
-      console.error("Erro ao buscar produto:", error);
-    } else {
-      product = data;
+      return res.status(500).send(`Erro Supabase: ${error.message}`);
     }
 
-    console.log("STORE:", store);
-    console.log("ID:", id);
-    console.log("CLEAN ID:", cleanId);
-    console.log("PRODUCT:", product);
-  } catch (error) {
-    console.error("Erro geral ao buscar produto:", error);
-  }
+    if (!product) {
+      return res.status(404).send("Produto não encontrado");
+    }
 
-  const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${cleanId}`;
-  const productTitle =
-    product?.title2 ||
-    product?.title ||
-    product?.name ||
-    "Shopping World MTI";
+    const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${cleanId}`;
 
-  const productPrice = product?.price
-    ? `Preço: ${product.price}`
-    : "Confira este produto";
+    const productTitle =
+      product.title2 ||
+      product.title ||
+      product.name ||
+      "Shopping World MTI";
 
-  const productImage =
-    product?.image_url ||
-    product?.image ||
-    "https://shoppingworldmti.com/avatar/shop_word3.png";
+    const productPrice = product.price
+      ? `Preço: ${product.price}`
+      : "Confira este produto";
 
-  const safeTitle = escapeHtml(productTitle);
-  const safePrice = escapeHtml(productPrice);
-  const safeImage = escapeHtml(productImage);
-  const safeLink = escapeHtml(finalLink);
+    const productImage =
+      product.image_url ||
+      product.image ||
+      "https://shoppingworldmti.com/avatar/shop_word3.png";
 
-  const html = `
+    const safeTitle = escapeHtml(productTitle);
+    const safePrice = escapeHtml(productPrice);
+    const safeImage = escapeHtml(productImage);
+    const safeLink = escapeHtml(finalLink);
+
+    const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>${safeTitle}</title>
+<head>
+  <meta charset="UTF-8" />
+  <title>${safeTitle}</title>
 
-    <meta property="og:title" content="${safeTitle}" />
-    <meta property="og:description" content="${safePrice}" />
-    <meta property="og:image" content="${safeImage}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:url" content="${safeLink}" />
-    <meta property="og:type" content="website" />
+  <meta property="og:title" content="${safeTitle}" />
+  <meta property="og:description" content="${safePrice}" />
+  <meta property="og:image" content="${safeImage}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="${safeLink}" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${safeTitle}" />
-    <meta name="twitter:description" content="${safePrice}" />
-    <meta name="twitter:image" content="${safeImage}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${safeTitle}" />
+  <meta name="twitter:description" content="${safePrice}" />
+  <meta name="twitter:image" content="${safeImage}" />
 
-    <meta http-equiv="refresh" content="0;url=${safeLink}" />
-    <script>
-      window.location.href = "${safeLink}";
-    </script>
-  </head>
-  <body>
-    Redirecionando...
-    <br />
-    <a href="${safeLink}">Abrir produto</a>
-  </body>
-</html>
-`;
+  <script>
+    window.location.replace("${safeLink}");
+  </script>
+</head>
+<body>
+  Redirecionando...
+</body>
+</html>`;
 
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  return res.status(200).send(html);
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    return res.status(200).send(html);
+  } catch (err) {
+    console.error("ERRO GERAL OG:", err);
+    return res.status(500).send(`Erro interno OG: ${err.message}`);
+  }
 }
 
 function extractNumericId(id = "") {
