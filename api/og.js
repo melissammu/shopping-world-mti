@@ -20,11 +20,11 @@ export default async function handler(req, res) {
       table: "amazon_products",
       redirectPath: "/amazon",
     },
-    amazonusa: {
+    amazonUsa: {
       table: "amazon_usa_products",
       redirectPath: "/amazonUsa",
     },
-    mercadoli: {
+    mercadoLi: {
       table: "mercado_livre_br",
       redirectPath: "/mercadoLi",
     },
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     console.error("Erro geral ao buscar produto:", error);
   }
 
-  const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${id}`;
+  const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${cleanId}`;
   const productTitle =
     product?.title2 ||
     product?.title ||

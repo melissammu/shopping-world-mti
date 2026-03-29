@@ -11,18 +11,17 @@ export default function ProductCatalog({
   const handleShare = async (product, e) => {
     e.stopPropagation();
 
-    const storeSlug =
-      product.country === "US"
-        ? "amazonusa"
-        : product.store === "Amazon"
-        ? "amazon"
-        : product.store === "Shein"
-        ? "shein"
-        : product.store === "Mercado Livre" || product.store === "Mercado br"
-        ? "mercadoli"
-        : "produto";
-
-    const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
+   const storeSlug =
+  product.store === "amazon USA"
+    ? "amazonUsa"
+    : product.store === "Amazon"
+    ? "amazon"
+    : product.store === "Shein"
+    ? "shein"
+    : product.store === "Mercado Livre"
+    ? "mercadoLi"
+    : "produto";
+   const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`;
 
     try {
       if (navigator.share) {
