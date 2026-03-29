@@ -56,6 +56,11 @@ export default async function handler(req, res) {
     } else {
       product = data;
     }
+
+    console.log("STORE:", store);
+    console.log("ID:", id);
+    console.log("CLEAN ID:", cleanId);
+    console.log("PRODUCT:", product);
   } catch (error) {
     console.error("Erro geral ao buscar produto:", error);
   }
