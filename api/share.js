@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     },
     amazonusa: {
       table: "amazon_usa_products",
-      redirectPath: "/amazonUsa",
+      redirectPath: "/amazonusa",
     },
     mercadoli: {
       table: "products",
@@ -56,11 +56,6 @@ export default async function handler(req, res) {
     } else {
       product = data;
     }
-
-    console.log("STORE:", store);
-    console.log("ID:", id);
-    console.log("CLEAN ID:", cleanId);
-    console.log("PRODUCT:", product);
   } catch (error) {
     console.error("Erro geral ao buscar produto:", error);
   }
@@ -74,31 +69,30 @@ export default async function handler(req, res) {
 
   const safeImage = escapeHtml(productImage);
   const safeLink = escapeHtml(finalLink);
+const html = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
 
-  const html = `
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-    <head>
-      <meta charset="UTF-8" />
+    <meta property="og:image" content="${safeImage}" />
+    <meta property="og:url" content="${safeLink}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-      <meta property="og:image" content="${safeImage}" />
-      <meta property="og:url" content="${safeLink}" />
-      <meta property="og:type" content="website" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${safeImage}" />
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content="${safeImage}" />
-
-      <script>
-        window.location.replace("${safeLink}");
-      </script>
-    </head>
-    <body>
-      Redirecionando...
-    </body>
-  </html>
-  `;
+    <script>
+      window.location.replace("${safeLink}");
+    </script>
+  </head>
+  <body>
+    Redirecionando...
+  </body>
+</html>
+`;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   return res.status(200).send(html);

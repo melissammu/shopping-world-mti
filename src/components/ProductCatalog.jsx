@@ -15,7 +15,7 @@ const handleShare = async (product, e) => {
       ? "shein"
       : product.store === "Mercado Livre"
       ? "mercadoli"
-      : "produtos";
+      : "shein";
 
 const shareLink = `${window.location.origin}/api/share?store=${storeSlug}&id=${product.id}`;
   try {
