@@ -13,7 +13,7 @@ export default function ProductCatalog({
 
    const storeSlug =
   product.store === "amazon USA"
-    ? "amazonUsa"
+    ? "amazonusa"
     : product.store === "Amazon"
     ? "amazon"
     : product.store === "Shein"
@@ -21,7 +21,7 @@ export default function ProductCatalog({
     : product.store === "Mercado Livre"
     ? "mercadoLi"
     : "produto";
-   const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`;
+  const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
 
     try {
       if (navigator.share) {

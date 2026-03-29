@@ -257,12 +257,24 @@ return (
   <button
     className="share-button"
     onClick={(e) => {
-      e.stopPropagation();
+  e.stopPropagation();
 
-      const link = `${window.location.origin}/product/${product.id}`;
-      navigator.clipboard.writeText(link);
-      alert("Link copiado");
-    }}
+  const storeSlug =
+    product.store === "Amazon"
+      ? "amazonusa"
+      : product.store === "Amazon"
+      ? "amazon"
+      : product.store === "Shein"
+      ? "shein"
+      : product.store === "Mercado br"
+      ? "mercadoLi"
+      : "produto";
+
+  const link = `${window.location.origin}/s/${storeSlug}/${product.id}`;
+
+  navigator.clipboard.writeText(link);
+  alert("Link copiado");
+}}
   >
     Compartir
   </button>
