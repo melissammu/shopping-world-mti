@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     let query = supabase
       .from(config.table)
       .select("*")
-      .eq("id", cleanId);
+      .eq("id", Number(cleanId));
 
     if (config.extraFilter) {
       query = query.eq(config.extraFilter.column, config.extraFilter.value);
