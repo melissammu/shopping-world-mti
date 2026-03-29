@@ -17,8 +17,7 @@ const handleShare = async (product, e) => {
       ? "mercadoli"
       : "produto";
 
-  const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
-
+const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`;
   try {
     if (navigator.share) {
       await navigator.share({
