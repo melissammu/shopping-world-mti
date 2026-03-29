@@ -65,7 +65,6 @@ export default async function handler(req, res) {
   }
 
   const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${id}`;
-
   const productTitle =
     product?.title2 ||
     product?.title ||
