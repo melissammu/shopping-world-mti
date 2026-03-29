@@ -19,17 +19,14 @@ export default function handler(req, res) {
   <!DOCTYPE html>
   <html lang="pt-BR">
     <head>
-      <meta charset="UTF-8" />
-      <meta property="og:title" content="${fallbackTitle}" />
-      <meta property="og:description" content="${fallbackPrice}" />
-      <meta property="og:image" content="${fallbackImage}" />
-      <meta property="og:url" content="${finalLink}" />
-      <meta property="og:type" content="website" />
-
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="${fallbackTitle}" />
-      <meta name="twitter:description" content="${fallbackPrice}" />
-      <meta name="twitter:image" content="${fallbackImage}" />
+     <meta property="og:title" content="${fallbackTitle}" />
+<meta property="og:description" content="${fallbackPrice}" />
+<meta property="og:image" content="${fallbackImage}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:url" content="${finalLink}" />
+<meta property="og:type" content="website" />
 
       <script>
         window.location.replace("${finalLink}");
