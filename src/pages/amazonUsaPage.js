@@ -8,26 +8,25 @@ export default function AmazonUsaPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);  
 
-  const handleAffiliateRedirect = async (product) => {
-    const safeLink =
-      (product.link_us && String(product.link_us).trim()) ||
-      (product.link && String(product.link).trim()) ||
-      (product.link_br && String(product.link_br).trim()) ||
-      "";
+ const handleAffiliateRedirect = async (product) => {
+  const safeLink =
+    (product.link_br && String(product.link_br).trim()) ||
+    (product.link && String(product.link).trim()) ||
+    "";
 
-    if (!safeLink) {
-      alert("Este produto ainda não tem link disponível.");
-      return;
-    }
+  if (!safeLink) {
+    console.log("Produto Amazon sem link válido");
+    return;
+  }
 
-    try {
-      await registerAfiliateClick(product);
-      window.open(safeLink, "_blank", "noopener,noreferrer");
-    } catch (error) {
-      console.error("Erro en redirect Amazon USA:", error);
-      window.open(safeLink, "_blank", "noopener,noreferrer");
-    }
-  };
+  try {
+    await registerAfiliateClick(product);
+    window.location.href = safeLink;
+  } catch (error) {
+    console.error("Erro ao redirecionar Amazon:", error);
+    window.location.href = safeLink;
+  }
+};
 
   useEffect(() => {
     async function loadProducts() {

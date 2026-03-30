@@ -9,24 +9,24 @@ export default function MercadoLiPage() {
   const [selectedProductId, setSelectedProductId] = useState(null);
 
   const handleAffiliateRedirect = async (product) => {
-    const safeLink =
-      (product.link_br && String(product.link_br).trim()) ||
-      (product.link && String(product.link).trim()) ||
-      "";
+  const safeLink =
+    (product.link_br && String(product.link_br).trim()) ||
+    (product.link && String(product.link).trim()) ||
+    "";
 
-    if (!safeLink) {
-      console.log("Producto Mercado Livre sin link válido");
-      return;
-    }
+  if (!safeLink) {
+    console.log("Produto Amazon sem link válido");
+    return;
+  }
 
-    try {
-      await registerAfiliateClick(product);
-      window.open(safeLink, "_blank", "noopener,noreferrer");
-    } catch (error) {
-      console.error("Error en redirect Mercado Livre:", error);
-      window.open(safeLink, "_blank", "noopener,noreferrer");
-    }
-  };
+  try {
+    await registerAfiliateClick(product);
+    window.location.href = safeLink;
+  } catch (error) {
+    console.error("Erro ao redirecionar Amazon:", error);
+    window.location.href = safeLink;
+  }
+};
 
   useEffect(() => {
     async function loadProducts() {
