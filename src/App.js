@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import SitePage from "./pages/sitePage";
 import AmazonPage from "./pages/amazonPage";
+import RedirectPage from "./pages/RedirectPage";
 import AmazonUsaPage from "./pages/amazonUsaPage";
 import SheinPage from "./pages/sheinPage";
 import MercadoLiPage from "./pages/mercadoLiPage";
@@ -32,6 +33,7 @@ export default function App() {
       <Route path="/dashboard-afiliada" element={<AffiliateDashboardPage />} />
       <Route path="/login-afiliada" element={<AffiliateLoginPage />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/s/:store/:id" element={<RedirectPage />} />
       <Route path="/" element={<OpenBrowserPage />} />
       <Route path="/home" element={<SitePage/>} />
       <Route path="/amazon" element={<AmazonPage />} />
