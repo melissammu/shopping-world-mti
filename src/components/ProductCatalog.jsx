@@ -10,17 +10,22 @@ export default function ProductCatalog({
 
   const handleShare = async (product, e) => {
     e.stopPropagation();
-    const store = product.store?.toLowerCase();
-const storeSlug =
-  product.store === "amazon usa"
-    ? "amazonusa"
-    : product.store === "amazon"
-    ? "amazon"
-    : product.store === "shein"
-    ? "shein"
-    : product.store === "mercado livre"
-    ? "mercadoli"
-    : "amazon";
+   const store = product.store?.toLowerCase()?.trim();
+
+let storeSlug = "amazon";
+
+if (store?.includes("amazon usa")) {
+  storeSlug = "amazonusa";
+} else if (store === "amazon") {
+  storeSlug = "amazon";
+} else if (store?.includes("shein")) {
+  storeSlug = "shein";
+} else if (store?.includes("mercado")) {
+  storeSlug = "mercadoli";
+}
+console.log("STORE ORIGINAL:", product.store);
+console.log("STORE NORMALIZADA:", store);
+console.log("STORE SLUG:", storeSlug);
 
 const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
     try {
