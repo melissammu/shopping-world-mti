@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/s/:store/:id",
-      "destination": "/api/og?store=:store&id=:id"
-    }
-  ]
-}
