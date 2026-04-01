@@ -34,6 +34,11 @@ const shuffleArray = (array) => {
         .select("*")
         .eq("store", "shein");
 
+         const { data: shopeeData, error: shopeeError } = await supabase
+        .from("shopee")
+        .select("*")
+        .eq("is_active", true);
+
       const { data: amazonData, error: amazonError } = await supabase
         .from("amazon_products")
         .select("*")
@@ -43,9 +48,13 @@ const shuffleArray = (array) => {
         .from("products")
         .select("*")
         .eq("store", "mercado_livre_br");
-
+ 
       if (sheinError) {
         console.error("Erro ao buscar Shein:", sheinError);
+      }
+
+       if (shopeeError) {
+        console.error("Erro ao buscar Shopee:", shopeeError);
       }
 
       if (amazonError) {
@@ -55,6 +64,7 @@ const shuffleArray = (array) => {
       if (mercadoError) {
         console.error("Erro ao buscar Mercado Livre:", mercadoError);
       }
+      
 
       const sheinFormatted = (sheinData || []).map((p) => ( {
           
@@ -76,34 +86,48 @@ const shuffleArray = (array) => {
          catalogPath:"/shein",
 
       }));
-      <>
-</>
-      const amazonFormatted = (amazonData || []).map((p) => {
-        const isAmazonBr = p.link_br && p.link_br.trim();
-        const isAmazonUs = p.link_us && p.link_us.trim();
 
-        return  {
+     const shopeeFormatted = (shopeeData || []).map((p) => ( {
           
-          id: `amazon-${p.id}`,
-          name: p.title || p.name || "Produto sem nome",
-          price: p.price || "",
-          image:
-            (p.image_url && p.image_url.trim()) ||
-            "/produtos/placeholder-amazon.png",
-          link:
-            (p.link_br && p.link_br.trim()) ||
-            (p.link_us && p.link_us.trim()) ||
-            (p.link && p.link.trim()) ||
-            "",
-          store: "Amazon",
-          category: p.category || "Geral",
-          country: isAmazonBr ? "BR" : isAmazonUs ? "US" : "",
-         catalogPath: isAmazonBr ? "/amazon" : isAmazonUs ? "/amazonusa" : "/amazon",
-        
-        };
-      });
-      
+        id: `shopee-${p.id}`,
+        name: p.title || p.name || "Produto sem nome",
+        price: p.price || "",
+        image:
+          (p.image_url && p.image_url.trim()) ||
+          (typeof p.image === "string" && p.image.trim()) ||
+          "/produtos/placeholder-shopee.png",
+        link:
+          (p.link_br && p.link_br.trim()) ||
+          (p.link_us && p.link_us.trim()) ||
+          (p.link && p.link.trim()) ||
+          "",
+        store: "Shopee",
+        category: p.category || "Moda",
+        country: "BR",
+         catalogPath:"/shopee",
 
+      }));
+      const amazonFormatted = (amazonData || []).map((p) => ( {
+          
+        id: `amazon-${p.id}`,
+        name: p.title || p.name || "Produto sem nome",
+        price: p.price || "",
+        image:
+          (p.image_url && p.image_url.trim()) ||
+          (typeof p.image === "string" && p.image.trim()) ||
+          "/produtos/placeholder-amazon.jpg",
+        link:
+          (p.link_br && p.link_br.trim()) ||
+          (p.link_us && p.link_us.trim()) ||
+          (p.link && p.link.trim()) ||
+          "",
+        store: "Amazon",
+        category: p.category || "Moda",
+        country: "BR",
+         catalogPath:"/amazon",
+
+      }));
+      
       const mercadoFormatted = (mercadoData || []).map((p) => ({
         id: `mercado-${p.id}`,
         name: p.title || p.name || "Produto sem nome",
@@ -125,6 +149,7 @@ const shuffleArray = (array) => {
 
       setAllProducts([
         ...sheinFormatted,
+         ...shopeeFormatted,
         ...amazonFormatted,
         ...mercadoFormatted,
       ]);
@@ -168,9 +193,9 @@ const shuffleArray = (array) => {
 }, [search, allProducts]);
 
   const getPlaceholderByProduct = (product) => {
-    if (product.store === "Amazon" && product.country === "US") {
+    if (product.store === "Shopee") {
       
-      return "/produtos/placeholder-amazonUsa.png";
+      return "/produtos/placeholder-shopee.png";
     }
 
     if (product.store === "Amazon") {
@@ -246,9 +271,11 @@ return (
   onClick={(e) => {
     e.stopPropagation();
 
-    if (!product.catalogPath) return;
+    if (!product.catalogPath)
+      
+      return;
 
-    navigate(product.catalogPath);
+   navigate(`${product.catalogPath}?productId=${product.id}`);
   }}
 >
   comprar agora
@@ -260,8 +287,8 @@ return (
   e.stopPropagation();
 
   const storeSlug =
-    product.store === "Amazon"
-      ? "amazonusa"
+    product.store === "Shopee"
+      ? "Shopee"
       : product.store === "Amazon"
       ? "amazon"
       : product.store === "Shein"
@@ -291,15 +318,14 @@ return (
     <span>SHEIN</span>
     <span className="flag">BR</span>
   </Link>
-
-  <Link to="/amazon" className="store amazon-br">
-    <span>Amazon Brasil</span>
+  <Link to="/shopee" className="store shopee">
+    <span>Shopee</span>
     <span className="flag">BR</span>
   </Link>
 
-  <Link to="/amazonusa" className="store amazon-us">
-    <span>Amazon USA</span>
-    <span className="flag">US</span>
+  <Link to="/amazon" className="store amazon-br">
+    <span>Amazon</span>
+    <span className="flag">BR</span>
   </Link>
 
   <Link to="/mercadoli" className="store mercado">

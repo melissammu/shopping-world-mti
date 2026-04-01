@@ -53,7 +53,7 @@ export default function OpenBrowserPage() {
             lineHeight: "1.4",
           }}
         >
-          Amazon, Shein e Mercado Livre juntos
+          Amazon, Shein, Shopee e Mercado Livre juntos
         </p>
 
         <div

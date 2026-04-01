@@ -14,12 +14,12 @@ export default function ProductCatalog({
 
 let storeSlug = "amazon";
 
-if (store?.includes("amazon usa")) {
-  storeSlug = "amazonusa";
+if (store?.includes("shein")) {
+  storeSlug = "shein";
+} else if (store?.includes("shopee")) {
+  storeSlug = "shopee";
 } else if (store === "amazon") {
   storeSlug = "amazon";
-} else if (store?.includes("shein")) {
-  storeSlug = "shein";
 } else if (store?.includes("mercado")) {
   storeSlug = "mercadoli";
 }
@@ -113,15 +113,16 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
                   selectedProductId === product.id ? "highlight-product" : ""
                 }`}
               >
-                <img
-                  src={safeImage}
-                  alt={product.name}
-                  className="product-image"
-                  onError={(e) => {
-                    e.currentTarget.src = "/produtos/placeholder-shein.jpg";
-                  }}
-                />
-
+               <img
+  src={safeImage}
+  alt={product.name}
+  className="product-image"
+  onClick={(e) => handleBuy(product, e)}
+  onError={(e) => {
+    e.currentTarget.src = "/produtos/placeholder-shein.jpg";
+  }}
+  style={{ cursor: "pointer" }}
+/>
                 <div className="product-info">
                   <h3 className="product-name">{product.name}</h3>
                   <p className="product-price">{product.price}</p>

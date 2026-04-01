@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import ProductCatalog from "../components/ProductCatalog";
 import { supabase } from "../lib/supabase";
 import { registerAfiliateClick } from "../lib/registerAfiliateClick";

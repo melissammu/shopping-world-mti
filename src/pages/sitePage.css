@@ -106,8 +106,8 @@ background:#f3c24f;
 color:#5c3317;
 }
 
-.amazon-us-btn{
-background:#f3c24f;
+.shopee-btn{
+background:#f33602;
 color:white;
 }
 
@@ -435,9 +435,9 @@ max-width:100%;
   color:#111111;
 }
 
-.amazon-us{
-  background:#f1b205;
-  color:#ffffff;
+.shopee{
+  background:hsl(16, 89%, 49%);
+  color:#fbf9f9;
 }
 
 .mercado{
