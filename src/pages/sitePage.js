@@ -165,6 +165,7 @@ const shuffleArray = (array) => {
     localStorage.setItem("affiliate_ref", ref);
     console.log("REF guardado en HOME:", ref);
   }
+
 }, []);
 
  useEffect(() => {
@@ -176,7 +177,7 @@ const shuffleArray = (array) => {
   }
 
   const results = allProducts.filter((product) => {
-    const productName = normalizeText(product.name);
+    const productName = normalizeText(product.title ||product.title ||"");
     const productCategory = normalizeText(product.category);
     const productStore = normalizeText(product.store);
 
@@ -189,7 +190,7 @@ const shuffleArray = (array) => {
 
   const mixedResults = shuffleArray(results);
 
-  setFilteredProducts(mixedResults.slice(0, 20));
+  setFilteredProducts(mixedResults.slice(0,30));
 }, [search, allProducts]);
 
   const getPlaceholderByProduct = (product) => {
@@ -313,27 +314,28 @@ return (
           )}
         </div>
 
-       <div className="stores">
-  <Link to="/shein" className="store shein">
-    <span>SHEIN</span>
-    <span className="flag">BR</span>
-  </Link>
-  <Link to="/shopee" className="store shopee">
-    <span>Shopee</span>
-    <span className="flag">BR</span>
+     <div className="stores">
+  <Link to="/shein" className="store-card shein-card">
+    <img src="/logos/logo_shein.png" alt="Shein" className="store-logo" />
+  
   </Link>
 
-  <Link to="/amazon" className="store amazon-br">
-    <span>Amazon</span>
-    <span className="flag">BR</span>
+  <Link to="/shopee" className="store-card shopee-card">
+    <img src="/logos/logo_shopee.jpg" alt="Shopee" className="store-logo" />
+
   </Link>
 
-  <Link to="/mercadoli" className="store mercado">
-    <span>Mercado Livre</span>
-    <span className="flag">BR</span>
+  <Link to="/amazon" className="store-card amazon-card">
+    <img src="/logos/logo_amazon.png" alt="Amazon" className="store-logo" />
+
   </Link>
-</div>
-      </div>
+
+  <Link to="/mercadoli" className="store-card mercado-card">
+    <img src="/logos/logo_mercado_livre.png" alt="Mercado livre" className="store-logo" />
+   
+  </Link>
+
+</div>     </div>
     </div>
   );
 }

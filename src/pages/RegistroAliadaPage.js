@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase"; // ajusta la ruta si tu archivo tien
 import "./RegistroAliadaPage.css";
 
 export default function RegistroAliadaPage() {
+  const[mensaje, setMensaje] = useState("");
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -90,125 +91,15 @@ export default function RegistroAliadaPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (loading) return;
+  setLoading(true); // 👈 activa loading
 
-    setMensagem("");
-    setErroMsg("");
+  setMensagem("No momento não temos vagas de afiliadas disponível");
+  setErroMsg("");
 
-    const erroValidacao = validarFormulario();
-    if (erroValidacao) {
-      setErroMsg(erroValidacao);
-      return;
-    }
-
-    if (!aceitaTermos) {
-      setErroMsg(
-        "Você não cumpre com os requisitos. Siga se preparando e tente depois."
-      );
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const codigo_ref = await gerarCodigoUnico();
-
-      const { data: afiliadaExistente, error: checkError } = await supabase
-        .from("afiliadas")
-        .select("id")
-        .eq("email", formData.email)
-        .maybeSingle();
-
-      if (checkError) {
-        setErroMsg("Não foi possível validar seu cadastro agora. Tente novamente.");
-        return;
-      }
-
-      if (afiliadaExistente) {
-        setErroMsg("Este e-mail já está cadastrado.");
-        return;
-      }
-
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (authError) {
-        const authMessage = authError.message?.toLowerCase() || "";
-
-        if (authMessage.includes("rate limit")) {
-          setErroMsg(
-            "Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente."
-          );
-        } else if (authMessage.includes("already registered")) {
-          setErroMsg("Este e-mail já está cadastrado.");
-        } else {
-          setErroMsg("Não foi possível criar sua conta agora. Tente novamente.");
-        }
-        return;
-      }
-
-      const link_afiliada = `https://shoppingworldmti.com/?ref=${codigo_ref}`;
-
-      const { error: insertError } = await supabase.from("afiliadas").insert([
-        {
-          nome: formData.nome,
-          email: formData.email,
-          telefone: `${formData.ddi} ${formData.telefone}`,
-          endereco: formData.endereco,
-          cep: formData.cep,
-          rede_social: formData.rede_social,
-          metodo_pagamento: formData.metodo_pagamento,
-          chave_pix:
-            formData.metodo_pagamento === "Pix" ? formData.chave_pix : null,
-          paypal_email:
-            formData.metodo_pagamento === "PayPal" ? formData.paypal_email : null,
-          codigo_ref,
-          link_afiliada,
-          status: "em_analise",
-          aceitou_termos: true,
-          data_aceite_termos: new Date().toISOString(),
-          user_id: authData?.user?.id || null,
-        },
-      ]);
-
-      if (insertError) {
-        if (insertError.message?.includes("afiliadas_codigo_ref_key")) {
-          setErroMsg("Erro ao gerar o código da afiliada. Tente novamente.");
-        } else {
-          setErroMsg("Não foi possível concluir seu cadastro. Tente novamente.");
-        }
-        return;
-      }
-
-      setMensagem(
-        "Seu cadastro foi enviado com sucesso e está em análise. Se for aprovado, a Shopping World MTI enviará seu ID e link de afiliada."
-      );
-
-      setFormData({
-        nome: "",
-        email: "",
-        password: "",
-        ddi: "",
-        telefone: "",
-        endereco: "",
-        cep: "",
-        rede_social: "",
-        metodo_pagamento: "",
-        chave_pix: "",
-        paypal_email: "",
-      });
-
-      setAceitaTermos(false);
-    } catch (error) {
-      setErroMsg("Ocorreu um erro inesperado. Tente novamente em instantes.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  return;
+};
 
   return (
     <div className="registro-aliada-page">
@@ -445,8 +336,8 @@ export default function RegistroAliadaPage() {
             {loading ? "Enviando..." : "Enviar cadastro"}
           </button>
 
-          {mensagem && <p className="sucesso-msg">{mensagem}</p>}
-          {erroMsg && <p className="erro-msg">{erroMsg}</p>}
+          {mensagem && <p className="alerta-vagas-msg">{mensagem}</p>}
+          {erroMsg && <p className="alerta-vagas-msg">{erroMsg}</p>}
         </form>
       </div>
     </div>

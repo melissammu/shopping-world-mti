@@ -95,4 +95,45 @@
   .registro-aliada-card h1 {
     font-size: 26px;
   }
+  .sucesso-msg {
+  margin-top: 15px;
+  padding: 12px;
+  background: #fff3cd;
+  color: #856404;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.erro-msg {
+  margin-top: 15px;
+  padding: 12px;
+  background: #f8d7da;
+  color: #842029;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 800;
+}
+.alerta-vagas-msg {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #ffe5e5;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  animation: alertaShake 0.6s infinite;
+}
+
+@keyframes alertaShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
 }
