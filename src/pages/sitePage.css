@@ -543,6 +543,7 @@ max-width:100%;
   padding: 0;
   margin: 0;
   display: block;
+  
 }
 
 .mercado-card {
@@ -560,6 +561,7 @@ max-width:100%;
   border-radius: 24px;
   overflow: hidden;
   display: flex;
+  margin: 0;
 }
 
 .store-logo {
@@ -574,5 +576,10 @@ max-width:100%;
 }
 
 .store-card:hover .store-logo {
-  transform: scale(1.08);
+  transform: scale(2);
+}
+@media (max-width: 600px) {
+  .stores {
+    gap: 6px; /* más pegados en móvil */
+  }
 }
