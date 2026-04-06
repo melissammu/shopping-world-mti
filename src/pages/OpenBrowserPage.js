@@ -73,7 +73,9 @@ export default function OpenBrowserPage() {
       minWidth: "90px",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
     }}
+  
   >
+    
     <img
       src="/avatar/logo_amazon.png"
       alt="Amazon"
@@ -130,6 +132,28 @@ export default function OpenBrowserPage() {
       }}
     />
 </div>
+ <div
+    style={{
+      background: "#fff",
+      padding: "10px 14px",
+      borderRadius: "12px",
+      minWidth: "90px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+    }}
+  >
+    <img
+      src="/avatar/logo_shopee.jpg"
+      alt="Shopee"
+      style={{
+        width: "85px", 
+        height: "28px",
+        objectFit: "contain",
+        display: "block",
+        margin: "0 auto"
+      }}
+    />
+  </div>
+
         </div>
 
        <img
