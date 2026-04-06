@@ -12,3 +12,11 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((reg) => console.log("SW registrado"))
+      .catch((err) => console.log("Error SW", err));
+  });
+}
