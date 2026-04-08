@@ -241,6 +241,7 @@
     margin-bottom: 12px;
     padding: 10px;
     border-radius: 16px;
+    overflow: hidden;
   }
 
   .image-container {
@@ -250,8 +251,9 @@
 
   .product-image {
     width: 100%;
-    height: auto;
-    object-fit: contain;
+    height: 180px;
+    object-fit: cover;
+    display: block;
   }
 
   .product-info {

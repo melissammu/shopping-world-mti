@@ -100,10 +100,12 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
       <div className="catalog-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
+          
+          
             const safeImage =
+              product.image_url||
               product.image ||
-              product.image_url ||
-              "/produtos/placeholder-shein.jpg";
+              "/produtos/placeholder-shopee.jpg";
 
             return (
               <div
@@ -113,13 +115,15 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
                   selectedProductId === product.id ? "highlight-product" : ""
                 }`}
               >
-               <img
+              <img 
   src={safeImage}
   alt={product.name}
   className="product-image"
+  loading="lazy"
   onClick={(e) => handleBuy(product, e)}
   onError={(e) => {
-    e.currentTarget.src = "/produtos/placeholder-shein.jpg";
+    if (e.currentTarget.src.includes("placeholder")) return;
+    e.currentTarget.src = "/produtos/placeholder-shopee.png";
   }}
   style={{ cursor: "pointer" }}
 />
