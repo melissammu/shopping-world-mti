@@ -90,6 +90,37 @@ if (productId) {
           Erro: {errorMessage}
         </div>
       )}
+<div style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "6px", // espacio entre nombre y logo
+    background: "#fff",
+    padding: "4px 8px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)"
+  }}>
+
+    {/* Nombre tienda */}
+    <span style={{
+      fontWeight: "600",
+      fontSize: "40px",
+      color: "#f89e18"
+    }}>
+  Amazon
+    </span>
+
+    {/* Logo MTI */}
+    <img
+      src="/avatar/icono2-512.png"
+      alt="MTI"
+      style={{
+        width: "40px",
+        height: "40px",
+        objectFit: "contain"
+      }}
+    />
+
+  </div>
 
       <ProductCatalog
               products={products}

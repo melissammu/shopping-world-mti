@@ -206,7 +206,7 @@ const shuffleArray = (array) => {
     if (product.store === "Mercado br") {
       return "/produtos/placeholder-mercadoLi.png";
     }
-
+    
     return "/produtos/placeholder-shein.jpg";
 
 };
@@ -219,7 +219,7 @@ return (
         className="logo"
       />
       <h1 className="title">Shopping World MTI.</h1>
-      <p className="subtitle">Seu shopping mundial num só lugar.</p>
+      <p className="subtitle">Seu shopping global num só lugar.</p>
       <div className="card">
         <div className="search-area">
           <div className="search-box">

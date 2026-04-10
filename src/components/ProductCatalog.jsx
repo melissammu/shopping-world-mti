@@ -115,6 +115,46 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
                   selectedProductId === product.id ? "highlight-product" : ""
                 }`}
               >
+
+                <div style={{
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "8px 10px"
+}}>
+
+  {/* Nombre tienda */}
+  <span style={{
+    fontWeight: "bold",
+    fontSize: "14px",
+    color: "#ff7b00"
+  }}>
+    {product.store || "Shopping"}
+  </span>
+
+  {/* Logo MTI */}
+  <div style={{
+    width: "26px",
+    height: "26px",
+    background: "#fff",
+    borderRadius: "6px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+  }}>
+    <img
+      src="/avatar/logo_nuevo.png"
+      alt="MTI"
+      style={{
+        width: "16px",
+        height: "16px",
+        objectFit: "contain"
+      }}
+    />
+  </div>
+
+</div>
               <img 
   src={safeImage}
   alt={product.name}

@@ -90,7 +90,45 @@ if (productId) {
           Erro: {errorMessage}
         </div>
       )}
+<div style={{
+  display: "flex",
+  justifyContent: "flex-end", // TODO a la derecha
+  padding: "10px 14px" // separación de la orilla
+}}>
 
+  <div style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "6px", // espacio entre nombre y logo
+    background: "#fff",
+    padding: "4px 8px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)"
+  }}>
+
+    {/* Nombre tienda */}
+    <span style={{
+      fontWeight: "600",
+      fontSize: "50px",
+      color: "#ff7b00"
+    }}>
+  Shopee
+    </span>
+
+    {/* Logo MTI */}
+    <img
+      src="/avatar/icono2-512.png"
+      alt="MTI"
+      style={{
+        width: "50px",
+        height: "50px",
+        objectFit: "contain"
+      }}
+    />
+
+  </div>
+
+</div>
      <ProductCatalog
              products={products}
              onProductClick={handleAffiliateRedirect}
