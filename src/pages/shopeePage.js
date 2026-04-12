@@ -58,7 +58,7 @@ export default function ShopeePage() {
 
         return {
   id: `shopee-${p.id}`,
-  name: p.title || p.name || "Produto sem nome",
+  title: p.title || p.name || "Produto sem nome",
   price: p.price || "",
   image: finalImage,
   link: finalLink,

@@ -68,7 +68,7 @@ const shuffleArray = (array) => {
       const sheinFormatted = (sheinData || []).map((p) => ( {
           
         id: `shein-${p.id}`,
-        name: p.title || p.name || "Produto sem nome",
+        title: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
           (p.image_url && p.image_url.trim()) ||
@@ -89,7 +89,7 @@ const shuffleArray = (array) => {
      const shopeeFormatted = (shopeeData || []).map((p) => ( {
           
         id: `shopee-${p.id}`,
-        name: p.title || p.name || "Produto sem nome",
+        title: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
           (p.image_url && p.image_url.trim()) ||
@@ -109,7 +109,7 @@ const shuffleArray = (array) => {
       const amazonFormatted = (amazonData || []).map((p) => ( {
           
         id: `amazon-${p.id}`,
-        name: p.title || p.name || "Produto sem nome",
+        title: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
           (p.image_url && p.image_url.trim()) ||

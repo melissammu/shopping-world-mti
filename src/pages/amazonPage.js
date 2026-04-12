@@ -59,7 +59,7 @@ const handleAffiliateRedirect = async (product) => {
 
          return {
   id: `amazon-${p.id}`,
-  name: p.title || p.name || "Produto sem nome",
+  title: p.title || p.name || "Produto sem nome",
   price: p.price || "",
   image: finalImage,
   link: finalLink,
