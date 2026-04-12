@@ -89,16 +89,78 @@ export default function RegistroAliadaPage() {
 
     return "";
   };
-
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  setLoading(true); // 👈 activa loading
-
-  setMensagem("No momento não temos vagas de afiliadas disponível");
+  setLoading(true);
+  setMensagem("");
   setErroMsg("");
 
+  try {
+    // 1) Validar formulario
+    const erroValidacao = validarFormulario();
+    if (erroValidacao) {
+      setErroMsg(erroValidacao);
+      setLoading(false);
+      return;
+
+  const { data, error } = await supabase
+  .from("afiliadas")
+  .insert([
+    {
+      nome: formData.nome,
+      email: formData.email,
+      whatsapp: formData.whatsapp,
+      pais: formData.pais,
+      instagram: formData.instagram,
+      metodo_pagamento: formData.metodo_pagamento,
+      chave_pix: formData.chave_pix,
+      paypal_email: formData.paypal_email,
+      codigo: gerarCodigoUnico(),
+      status: "pendente"
+    }
+  ]);
+
+console.log("RESULT data:", data);
+console.log("RESULT error:", error);
+
+if (error) {
+  console.error("Erro real do Supabase:", error);
+  setErroMsg(error.message);
+  setLoading(false);
+
   return;
+}
+
+setMensagem("No momento não temos vagas disponível.");
+setErroMsg("");
+setLoading(false);
+      return;
+    }
+
+
+    // 3) Mostrar mensaje después de guardar
+    setMensagem("No momento não temos vagas disponível.");
+
+    // 4) Limpiar formulario si quieres
+    setFormData({
+      nome: "",
+      email: "",
+      whatsapp: "",
+      instagram: "",
+      cpf: "",
+      metodo_pagamento: "",
+      chave_pix: "",
+      paypal_email: ""
+    });
+
+    setAceitaTermos(false);
+  } catch (err) {
+    console.error("Erro inesperado:", err);
+    setErroMsg("Ocorreu um erro inesperado ao enviar o cadastro.");
+  } finally {
+    setLoading(false);
+  }
 };
 
   return (

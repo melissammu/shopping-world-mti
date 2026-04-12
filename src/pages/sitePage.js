@@ -45,9 +45,8 @@ const shuffleArray = (array) => {
         .eq("is_active", true);
 
       const { data: mercadoData, error: mercadoError } = await supabase
-        .from("products")
+        .from("mercado_livre_br")
         .select("*")
-        .eq("store", "mercado_livre_br");
  
       if (sheinError) {
         console.error("Erro ao buscar Shein:", sheinError);
@@ -128,9 +127,9 @@ const shuffleArray = (array) => {
 
       }));
       
-      const mercadoFormatted = (mercadoData || []).map((p) => ({
+      const mercadoLiFormatted = (mercadoData || []).map((p) => ({
         id: `mercado-${p.id}`,
-        name: p.title || p.name || "Produto sem nome",
+        title: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
           (p.image_url && p.image_url.trim()) ||
@@ -151,7 +150,7 @@ const shuffleArray = (array) => {
         ...sheinFormatted,
          ...shopeeFormatted,
         ...amazonFormatted,
-        ...mercadoFormatted,
+        ...mercadoLiFormatted,
       ]);
  }
 
@@ -250,7 +249,7 @@ return (
   >
     <img
       src={product.image}
-      alt={product.name}
+      alt={product.title}
       className="global-search-image"
       onError={(e) => {
         e.currentTarget.src = getPlaceholderByProduct(product);
@@ -258,7 +257,7 @@ return (
     />
 
     <div className="global-search-info">
-  <p className="global-search-name">{product.name}</p>
+  <p className="global-search-name">{product.title}</p>
 
   <p className="global-search-store">
     {product.store}
@@ -330,7 +329,7 @@ return (
 
   </Link>
 
-  <Link to="/mercadoli" className="store-card mercado-card">
+  <Link to="/mercadoLi" className="store-card mercado-card">
     <img src="/logos/logo_mercado_livre.png" alt="Mercado livre" className="store-logo" />
    
   </Link>

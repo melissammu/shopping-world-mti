@@ -57,7 +57,7 @@ export default function MercadoLiPage() {
 
         return {
   id: `mercado-${p.id}`,
-  name: p.title || p.name || "Produto sem nome",
+  title: p.title || p.name || "Produto sem nome",
   price: p.price || "",
   image: finalImage,
   link: finalLink,

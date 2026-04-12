@@ -31,7 +31,7 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
     try {
       if (navigator.share) {
         await navigator.share({
-          title: product.name || "Produto",
+          title: product.title || "Produto",
           text: product.price
             ? `${product.name} - ${product.price}`
             : product.name || "Produto",
@@ -63,7 +63,7 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
 
   const filteredProducts = products.filter((product) => {
     const texto = `
-      ${product.name || ""}
+      ${product.title || ""}
       ${product.category || ""}
       ${product.store || ""}
     `.toLowerCase();
@@ -157,7 +157,7 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
 </div>
               <img 
   src={safeImage}
-  alt={product.name}
+  alt={product.title}
   className="product-image"
   loading="lazy"
   onClick={(e) => handleBuy(product, e)}
@@ -168,7 +168,7 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
   style={{ cursor: "pointer" }}
 />
                 <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
+                  <h3 className="product-name">{product.title}</h3>
                   <p className="product-price">{product.price}</p>
 
                   <button
