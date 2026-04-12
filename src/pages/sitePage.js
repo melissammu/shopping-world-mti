@@ -46,7 +46,7 @@ const shuffleArray = (array) => {
 
       const { data: mercadoData, error: mercadoError } = await supabase
         .from("mercado_livre_br")
-        .select("*")
+        .select("*");
  
       if (sheinError) {
         console.error("Erro ao buscar Shein:", sheinError);
