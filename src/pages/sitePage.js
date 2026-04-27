@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
 import MainHeader from "../components/MainHeader";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ProductCatalog from "../components/ProductCatalog";
 
 export default function SitePage() {
   const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Todos");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
@@ -16,16 +18,14 @@ export default function SitePage() {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
-
-const shuffleArray = (array) => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-
-  return newArray;
-};
+const productsByCategory =
+  activeCategory === "Todos"
+    ? allProducts
+    : allProducts.filter((product) =>
+        normalizeText(product.category || "").includes(
+          normalizeText(activeCategory)
+        )
+      );
   useEffect(() => {
     async function loadProducts() {
       
@@ -145,40 +145,78 @@ const shuffleArray = (array) => {
          catalogPath:"/mercadoLi",
 
       }));
+const intercalarDeDos = (...listas) => {
+  const resultado = [];
+  let i = 0;
+  let hay = true;
 
-      setAllProducts([
-        ...sheinFormatted,
-         ...shopeeFormatted,
-        ...amazonFormatted,
-        ...mercadoLiFormatted,
-      ]);
- }
+  while (hay) {
+    hay = false;
+
+    listas.forEach((lista) => {
+      const grupo = lista.slice(i, i + 2);
+
+      if (grupo.length > 0) {
+        resultado.push(...grupo);
+        hay = true;
+      }
+    });
+
+    i += 2;
+  }
+
+  return resultado;
+};
+
+const mixedProducts = intercalarDeDos(
+  sheinFormatted,
+  shopeeFormatted,
+  amazonFormatted,
+  mercadoLiFormatted
+);
+
+setAllProducts(mixedProducts);
+setFilteredProducts(mixedProducts); }
 
     loadProducts();
   }, []);
-  useEffect(() => {
+useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get("ref");
+  const productId = params.get("product");
 
   if (ref && !localStorage.getItem("affiliate_ref")) {
     localStorage.setItem("affiliate_ref", ref);
     console.log("REF guardado en HOME:", ref);
   }
 
-}, []);
+  if (productId && allProducts.length > 0) {
+    const foundProduct = allProducts.find(
+      (product) => String(product.id) === String(productId)
+    );
 
- useEffect(() => {
+   if (foundProduct) {
+  const restProducts = allProducts.filter(
+    (product) => String(product.id) !== String(productId)
+  );
+
+  setFilteredProducts([foundProduct, ...restProducts]);
+ }
+  }
+}, [allProducts]);
+
+useEffect(() => {
   const term = normalizeText(search);
 
   if (!term) {
-    setFilteredProducts([]);
+    setFilteredProducts(allProducts);
     return;
   }
 
   const results = allProducts.filter((product) => {
-    const productName = normalizeText(product.title ||product.title ||"");
-    const productCategory = normalizeText(product.category);
-    const productStore = normalizeText(product.store);
+    const productName = normalizeText(product.title || "");
+    const productCategory = normalizeText(product.category || "");
+    const productStore = normalizeText(product.store || "");
 
     return (
       productName.includes(term) ||
@@ -187,9 +225,45 @@ const shuffleArray = (array) => {
     );
   });
 
-  const mixedResults = shuffleArray(results);
+  setFilteredProducts(results.slice(0, 30));
+}, [search, allProducts]);
 
-  setFilteredProducts(mixedResults.slice(0,30));
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("product");
+const handleAffiliateRedirect = async (product) => {
+  if (!product.link) {
+    alert("Produto sem link de afiliado");
+    return;
+  }
+
+  try {
+    window.location.href = product.link;
+  } catch (error) {
+    console.error("Erro ao redirecionar:", error);
+    window.location.href = product.link;
+  }
+};
+useEffect(() => {
+  const term = normalizeText(search);
+
+  if (!term) {
+    setFilteredProducts(allProducts);
+    return;
+  }
+
+  const results = allProducts.filter((product) => {
+    const productName = normalizeText(product.title || "");
+    const productCategory = normalizeText(product.category || "");
+    const productStore = normalizeText(product.store || "");
+
+    return (
+      productName.includes(term) ||
+      productCategory.includes(term) ||
+      productStore.includes(term)
+    );
+  });
+
+  setFilteredProducts(results.slice(0, 30));
 }, [search, allProducts]);
 
   const getPlaceholderByProduct = (product) => {
@@ -210,8 +284,11 @@ const shuffleArray = (array) => {
 
 };
 return ( 
+
     <div className="home-container">
+    
       <MainHeader/>
+      
       <img
         src="/avatar/shop_word3.png"
         alt="Shopping World"
@@ -219,7 +296,37 @@ return (
       />
       <h1 className="title">Shopping World MTI.</h1>
       <p className="subtitle">Seu shopping global num só lugar.</p>
+      
       <div className="card">
+        <div
+ className="category-section">
+  <h2>Categorias</h2>
+  <div
+   className="category-header">
+    {["Todos", "Moda", "Beleza", "Casa", "Eletrônicos", "Tendencia","Ofertas"].map((cat) => (
+      <button
+        key={cat}
+        className={activeCategory === cat ? "active" : ""}
+        onClick={() => setActiveCategory(cat)}
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
+  return (
+  <div className="home-container">
+
+    {/* otras cosas (header, banner, etc) */}
+
+    <ProductCatalog
+      products={filteredProducts}
+      onProductClick={handleAffiliateRedirect}
+      selectedProductId={productId}
+    />
+
+  </div>
+);
+
         <div className="search-area">
           <div className="search-box">
             {!search && <span className="search-icon">🔍</span>}
@@ -232,109 +339,102 @@ return (
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+   {search ? (
+  <div className="mixed-products">
+    {filteredProducts.length === 0 ? (
+      <p className="no-results">Nenhum produto encontrado</p>
+    ) : (
+      filteredProducts.map((product) => (
+        <div
+          className="product-card"
+          key={`${product.store}-${product.id}`}
+        >
+          <span className="store">{product.store}</span>
 
-          {search && (
-            <div className="global-search-results">
-              {filteredProducts.length === 0 ? (
-                <p className="no-results">Nenhum produto encontrado</p>
-              ) : (
-                filteredProducts.map((product) => (
-  <div
-    key={product.id}
-    className="global-search-item"
-    onClick={async () => {
-  if (!product.catalogPath) return;
-  navigate(product.catalogPath);
-}}
-  >
-    <img
-      src={product.image}
-      alt={product.title}
-      className="global-search-image"
-      onError={(e) => {
-        e.currentTarget.src = getPlaceholderByProduct(product);
-      }}
-    />
+          <div className="image-box">
+            <img
+              src={product.image_url || product.image}
+              alt={product.title}
+              onError={(e) => {
+                e.currentTarget.src = getPlaceholderByProduct(product);
+              }}
+            />
+          </div>
 
-    <div className="global-search-info">
-  <p className="global-search-name">{product.title}</p>
+          <h3>{product.title}</h3>
+          <p className="price">R$ {product.price}</p>
 
-  <p className="global-search-store">
-    {product.store}
-    {product.country ? ` - ${product.country}` : ""}
-  </p>
+          <button
+            onClick={() =>
+              (window.location.href =
+                product.link_br || product.link)
+            }
+          >
+            Comprar agora
+          </button>
 
-  <p className="global-search-price">{product.price}</p>
-
-<button
-  className="buy-button"
-  onClick={(e) => {
-    e.stopPropagation();
-
-    if (!product.catalogPath)
-      
-      return;
-
-   navigate(`${product.catalogPath}?productId=${product.id}`);
-  }}
->
-  comprar agora
-</button>
-
-  <button
-    className="share-button"
-    onClick={(e) => {
-  e.stopPropagation();
-
-  const storeSlug =
-    product.store === "Shopee"
-      ? "Shopee"
-      : product.store === "Amazon"
-      ? "amazon"
-      : product.store === "Shein"
-      ? "shein"
-      : product.store === "Mercado br"
-      ? "mercadoLi"
-      : "produto";
-
-  const link = `${window.location.origin}/s/${storeSlug}/${product.id}`;
-
-  navigator.clipboard.writeText(link);
-  alert("Link copiado");
-}}
-  >
-    Compartir
-  </button>
-</div>
+          <button
+            className="share-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              const link = `${window.location.origin}/?product=${product.id}`;
+              navigator.clipboard.writeText(link);
+              alert("Link copiado");
+            }}
+          >
+            Compartir
+          </button>
+        </div>
+      ))
+    )}
   </div>
-))
-              )}
-            </div>
-          )}
+
+) : (
+  <div className="mixed-products">
+    {productsByCategory.map((product) => (
+      <div
+        className="product-card"
+        key={`${product.store}-${product.id}`}
+      >
+        <span className="store">{product.store}</span>
+
+        <div className="image-box">
+          <img
+            src={product.image_url || product.image}
+            alt={product.title}
+          />
         </div>
 
-     <div className="stores">
-  <Link to="/shein" className="store-card shein-card">
-    <img src="/logos/logo_shein.png" alt="Shein" className="store-logo" />
-  
-  </Link>
+        <h3>{product.title}</h3>
+        <p className="price">R$ {product.price}</p>
 
-  <Link to="/shopee" className="store-card shopee-card">
-    <img src="/logos/logo_shopee.jpg" alt="Shopee" className="store-logo" />
+        <button
+          onClick={() =>
+            (window.location.href =
+              product.link_br || product.link)
+          }
+        >
+          Comprar agora
+        </button>
 
-  </Link>
-
-  <Link to="/amazon" className="store-card amazon-card">
-    <img src="/logos/logo_amazon.png" alt="Amazon" className="store-logo" />
-
-  </Link>
-
-  <Link to="/mercadoLi" className="store-card mercado-card">
-    <img src="/logos/logo_mercado_livre.png" alt="Mercado livre" className="store-logo" />
-   
-  </Link>
-
-</div>     </div>
+        <button
+          className="share-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            const link = `${window.location.origin}/?product=${product.id}`;
+            navigator.clipboard.writeText(link);
+            alert("Link copiado");
+          }}
+        >
+          Compartir
+        </button>
+      </div>
+    ))}
     </div>
+)}
+  </div>
+  </div>
+  </div>
+  </div>
   );
-}
+  }

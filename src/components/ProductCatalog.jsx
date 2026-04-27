@@ -60,17 +60,15 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
       });
     }
   }, [selectedProductId, products]);
-
   const filteredProducts = products.filter((product) => {
-    const texto = `
-      ${product.title || ""}
-      ${product.category || ""}
-      ${product.store || ""}
-    `.toLowerCase();
+  const texto = `
+    ${product.title || ""}
+    ${product.category || ""}
+    ${product.store || ""}
+  `.toLowerCase();
 
-    return texto.includes(search.toLowerCase());
-  });
-
+  return texto.includes(search.toLowerCase());
+});
   const handleBuy = (product, e) => {
     e.stopPropagation();
     if (onProductClick) {
@@ -83,7 +81,7 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
       <div className="catalog-header">
         <h2 className="catalog-title">Produtos</h2>
         <p className="catalog-subtitle">
-          Escolha seu produto e clique para comprar
+          Escolha seu produto e compre
         </p>
 
         <div className="search-box">
@@ -111,9 +109,11 @@ const shareLink = `${window.location.origin}/s/${storeSlug}/${product.id}`;
               <div
                 key={product.id}
                 data-product-id={product.id}
-                className={`product-card ${
-                  selectedProductId === product.id ? "highlight-product" : ""
-                }`}
+               className={`product-card ${
+  selectedProductId && String(product.id) === String(selectedProductId)
+    ? "highlight-product"
+    : ""
+}`}
               >
 
                 <div style={{
