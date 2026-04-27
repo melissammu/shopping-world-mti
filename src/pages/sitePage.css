@@ -765,13 +765,13 @@ max-width:100%;
 @media (max-width: 600px) {
   .catalog-page {
     width: 100%;
-    padding: 16px;
+    padding: 16px 12px;
   }
 
-  .catalog-grid,
-  .mixed-products {
+  .catalog-grid {
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 20px;
   }
 
   .product-card {
@@ -780,10 +780,21 @@ max-width:100%;
     margin: 0 auto;
   }
 
-  .product-card img,
   .product-image {
     width: 100%;
     height: auto;
+    max-height: 360px;
     object-fit: contain;
   }
+
+  .product-name {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .buy-button,
+  .share-button {
+    width: 100%;
+  }
+
 }
