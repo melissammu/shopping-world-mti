@@ -313,7 +313,7 @@ return (
       </button>
     ))}
   </div>
-  return (
+  
   <div className="home-container">
 
     {/* otras cosas (header, banner, etc) */}

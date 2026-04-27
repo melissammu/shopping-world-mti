@@ -762,3 +762,28 @@ max-width:100%;
   color: white;
   box-shadow: 0 8px 20px rgba(255, 122, 0, 0.35);
 }
+@media (max-width: 600px) {
+  .catalog-page {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .catalog-grid,
+  .mixed-products {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .product-card {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .product-card img,
+  .product-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
