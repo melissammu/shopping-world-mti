@@ -710,7 +710,7 @@ max-width:100%;
 
 @media (max-width: 700px) {
   .mixed-products {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 2fr);
   }
 
   .product-card h3 {
@@ -724,7 +724,7 @@ max-width:100%;
 
 @media (max-width: 480px) {
   .mixed-products {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
   }
 }
 .category-section {
@@ -783,7 +783,7 @@ max-width:100%;
 
   .catalog-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
     gap: 20px;
   }
 
