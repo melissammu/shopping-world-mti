@@ -1,14 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import MainHeader from "../components/MainHeader";
 
 export default function OpenBrowserPage() {
   const navigate = useNavigate();
 
-  const abrirCatalogo = () => {
-    navigate("/home");
-  };
-
+ const abrirCatalogo = () => {
+  navigate(`/home${window.location.search}`);
+};
+useEffect(() => {
+  if (window.location.search.includes("product=")) {
+    navigate(`/home${window.location.search}`);
+  }
+}, [navigate]);
   return (
     
     <div className="container-card">

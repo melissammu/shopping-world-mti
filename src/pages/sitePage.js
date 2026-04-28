@@ -10,6 +10,7 @@ export default function SitePage() {
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
  const normalizeText = (text) =>
   (text || "")
@@ -344,11 +345,12 @@ return (
     ) : (
       filteredProducts.map((product) => (
         <div
-          className="product-card"
-          key={`${product.store}-${product.id}`}
-        >
-          <span className="store">{product.store}</span>
-
+className={`product-card ${
+  `${product.store}-${product.id}`.toLowerCase().trim() ===
+  selectedProductId?.toLowerCase().trim()
+    ? "highlight-product"
+    : ""
+}`}     >
           <div className="image-box">
             <img
               src={product.image_url || product.image}
@@ -382,6 +384,8 @@ return (
           >
             Compartir
           </button>
+
+            <span className="store-name">{product.store}</span>
         </div>
       ))
     )}
