@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./sitePage.css";
-import MainHeader from "../components/MainHeader";
 import { useNavigate } from "react-router-dom";
 import ProductCatalog from "../components/ProductCatalog";
 
@@ -18,14 +17,28 @@ export default function SitePage() {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
+const getPriceNumber = (price) => {
+  if (!price) return 0;
+
+  return Number(
+    String(price)
+      .replace("R$", "")
+      .replace(",", ".")
+      .replace(/[^\d.]/g, "")
+  );
+};
+
 const productsByCategory =
   activeCategory === "Todos"
     ? allProducts
+    : activeCategory === "Ofertas"
+    ? allProducts.filter((product) => getPriceNumber(product.price) <= 50)
     : allProducts.filter((product) =>
         normalizeText(product.category || "").includes(
           normalizeText(activeCategory)
         )
       );
+
   useEffect(() => {
     async function loadProducts() {
       
@@ -139,7 +152,7 @@ const productsByCategory =
           (p.link_br && p.link_br.trim()) ||
           (p.link && p.link.trim()) ||
           "",
-        store: "Mercado br",
+        store: "Mercado livre",
         category: p.category || "Geral",
         country: "BR",
          catalogPath:"/mercadoLi",
@@ -276,26 +289,23 @@ useEffect(() => {
       return "/produtos/placeholder-amazon.png";
     }
 
-    if (product.store === "Mercado br") {
+    if (product.store === "Mercado Livre") {
       return "/produtos/placeholder-mercadoLi.png";
     }
     
     return "/produtos/placeholder-shein.jpg";
+ };
 
-};
 return ( 
 
     <div className="home-container">
     
-      <MainHeader/>
-      
+
       <img
         src="/avatar/shop_word3.png"
         alt="Shopping World"
-        className="logo"
+        className="logo-catalogo"
       />
-      <h1 className="title">Shopping World MTI.</h1>
-      <p className="subtitle">Seu shopping global num só lugar.</p>
       
       <div className="card">
         <div
@@ -313,19 +323,7 @@ return (
       </button>
     ))}
   </div>
-  
-  <div className="home-container">
 
-    {/* otras cosas (header, banner, etc) */}
-
-    <ProductCatalog
-      products={filteredProducts}
-      onProductClick={handleAffiliateRedirect}
-      selectedProductId={productId}
-    />
-
-  </div>
-);
 
         <div className="search-area">
           <div className="search-box">

@@ -311,30 +311,40 @@ box-shadow:0 4px 14px rgba(0,0,0,0.05);
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:60px 24px 40px;
+  padding:40px 24px 40px;
   box-sizing:border-box;
   font-family:Arial, Helvetica, sans-serif;
 }
 
 .logo{
-  width:300px;
+  width:150px;
   height:auto;
   margin-bottom:6px;
 }
 
+.logo-catalogo{
+  width: 260px;
+  height:auto;
+  margin-bottom:5px;
+  padding: 3px;
+
+}
+
 .logo-text{
   color:#f36c2d;
-  font-size:18px;
+  font-size:15px;
   margin:0 0 18px;
 }
 
 .title{
-  font-size:28px;
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
   color:#a36001;
-  margin:0 0 8px;
-  font-weight:700;
-  text-align:center;
+justify-content: flex-start;
+font-size: 15px;
 }
+
 
 .subtitle{
   color:#888;
@@ -359,6 +369,7 @@ box-shadow:0 4px 14px rgba(0,0,0,0.05);
   flex-direction:column;
   align-items:center;
   flex: 1;
+  margin: auto;
 }
 
 .search-box {
@@ -366,6 +377,7 @@ box-shadow:0 4px 14px rgba(0,0,0,0.05);
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
+  
 }
 
 .search-icon{
@@ -725,8 +737,8 @@ max-width:100%;
 
 .category-section h2 {
   font-size: 28px;
-  font-weight: 800;
-  color: #222;
+  font-weight: 400;
+  color: #5b5757;
   margin-bottom: 16px;
 }
 
@@ -735,14 +747,15 @@ max-width:100%;
   gap: 12px;
   align-items: center;
   overflow-x: auto;
-  padding: 8px 0 14px;
+  padding: 8px 0 8px;
+  justify-content: left;
 }
 
 .category-header button {
   border: none;
   background: #ffffff;
   color: #333;
-  padding: 12px 22px;
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: 15px;
   font-weight: 700;

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import MainHeader from "../components/MainHeader";
 
 export default function OpenBrowserPage() {
   const navigate = useNavigate();
@@ -9,12 +10,23 @@ export default function OpenBrowserPage() {
   };
 
   return (
+    
+    <div className="container-card">
+        <img
+        src="/avatar/shop_word3.png"
+        alt="Shopping World"
+        className="logo"
+      />
+      
+    <h1 className="title">Shopping World MTI.</h1>
+    
+      <MainHeader/>
+      
     <div
       style={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
         background: "#f5f5f5",
         textAlign: "center",
@@ -201,10 +213,11 @@ export default function OpenBrowserPage() {
               color: "#111",
             }}
           >
-           Ver ofertas agora 🔥
+           Clique agora 🔥
           </button>
         </div>
       </div>
     </div>
+      </div>
   );
 }
