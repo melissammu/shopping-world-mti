@@ -602,7 +602,7 @@ max-width:100%;
 }
 
 /* 📱 CELULARES GRANDES (iPhone Pro Max, Android grandes) */
-@media (min-width: 481px) and (max-width: 767px) {
+@media (min-width: 481px) and (max-width: 800px) {
   .mixed-products {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -610,7 +610,7 @@ max-width:100%;
 }
 
 /* 📲 TABLETS (iPad, tablets Android) */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 801px) and (max-width: 1023px) {
   .mixed-products {
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
