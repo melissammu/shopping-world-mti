@@ -27,7 +27,9 @@ console.log("STORE ORIGINAL:", product.store);
 console.log("STORE NORMALIZADA:", store);
 console.log("STORE SLUG:", storeSlug);
 
-const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`;
+const shareLink = `${window.location.origin}/api/og?store=${storeSlug}&id=${product.id}`
+alert(shareLink);
+console.log("LINK REAL:", shareLink);
     try {
       if (navigator.share) {
         await navigator.share({
