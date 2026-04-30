@@ -71,7 +71,7 @@ export default async function handler(req, res) {
       return res.status(404).send("Produto não encontrado");
     }
 
-    const finalLink = `https://shoppingworldmti.com${config.redirectPath}?product=${cleanId}`;
+    const finalLink = `https://shoppingworldmti.com/?product=${store}-${cleanId}`;
 
     const productTitle =
       product.title2 ||
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
     const productImage =
       product.image_url ||
       product.image ||
-      "https://shoppingworldmti.com/avatar/shop_word3.png";
+      "https://shoppingworldmti.com/avatar/nuevologohome.png";
 
     const safeTitle = escapeHtml(productTitle);
     const safePrice = escapeHtml(productPrice);
