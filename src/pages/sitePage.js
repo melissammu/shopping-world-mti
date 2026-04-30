@@ -303,7 +303,7 @@ return (
     
 
       <img
-        src="/avatar/shop_word3.png"
+        src="/avatar/nuevologohome.png"
         alt="Shopping World"
         className="logo-catalogo"
       />
