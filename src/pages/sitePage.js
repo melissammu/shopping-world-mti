@@ -142,7 +142,7 @@ const productsByCategory =
       }));
       
       const mercadoLiFormatted = (mercadoData || []).map((p) => ({
-        id: `mercado-${p.id}`,
+        id: `mercadoli-${p.id}`,
         title: p.title || p.name || "Produto sem nome",
         price: p.price || "",
         image:
@@ -204,19 +204,22 @@ useEffect(() => {
     console.log("REF guardado en HOME:", ref);
   }
 
-  if (productId && allProducts.length > 0) {
-    const foundProduct = allProducts.find(
-      (product) => String(product.id) === String(productId)
+  if (productId && allProducts && allProducts.length > 0) {
+  const foundProduct = allProducts.find((product) => {
+    return (
+      String(product.id) === String(productId) ||
+      String(product.dbId) === String(productId)
+    );
+  });
+
+  if (foundProduct) {
+    const restProducts = allProducts.filter(
+      (product) => String(product.id) !== String(foundProduct.id)
     );
 
-   if (foundProduct) {
-  const restProducts = allProducts.filter(
-    (product) => String(product.id) !== String(productId)
-  );
-
-  setFilteredProducts([foundProduct, ...restProducts]);
- }
+    setFilteredProducts([foundProduct, ...restProducts]);
   }
+}
 }, [allProducts]);
 
 useEffect(() => {
