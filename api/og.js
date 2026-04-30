@@ -71,7 +71,7 @@ export default async function handler(req, res) {
       return res.status(404).send("Produto não encontrado");
     }
 
-    const finalLink = `https://shoppingworldmti.com/?product=${store}-${cleanId}`;
+    const finalLink = `https://www.shoppingworldmti.com/product=${store}-${cleanId}`;
 
     const productTitle =
       product.title2 ||
