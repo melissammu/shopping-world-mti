@@ -58,14 +58,7 @@ export default async function handler(req, res) {
       );
     }
 
-    const { data: product, error } = await query.single();
-
-    console.log("SUPABASE ERROR:", error);
-    console.log("PRODUCT:", product);
-
-    if (error) {
-      return res.status(500).send(`Erro Supabase: ${error.message}`);
-    }
+    const { data: product, error } = await query.maybeSingle();
 
     if (!product) {
       return res.status(404).send("Produto não encontrado");
