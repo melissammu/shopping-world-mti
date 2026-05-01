@@ -242,7 +242,7 @@ useEffect(() => {
     );
   });
 
-  setFilteredProducts(results.slice(0, 30));
+  setFilteredProducts(results.slice(0, 100));
 }, [search, allProducts]);
 
 const params = new URLSearchParams(window.location.search);
